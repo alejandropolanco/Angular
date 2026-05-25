@@ -1,1 +1,15 @@
-<p>header works!</p>
+<p-menubar [model]="items">
+
+  <ng-template pTemplate="end">
+
+    <button
+      pButton
+      icon="pi pi-shopping-cart"
+      class="p-button-text"
+      (click)="goToCart()"
+      label="({{ cartService.totalItems() }})"
+    ></button>
+
+  </ng-template>
+
+</p-menubar>

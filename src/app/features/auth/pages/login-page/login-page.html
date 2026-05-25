@@ -1,0 +1,45 @@
+<form [formGroup]="loginForm"
+(ngSubmit)="login()">
+<div class="flex justify-content-center align-items-center h-screen">
+
+    <div class="card p-5 w-20rem">
+
+        <h2 class="text-center mb-4">
+            Login
+        </h2>
+
+        <div class="flex flex-column gap-3">
+
+            <div class="flex flex-column gap-2">
+                <label>Username</label>
+
+                <input
+                    pInputText
+                    type="text"
+                    formControlName="email"
+                >
+            </div>
+
+            <div class="flex flex-column gap-2">
+                <label>Password</label>
+
+                <input
+                    pInputText
+                    type="password"
+                    formControlName="password"
+                >
+            </div>
+
+            <p-button
+                label="Ingresar"
+                styleClass="w-full"
+                type="submit"
+            />
+
+        </div>
+
+    </div>
+
+</div>
+
+</form>

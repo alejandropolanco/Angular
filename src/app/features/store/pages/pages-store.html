@@ -1,0 +1,40 @@
+<div class="card">
+
+  <div class="grid">
+
+    <div class="col-12" *ngFor="let item of products">
+
+      <div class="flex justify-content-between align-items-center p-4 border-bottom-1 surface-border">
+
+        <div>
+
+          <h3>{{ item.name }}</h3>
+          <img [src]="'images/' + item.image" [alt]="item.name" width="200" />
+
+          <p>{{ item.category }}</p>
+
+          <p>${{ item.price }}</p>
+
+
+        </div>
+
+        <div>
+
+          <p-tag [value]="item.inventoryStatus" [severity]="getSeverity(item)" />
+
+
+          <br><br>
+
+
+          <p-button label="Comprar" icon="pi pi-shopping-cart" (onClick)="addToCart(item)" />
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
