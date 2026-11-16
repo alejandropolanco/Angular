@@ -3,11 +3,11 @@
 }
 
 .brand {
-  --brand-mark: 32px;
-  --brand-title: 1.25rem;
+  --brand-mark: 30px;
+  --brand-title: 1.4rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.58rem;
+  gap: 0.6rem;
   color: var(--nv-text);
   line-height: 1;
 }
@@ -17,7 +17,7 @@
   width: var(--brand-mark);
   height: var(--brand-mark);
   place-items: center;
-  color: var(--nv-primary);
+  color: var(--nv-text);
 }
 
 .brand__mark svg {
@@ -28,20 +28,22 @@
 .brand__text {
   font-family: var(--nv-font-display);
   font-size: var(--brand-title);
-  font-weight: 700;
-  letter-spacing: -0.035em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .brand__text span {
-  color: var(--nv-primary);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--nv-text-muted);
 }
 
 .brand--sm {
-  --brand-mark: 26px;
-  --brand-title: 1.05rem;
+  --brand-mark: 24px;
+  --brand-title: 1.2rem;
 }
 
 .brand--lg {
-  --brand-mark: 46px;
-  --brand-title: 1.65rem;
+  --brand-mark: 42px;
+  --brand-title: 1.85rem;
 }

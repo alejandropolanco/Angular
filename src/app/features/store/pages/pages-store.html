@@ -1,57 +1,93 @@
-<div class="container store-page">
-  <section class="store-hero">
-    <div class="store-hero__content">
-      <span class="eyebrow"
-        ><i class="pi pi-sparkles" aria-hidden="true"></i> Nueva colección 2026</span
-      >
-      <h1>Tu setup, <span class="gradient-text">al siguiente nivel</span></h1>
-      <p>
-        Periféricos y tecnología premium seleccionados para gamers, creadores y profesionales que
-        quieren más de su equipo.
+<div class="store-page">
+  <!-- =====================================================================
+       Portada — hero full-bleed tipo revista
+       ===================================================================== -->
+  <section class="home-hero">
+    <div class="home-hero__media" aria-hidden="true">
+      <img
+        src="images/fondo.jpg"
+        alt=""
+        width="6000"
+        height="4000"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+
+    <div class="home-hero__inner container">
+      <span class="eyebrow home-hero__eyebrow">Nueva colección · 2026</span>
+      <h1 class="home-hero__title">
+        El detalle<br />
+        <span class="gradient-text">lo cambia todo</span>
+      </h1>
+      <p class="home-hero__lead">
+        Periféricos y tecnología seleccionados para quienes miden su equipo por lo que es capaz de
+        hacer, no por lo que promete.
       </p>
 
-      <div class="store-hero__actions">
+      <div class="home-hero__actions">
         <a class="hero-cta" href="#catalogo">
-          Explorar catálogo
+          Descubrir la colección
           <i class="pi pi-arrow-down" aria-hidden="true"></i>
         </a>
-        <span class="store-hero__shipping">
+        <span class="home-hero__shipping">
           <i class="pi pi-truck" aria-hidden="true"></i>
           Envío gratis desde $1,500
         </span>
       </div>
     </div>
 
-    <div class="store-hero__stats" aria-label="Datos de la tienda">
-      <div class="stat">
-        <strong>09</strong>
-        <span>productos premium</span>
-      </div>
-      <div class="stat">
-        <strong>24h</strong>
-        <span>envío express</span>
-      </div>
-      <div class="stat">
-        <strong>4.8</strong>
-        <span>valoración media</span>
-      </div>
-      <div class="stat stat--accent">
-        <i class="pi pi-shield" aria-hidden="true"></i>
-        <span>Compra protegida</span>
-      </div>
+    <div class="home-hero__meta container" aria-label="Datos de la tienda">
+      <span><b>09</b> piezas curadas</span>
+      <span><b>24h</b> envío express</span>
+      <span><b>4.8</b> valoración media</span>
+      <span><b>100%</b> compra protegida</span>
     </div>
   </section>
 
+  <!-- =====================================================================
+       Valores — manifiesto en tres tiempos
+       ===================================================================== -->
+  <section class="home-values container" aria-label="Cómo trabaja NovaStore">
+    <article class="value">
+      <span class="value__index">01</span>
+      <h3>Curaduría, no catálogo infinito</h3>
+      <p>
+        Probamos cada pieza antes de venderla. Si no mejora tu escritorio, no entra en la colección.
+      </p>
+    </article>
+
+    <article class="value">
+      <span class="value__index">02</span>
+      <h3>Precios claros, sin letra chica</h3>
+      <p>
+        El precio que ves es el que pagás. Descuentos marcados, stock real y envío gratis desde
+        $1,500.
+      </p>
+    </article>
+
+    <article class="value">
+      <span class="value__index">03</span>
+      <h3>Soporte de gente que la usa</h3>
+      <p>
+        Respondemos dudas de compatibilidad y armado de setup. Comprás una pieza, no un ticket.
+      </p>
+    </article>
+  </section>
+
+  <!-- =====================================================================
+       Catálogo
+       ===================================================================== -->
   <section
     id="catalogo"
-    class="catalog"
+    class="catalog container"
     aria-labelledby="catalog-title"
     [attr.aria-busy]="isLoading()"
   >
     <div class="catalog__header">
-      <div>
-        <span class="eyebrow">Catálogo</span>
-        <h2 id="catalog-title">Productos destacados</h2>
+      <div class="catalog__intro">
+        <span class="eyebrow">La colección</span>
+        <h2 id="catalog-title">Piezas seleccionadas</h2>
       </div>
       @if (!isLoading()) {
         <span class="catalog__count" aria-live="polite">{{ resultLabel() }}</span>
@@ -142,5 +178,67 @@
         Limpiar filtros
       </button>
     }
+  </section>
+
+  <!-- =====================================================================
+       Editorial — doble página con cita destacada
+       ===================================================================== -->
+  <section class="home-editorial" aria-labelledby="editorial-title">
+    <div class="home-editorial__media" aria-hidden="true">
+      <img
+        src="images/fondo.1.jpg"
+        alt=""
+        width="1766"
+        height="3140"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+
+    <div class="home-editorial__body">
+      <span class="eyebrow">La casa</span>
+      <h2 id="editorial-title" class="sr-only">Sobre NovaStore</h2>
+      <blockquote class="home-editorial__quote">
+        “Diseñamos para el escritorio, no para la vitrina.”
+      </blockquote>
+      <p class="home-editorial__text">
+        NovaStore nace de una obsesión simple: que cada pieza del setup se sienta inevitable. Elegimos
+        menos productos y los probamos más, para que decidir sea rápido y comprar sea tranquilo.
+      </p>
+
+      <div class="home-editorial__stats">
+        <div>
+          <strong>+1.2K</strong>
+          <span>setups armados</span>
+        </div>
+        <div>
+          <strong>4.8/5</strong>
+          <span>valoración media</span>
+        </div>
+        <div>
+          <strong>24h</strong>
+          <span>despacho express</span>
+        </div>
+      </div>
+
+      <a class="editorial-link home-editorial__link" href="#catalogo">
+        Ver la colección
+        <i class="pi pi-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       Cierre
+       ===================================================================== -->
+  <section class="home-cta">
+    <div class="container home-cta__inner">
+      <span class="eyebrow home-cta__eyebrow">Empezá hoy</span>
+      <h2 class="home-cta__title">Tu próximo setup empieza con una pieza.</h2>
+      <a class="hero-cta hero-cta--inverse" href="#catalogo">
+        Explorar el catálogo
+        <i class="pi pi-arrow-up" aria-hidden="true"></i>
+      </a>
+    </div>
   </section>
 </div>

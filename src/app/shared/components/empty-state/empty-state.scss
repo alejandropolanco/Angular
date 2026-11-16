@@ -22,9 +22,10 @@
   height: 72px;
   margin-bottom: 1.25rem;
   place-items: center;
+  border: 1px solid var(--nv-border);
   border-radius: 50%;
-  color: var(--nv-primary);
-  background: var(--nv-primary-soft);
+  color: var(--nv-text);
+  background: var(--nv-surface-2);
 }
 
 .empty-state__icon i {
@@ -49,19 +50,21 @@
   align-items: center;
   gap: 0.5rem;
   min-height: 44px;
-  padding: 0.7rem 1.15rem;
-  border: 0;
-  border-radius: var(--nv-radius-md);
-  color: var(--nv-primary);
-  font-size: var(--nv-text-footnote);
+  padding: 0.7rem 1.2rem;
+  border: 1px solid var(--nv-text);
+  border-radius: var(--nv-radius-sm);
+  color: var(--nv-text);
+  font-size: var(--nv-text-overline);
   font-weight: 600;
-  background: var(--nv-primary-soft);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: transparent;
   transition:
     color var(--nv-duration-base) var(--nv-ease),
     background var(--nv-duration-base) var(--nv-ease);
 }
 
 .empty-state__action:hover {
-  color: var(--nv-gray-0);
-  background: var(--nv-primary);
+  color: var(--nv-bg);
+  background: var(--nv-text);
 }

@@ -1,6 +1,6 @@
 /* ==========================================================================
    NovaStore — Overrides de PrimeNG
-   Objetivo: alinear los componentes PrimeNG con los tokens "Quiet Tech".
+   Objetivo: alinear los componentes PrimeNG con los tokens monocromos.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -9,7 +9,7 @@
 .p-button {
   border-radius: var(--nv-radius-md);
   font-weight: 600;
-  letter-spacing: 0;
+  letter-spacing: 0.01em;
   transition:
     background var(--nv-transition),
     border-color var(--nv-transition),
@@ -22,7 +22,7 @@
     .p-button-secondary
   ) {
   border-color: transparent;
-  color: var(--nv-gray-0);
+  color: var(--nv-bg);
   background: var(--nv-primary);
   box-shadow: none;
 }
@@ -31,7 +31,7 @@
     .p-button-secondary
   ):hover {
   border-color: transparent;
-  color: var(--nv-gray-0);
+  color: var(--nv-bg);
   background: var(--nv-primary-strong);
   box-shadow: var(--nv-shadow-sm);
 }
@@ -51,8 +51,8 @@
 }
 
 .p-button.p-button-text:hover {
-  color: var(--nv-primary);
-  background: var(--nv-primary-soft);
+  color: var(--nv-text);
+  background: var(--nv-surface-2);
 }
 
 /* --------------------------------------------------------------------------
@@ -72,11 +72,11 @@
 }
 
 .p-inputtext:enabled:hover {
-  border-color: var(--nv-gray-300);
+  border-color: var(--nv-stone-300);
 }
 
 .p-inputtext:enabled:focus {
-  border-color: var(--nv-primary);
+  border-color: var(--nv-text);
   box-shadow: var(--nv-focus-ring);
 }
 
@@ -97,11 +97,11 @@
 }
 
 .p-select:not(.p-disabled):hover {
-  border-color: var(--nv-gray-300);
+  border-color: var(--nv-stone-300);
 }
 
 .p-select:not(.p-disabled).p-focus {
-  border-color: var(--nv-primary);
+  border-color: var(--nv-text);
   box-shadow: var(--nv-focus-ring);
 }
 
@@ -109,7 +109,8 @@
   color: var(--nv-text);
 }
 
-.p-select-overlay {
+/* Doble clase: el tema de PrimeNG se inyecta después y empata en especificidad. */
+.p-select-overlay.p-select-overlay {
   border: 1px solid var(--nv-border);
   border-radius: var(--nv-radius-md);
   color: var(--nv-text);
@@ -124,7 +125,7 @@
 .p-select-option.p-select-option-selected,
 .p-select-option:hover {
   color: var(--nv-text);
-  background: var(--nv-primary-soft);
+  background: var(--nv-surface-2);
 }
 
 /* Dropdown de ordenamiento del catálogo: se monta en <body>, por eso vive aquí. */
@@ -148,7 +149,7 @@
   padding: 0.3rem 0.62rem;
   font-size: var(--nv-text-caption);
   font-weight: 600;
-  letter-spacing: 0;
+  letter-spacing: 0.02em;
   text-transform: none;
 }
 
@@ -185,7 +186,7 @@
 }
 
 .p-toast .p-toast-summary {
-  font-family: var(--nv-font-display);
+  font-family: var(--nv-font-body);
   font-weight: 600;
 }
 
@@ -194,7 +195,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Drawer (sheet iOS en móvil)
+   Drawer (menú móvil)
    -------------------------------------------------------------------------- */
 .p-drawer.mobile-drawer {
   width: min(88vw, 360px);
@@ -207,10 +208,11 @@
 .p-drawer.mobile-drawer .p-drawer-header {
   border-bottom: 1px solid var(--nv-border);
   color: var(--nv-text);
+  font-family: var(--nv-font-display);
 }
 
 .p-drawer-mask {
-  background: rgba(0, 0, 0, 0.32);
+  background: rgba(12, 10, 9, 0.4);
   backdrop-filter: blur(2px);
 }
 
@@ -230,6 +232,10 @@
 .p-dialog .p-dialog-footer {
   color: var(--nv-text);
   background: transparent;
+}
+
+.p-dialog .p-dialog-header {
+  font-family: var(--nv-font-display);
 }
 
 .p-confirmdialog-icon {

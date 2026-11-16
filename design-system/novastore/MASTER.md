@@ -1,8 +1,8 @@
-# NovaStore — Design System "Quiet Tech"
+# NovaStore — Design System "Clean Tech Monocromo"
 
 > Fuente de verdad visual para la tienda online de periféricos NovaStore.
 > Stack: Angular 21 · PrimeNG 21 · SCSS · SSR.
-> Última actualización: 2026-11-14.
+> Última actualización: 2026-11-15.
 
 ---
 
@@ -18,20 +18,21 @@ alto y la comparación es constante.
 | Necesidad | Decisión de diseño |
 | --- | --- |
 | Que el producto se vea premium y deseable | Fotografía grande sobre superficie neutra, tarjetas limpias, tipografía precisa, sombras suaves. |
-| Que el precio y la disponibilidad se entiendan en < 2 s | Precio jerárquico, descuento como pill, stock como tag semántico. |
+| Que el precio y la disponibilidad se entiendan en < 2 s | Precio jerárquico en mono, descuento como pill, stock como tag semántico. |
 | Reducir fricción de compra | CTA "Añadir" siempre visible, carrito persistente, badge de cantidad en el header. |
 | Generar confianza | Compra protegida, envío express, valoraciones, estados vacíos claros, checkout demo explícito. |
 | Incentivar ticket promedio | Progreso de envío gratis (umbral $1,500) visible en el carrito. |
-| Que se sienta moderna y "Apple-like" | Estilo iOS: superficies blancas, glass solo en navegación, esquinas continuas, azul de acción, movimiento con spring. |
+| Que se sienta moderna y premium | Clean Tech monocromo: papel cálido, superficies blancas, borde hairline, tipografía editorial, un solo acento (la tinta). Home tipo revista. |
 | Rendimiento percibido | Skeleton loading con dimensiones estables (cero layout shift) y feedback inmediato. |
 
 ### Principios
 
 1. **Claridad antes que decoración.** El producto es el protagonista; la UI desaparece.
-2. **Un solo acento de acción.** Azul iOS para lo accionable; el resto es neutro.
-3. **Profundidad suave.** Sombras cortas y difusas, nunca glow neón.
-4. **Continuidad.** Radios generosos, superficies translúcidas solo donde hay scroll detrás.
-5. **Movimiento con propósito.** Micro-interacciones < 300 ms; respeta `prefers-reduced-motion`.
+2. **Un solo acento: el contraste tinta/papel.** Sin color de marca compitiendo por atención; los estados semánticos (éxito/aviso/peligro) se conservan solo como señal.
+3. **Profundidad suave.** Bordes hairline y sombras difusas; nunca glow neón.
+4. **Continuidad.** Radios contenidos, superficies translúcidas solo donde hay scroll detrás.
+5. **Editorial en la home.** Retícula de revista, display serif (Bodoni Moda), mucho aire; el catálogo, el carrito y el auth son utilitarios.
+6. **Movimiento con propósito.** Micro-interacciones < 300 ms; respeta `prefers-reduced-motion`.
 
 ### Anti-patrones (prohibido en este proyecto)
 
@@ -47,10 +48,18 @@ alto y la comparación es constante.
 
 ## 2. Dirección visual
 
-**"Quiet Tech"**: la limpieza de la Apple Store con la precisión de un producto
-de hardware. Fondo gris sistema iOS (`#F2F2F7`), superficies blancas, tipografía
-Inter, azul de acción `#0A84FF`, y un índigo secundario reservado para detalles
-de marca. Sin ruido.
+**"Clean Tech Monocromo"**: papel cálido y tinta. La base es una escala neutra
+cálida (*stone*) sobre la que el único acento es el contraste tinta/papel — sin
+color de marca. Dos registros conviven:
+
+- **Utilitario** (catálogo, carrito, auth, 404): retícula limpia, bordes
+  hairline, superficies blancas, densidad cómoda.
+- **Editorial** (home): hero full-bleed en blanco y negro, manifiesto de
+  valores, split con *pull quote* y banda CTA en tinta; se lee como una
+  revista premium, no como una ficha de producto.
+
+Tipografía: **Bodoni Moda** (display editorial, serif), **Inter** (UI/cuerpo),
+**JetBrains Mono** (precios y datos).
 
 - **Modo:** automático según `prefers-color-scheme` del sistema. El script externo
   `public/theme-init.js` aplica `.app-dark` en `<html>` antes del primer paint y escucha
@@ -68,99 +77,115 @@ Arquitectura: **Primitive → Semantic → Component**. En código viven en
 
 ### 3.1 Color — primitivos
 
+Escala neutra cálida *stone* (Tailwind). Todo el sistema se construye sobre ella;
+el "acento" es el extremo oscuro de la escala (la tinta).
+
 | Token | Valor | Uso |
 | --- | --- | --- |
-| `--nv-blue-500` | `#0A84FF` | Acción primaria (iOS blue) |
-| `--nv-blue-600` | `#0066CC` | Hover / pressed |
-| `--nv-blue-50` | `#EAF4FF` | Tinte de selección |
-| `--nv-indigo-500` | `#5E5CE6` | Acento de marca secundario |
-| `--nv-green-600` | `#248A3D` | Disponible / éxito |
-| `--nv-orange-600` | `#B25000` | Últimas unidades |
-| `--nv-red-600` | `#D70015` | Agotado / destructivo |
-| `--nv-yellow-500` | `#FFB800` | Estrellas de valoración |
-| `--nv-gray-0` | `#FFFFFF` | Superficie |
-| `--nv-gray-50` | `#F9F9FB` | Superficie suave |
-| `--nv-gray-100` | `#F2F2F7` | Fondo de app (iOS system background) |
-| `--nv-gray-200` | `#E5E5EA` | Separadores sólidos |
-| `--nv-gray-400` | `#C7C7CC` | Placeholder / deshabilitado |
-| `--nv-gray-600` | `#8E8E93` | Texto terciario |
-| `--nv-gray-700` | `#6E6E73` | Texto secundario |
-| `--nv-gray-900` | `#1D1D1F` | Texto primario |
-| `--nv-black` | `#000000` | Fondo dark |
+| `--nv-stone-50` | `#FAFAF9` | Papel (fondo de app) |
+| `--nv-stone-100` | `#F5F5F4` | Superficie suave / superficie 2 |
+| `--nv-stone-200` | `#E7E5E4` | Bordes hairline |
+| `--nv-stone-300` | `#D6D3D1` | Bordes en hover |
+| `--nv-stone-400` | `#A8A29E` | Texto atenuado en dark |
+| `--nv-stone-500` | `#78716C` | Texto terciario |
+| `--nv-stone-600` | `#57534E` | Texto secundario |
+| `--nv-stone-700` | `#44403C` | Superficie 3 en dark |
+| `--nv-stone-800` | `#292524` | Superficie 2 en dark / hover de tinta |
+| `--nv-stone-900` | `#1C1917` | Superficie en dark |
+| `--nv-stone-950` | `#0C0A09` | Tinta (texto y acción) |
+| `--nv-gray-0` | `#FFFFFF` | Superficie (papel elevado) |
+
+Los alias heredados `--nv-gray-*` apuntan a la escala `--nv-stone-*`.
+
+Estados (se conservan como señal semántica, no como acento):
+
+| Token | Valor | Uso |
+| --- | --- | --- |
+| `--nv-green-600` | `#15803D` | Disponible / éxito |
+| `--nv-orange-600` | `#B45309` | Últimas unidades |
+| `--nv-red-600` | `#B91C1C` | Agotado / destructivo |
 
 ### 3.2 Color — semánticos
 
 | Token | Claro | Dark (`.app-dark`) |
 | --- | --- | --- |
-| `--nv-bg` | `#F2F2F7` | `#000000` |
-| `--nv-bg-soft` | `#F9F9FB` | `#0A0A0C` |
-| `--nv-surface` | `#FFFFFF` | `#1C1C1E` |
-| `--nv-surface-2` | `#F9F9FB` | `#2C2C2E` |
-| `--nv-surface-3` | `#E5E5EA` | `#3A3A3C` |
-| `--nv-surface-glass` | `rgba(255,255,255,.78)` | `rgba(28,28,30,.72)` |
-| `--nv-border` | `rgba(60,60,67,.12)` | `rgba(84,84,88,.60)` |
-| `--nv-border-strong` | `rgba(10,132,255,.32)` | `rgba(10,132,255,.42)` |
-| `--nv-text` | `#1D1D1F` | `#F5F5F7` |
-| `--nv-text-muted` | `#6E6E73` | `#A1A1A6` |
-| `--nv-text-dim` | `#8E8E93` | `#8E8E93` |
-| `--nv-primary` | `#0A84FF` | `#0A84FF` |
-| `--nv-primary-strong` | `#0066CC` | `#409CFF` |
-| `--nv-primary-soft` | `#EAF4FF` | `rgba(10,132,255,.16)` |
-| `--nv-success` | `#248A3D` | `#30D158` |
-| `--nv-warning` | `#B25000` | `#FF9F0A` |
-| `--nv-danger` | `#D70015` | `#FF453A` |
-| `--nv-star` | `#FFB800` | `#FFD60A` |
+| `--nv-bg` | `#FAFAF9` | `#0C0A09` |
+| `--nv-bg-soft` | `#F5F5F4` | `#141210` |
+| `--nv-surface` | `#FFFFFF` | `#1C1917` |
+| `--nv-surface-2` | `#F5F5F4` | `#292524` |
+| `--nv-surface-3` | `#E7E5E4` | `#44403C` |
+| `--nv-surface-glass` | `rgba(250,250,249,.82)` | `rgba(12,10,9,.78)` |
+| `--nv-border` | `#E7E5E4` | `#292524` |
+| `--nv-border-strong` | `#0C0A09` | `#FAFAF9` |
+| `--nv-text` | `#0C0A09` | `#FAFAF9` |
+| `--nv-text-muted` | `#57534E` | `#A8A29E` |
+| `--nv-text-dim` | `#78716C` | `#78716C` |
+| `--nv-primary` | `#0C0A09` (tinta) | `#FAFAF9` (papel) |
+| `--nv-primary-strong` | `#292524` | `#E7E5E4` |
+| `--nv-primary-soft` | `#F5F5F4` | `rgba(250,250,249,.08)` |
+| `--nv-success` | `#15803D` | `#4ADE80` |
+| `--nv-warning` | `#B45309` | `#FBBF24` |
+| `--nv-danger` | `#B91C1C` | `#F87171` |
+| `--nv-star` | `= --nv-text` (tinta) | `= --nv-text` |
 
 **Contraste:** texto primario y secundario ≥ 4.5:1 sobre su superficie en ambos
 modos. El acento nunca es el único indicador de estado (se acompaña de texto/icono).
+Las estrellas de valoración usan la tinta, no un amarillo.
 
 ### 3.3 Tipografía
 
-- Familia única: **Inter**, fallback `-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif`.
-- Display y body comparten familia; el display se diferencia por peso y tracking.
-- `font-display: swap` (Google Fonts ya lo incluye).
+Tres familias, cada una con un rol claro:
+
+- **Bodoni Moda** — display editorial (serif). Titulares de la home, precios
+  destacados, código 404. `--nv-font-display`.
+- **Inter** — UI y cuerpo. `--nv-font-body`, fallback
+  `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`.
+- **JetBrains Mono** — datos y precios. `--nv-font-mono`, fallback
+  `ui-monospace, 'SF Mono', SFMono-Regular, Menlo, monospace`.
+
+`font-display: swap` (Google Fonts ya lo incluye).
 
 | Rol | Token | Tamaño / línea | Peso | Tracking |
 | --- | --- | --- | --- | --- |
-| Display | `--nv-text-display` | `clamp(2.5rem, 6vw, 4rem)` / 1.05 | 700 | -0.03em |
-| H1 | `--nv-text-h1` | `clamp(2rem, 4vw, 3rem)` / 1.1 | 700 | -0.025em |
-| H2 | `--nv-text-h2` | `clamp(1.5rem, 3vw, 2rem)` / 1.15 | 700 | -0.02em |
+| Display | `--nv-text-display` | `clamp(2.75rem, 7.5vw, 5.75rem)` / 0.95 | 400 (serif) | -0.03em |
+| H1 | `--nv-text-h1` | `clamp(2.25rem, 5vw, 3.75rem)` / 1.05 | 400 (serif) | -0.025em |
+| H2 | `--nv-text-h2` | `clamp(1.75rem, 3.4vw, 2.75rem)` / 1.1 | 400 (serif) | -0.02em |
 | H3 | `--nv-text-h3` | `1.25rem` / 1.3 | 600 | -0.015em |
 | Headline | `--nv-text-headline` | `1.0625rem` / 1.3 | 600 | -0.01em |
-| Body | `--nv-text-body` | `1rem` / 1.5 | 400 | 0 |
+| Body | `--nv-text-body` | `1rem` / 1.6 | 400 | 0 |
 | Callout | `--nv-text-callout` | `0.9375rem` / 1.4 | 400 | 0 |
 | Subhead | `--nv-text-subhead` | `0.875rem` / 1.35 | 500 | 0 |
 | Footnote | `--nv-text-footnote` | `0.8125rem` / 1.35 | 400 | 0 |
 | Caption | `--nv-text-caption` | `0.75rem` / 1.3 | 500 | 0 |
-| Overline | `--nv-text-overline` | `0.6875rem` / 1.2 | 700 | 0.12em, uppercase |
+| Overline | `--nv-text-overline` | `0.6875rem` / 1.2 | 600 | 0.16em, uppercase |
 
 ### 3.4 Espaciado (base 4 pt, ritmo 8 pt)
 
 `--nv-space-1: 4px` · `2: 8` · `3: 12` · `4: 16` · `5: 20` · `6: 24` · `7: 28`
 · `8: 32` · `10: 40` · `12: 48` · `16: 64` · `20: 80` · `24: 96`.
 
-Secciones: `--nv-section: clamp(3rem, 7vw, 6rem)`.
-Gutter: `--nv-gutter: clamp(1rem, 4vw, 2rem)`.
+Secciones: `--nv-section: clamp(4rem, 9vw, 8rem)`.
+Gutter: `--nv-gutter: clamp(1.25rem, 5vw, 3rem)`.
 
 ### 3.5 Radios y sombras
 
 | Token | Valor | Uso |
 | --- | --- | --- |
-| `--nv-radius-xs` | `6px` | Chips pequeños, badges |
-| `--nv-radius-sm` | `10px` | Inputs internos, botones pequeños |
-| `--nv-radius-md` | `14px` | Botones, steppers |
-| `--nv-radius-lg` | `18px` | Tarjetas compactas |
-| `--nv-radius-xl` | `24px` | Tarjetas de producto, paneles |
+| `--nv-radius-xs` | `4px` | Chips pequeños, badges |
+| `--nv-radius-sm` | `8px` | Inputs, botones |
+| `--nv-radius-md` | `12px` | Botones grandes, overlays |
+| `--nv-radius-lg` | `16px` | Tarjetas compactas |
+| `--nv-radius-xl` | `20px` | Tarjetas de producto, paneles |
 | `--nv-radius-2xl` | `28px` | Hero, sheets |
 | `--nv-radius-pill` | `999px` | Tags, chips, avatares |
 
 | Sombra | Valor |
 | --- | --- |
-| `--nv-shadow-xs` | `0 1px 2px rgba(0,0,0,.04)` |
-| `--nv-shadow-sm` | `0 2px 8px rgba(0,0,0,.05)` |
-| `--nv-shadow-md` | `0 8px 24px rgba(0,0,0,.07)` |
-| `--nv-shadow-lg` | `0 20px 48px rgba(0,0,0,.10)` |
-| `--nv-focus-ring` | `0 0 0 4px rgba(10,132,255,.18)` |
+| `--nv-shadow-xs` | `0 1px 2px rgba(12,10,9,.04)` |
+| `--nv-shadow-sm` | `0 1px 3px rgba(12,10,9,.05), 0 8px 24px -14px rgba(12,10,9,.10)` |
+| `--nv-shadow-md` | `0 2px 6px rgba(12,10,9,.05), 0 20px 44px -22px rgba(12,10,9,.16)` |
+| `--nv-shadow-lg` | `0 4px 12px rgba(12,10,9,.06), 0 40px 80px -34px rgba(12,10,9,.24)` |
+| `--nv-focus-ring` | `0 0 0 3px rgba(12,10,9,.14)` |
 
 ### 3.6 Movimiento
 
@@ -180,8 +205,8 @@ Todo desactivado bajo `prefers-reduced-motion: reduce`.
 
 ### 3.7 Layout
 
-- Ancho máximo: `1200px`.
-- Header sticky: `64px`, glass (`blur(20px) saturate(180%)`).
+- Ancho máximo: `1280px`.
+- Header sticky: `72px` (`--nv-header-height`), glass (`blur(20px) saturate(180%)`) con borde hairline. El contenido arranca a ras del header (el hero de la home no se superpone).
 - Breakpoints: `480`, `768`, `1024`, `1280`.
 - Grid catálogo: `repeat(auto-fill, minmax(240px, 1fr))`, gap `20px`.
 - Contenido de texto: máx. `68ch`.
@@ -194,41 +219,41 @@ Todo desactivado bajo `prefers-reduced-motion: reduce`.
 
 | Variante | Fondo | Texto | Borde |
 | --- | --- | --- | --- |
-| Primary | `--nv-primary` | `#FFFFFF` | ninguno |
-| Tinted | `--nv-primary-soft` | `--nv-primary` | ninguno |
+| Primary | `--nv-text` (tinta) | `--nv-bg` (papel) | ninguno |
+| Tinted | `--nv-primary-soft` | `--nv-text` | ninguno |
 | Ghost | transparente | `--nv-text-muted` | ninguno |
 | Destructive | `--nv-danger-soft` | `--nv-danger` | ninguno |
 
-Altura 44 px (48 en móvil), radio `14px`, peso 600, icono 16 px.
-Hover: `--nv-primary-strong`. Press: `scale(.98)`. Disabled: opacidad `.4`.
+Altura 44 px (46 en carrito), radio `--nv-radius-sm`/`--nv-radius-md`, peso 600,
+icono 16 px. Hover: `--nv-primary-strong`. Press: `scale(.98)`. Disabled: opacidad `.4`.
 
 ### Inputs
 
-Altura 44 px, radio `12px`, fondo `--nv-surface`, borde `--nv-border`.
-Focus: borde `--nv-primary` + `--nv-focus-ring`. Label 13 px / 600.
+Altura 44 px, radio `--nv-radius-sm` (8px), fondo `--nv-surface`, borde `--nv-border`.
+Focus: borde `--nv-text` + `--nv-focus-ring`. Label 13 px / 600.
 Error: borde `--nv-danger` + mensaje `--nv-text-footnote`.
 
 ### Tarjeta de producto (`app-product-card`)
 
-- Media 4:3 sobre `--nv-gray-50`, imagen `object-fit: contain`.
+- Media 4:3 sobre `--nv-surface-2`, imagen `object-fit: contain`.
 - Radio `--nv-radius-xl`, superficie blanca, borde hairline, `--nv-shadow-sm`.
 - Hover: `translateY(-4px)` + `--nv-shadow-md` (sin glow).
-- Badge (Top ventas/Nuevo) pill azul; descuento pill rojo.
+- Badge (Top ventas/Nuevo) pill en tinta; descuento pill en tinta con texto papel.
 - Stock tag semántico (verde/naranja/rojo) con texto.
-- Rating con estrellas `--nv-star` + valor numérico.
-- Precio `1.35rem` 700; precio anterior tachado en terciario.
-- CTA "Añadir" tinted azul; deshabilitado si agotado.
+- Rating con estrellas en tinta (`--nv-star`) + valor numérico.
+- Precio en `--nv-font-mono`; precio anterior tachado en terciario.
+- CTA "Añadir" 95×38, radio 8px, en tinta; deshabilitado si agotado.
 
 ### Navegación
 
-Header glass sticky con borde hairline. Links pill; activo con tinte azul.
-Carrito circular 44 px con badge contador. Drawer móvil tipo sheet iOS
-(radio superior 24 px, scrim `.32`).
+Header glass sticky (72 px) con borde hairline. Links con regla/subrayado al activo.
+Carrito circular con badge contador en tinta. Drawer móvil tipo sheet
+(radio superior, scrim `rgba(12,10,9,.4)`).
 
 ### Chips de categoría
 
-Pill 34 px, fondo `--nv-surface-2`, texto secundario. Activo: fondo azul,
-texto blanco. Scroll horizontal en móvil, sin scrollbar visible.
+Pill, fondo `--nv-surface-2`, texto secundario. Activo: fondo tinta,
+texto papel. Scroll horizontal en móvil, sin scrollbar visible.
 
 ### Tags de stock
 
@@ -236,12 +261,21 @@ Pill tintado, texto ≥ 12 px, peso 600. Colores semánticos suaves.
 
 ### Toast / Dialog / Confirm
 
-Superficie glass, radio 18 px, `--nv-shadow-lg`, texto primario.
+Superficie glass, radio `--nv-radius-lg`/`--nv-radius-xl`, `--nv-shadow-lg`,
+texto primario. El overlay del `p-select` (radio `--nv-radius-md`,
+`--nv-shadow-lg`) se monta en `<body>`, por eso sus overrides viven en
+`_prime-overrides.scss` con especificidad doble.
 
 ### Empty state
 
-Icono en círculo tintado azul, título H3, mensaje ≤ 400 px, CTA tinted.
+Icono en círculo neutro, título H3, mensaje ≤ 400 px, CTA en tinta.
 Altura mínima 320 px para evitar saltos.
+
+### Home (editorial)
+
+Hero full-bleed (`images/fondo.jpg` en escala de grises + overlay tinta),
+manifiesto de valores, catálogo destacado, split editorial con *pull quote*
+(`images/fondo.1.jpg`) y banda CTA en tinta.
 
 ---
 
@@ -267,17 +301,18 @@ El skeleton debe **parecer el contenido final**, no una caja genérica.
 ### Piezas
 
 - `app-skeleton`: primitiva (`width`, `height`, `radius`, `circle`, `text`).
-- `app-product-card-skeleton`: réplica de la tarjeta (media 4:3, 2 líneas de
-  descripción, footer de precio + CTA).
+- `app-product-card-skeleton`: réplica geométrica exacta de la tarjeta
+  (borde hairline, media 4:3, 2 líneas de descripción, footer con borde superior,
+  precio 66/44 px y CTA 95×38 px) para que el paso a contenido no mueva el layout.
 - Catálogo: grid de 6 skeletons mientras `isLoading()`.
 - Carrito: filas skeleton si la hidratación del carrito lo requiere.
 
 ### Tokens de skeleton
 
 ```scss
---nv-skeleton-base: #e9e9ee;
---nv-skeleton-shine: #f5f5f7;
---nv-skeleton-radius: 10px;
+--nv-skeleton-base: #edecea;
+--nv-skeleton-shine: #f7f6f5;
+--nv-skeleton-radius: var(--nv-radius-sm);
 ```
 
 ---
@@ -293,7 +328,7 @@ El skeleton debe **parecer el contenido final**, no una caja genérica.
 | Fuentes / meta | `src/index.html` |
 | Skeleton primitiva | `src/app/shared/components/skeleton/` |
 | Skeleton de tarjeta | `src/app/shared/components/product-card-skeleton/` |
-| Catálogo | `src/app/features/store/pages/` |
+| Catálogo y home editorial | `src/app/features/store/pages/` |
 | Tarjeta real | `src/app/shared/components/product-card/` |
 | Header / Footer / Layout | `src/app/layout/` |
 | Carrito | `src/app/features/cart/pages/cart-page/` |
@@ -310,4 +345,4 @@ El skeleton debe **parecer el contenido final**, no una caja genérica.
 - [ ] `prefers-reduced-motion` respetado.
 - [ ] Iconos solo de PrimeIcons, con `aria-hidden` cuando son decorativos.
 - [ ] Estados vacíos, loading y error definidos para cada vista.
-- [ ] Un solo acento de acción por vista.
+- [ ] Un solo acento de acción por vista (la tinta).

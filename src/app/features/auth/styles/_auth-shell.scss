@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Auth shell compartido (login / register)
+   Auth shell compartido (login / register) — Clean Tech Monocromo
    ========================================================================== */
 
 .login-shell {
@@ -18,10 +18,7 @@
   justify-content: space-between;
   overflow: hidden;
   padding: clamp(2rem, 5vw, 3.75rem);
-  background:
-    radial-gradient(circle at 82% 12%, rgba(94, 92, 230, 0.16), transparent 42%),
-    radial-gradient(circle at 8% 92%, rgba(10, 132, 255, 0.14), transparent 46%),
-    var(--nv-surface);
+  background: var(--nv-bg-soft);
 }
 
 .login-visual::before {
@@ -29,13 +26,20 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.6;
   background:
-    linear-gradient(var(--nv-border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--nv-border) 1px, transparent 1px);
+    linear-gradient(rgba(12, 10, 9, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(12, 10, 9, 0.06) 1px, transparent 1px);
   background-size: 56px 56px;
-  mask-image: linear-gradient(130deg, black, transparent 72%);
-  -webkit-mask-image: linear-gradient(130deg, black, transparent 72%);
+  mask-image: linear-gradient(130deg, black, transparent 78%);
+  -webkit-mask-image: linear-gradient(130deg, black, transparent 78%);
+}
+
+.app-dark .login-visual::before {
+  background:
+    linear-gradient(rgba(250, 250, 249, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(250, 250, 249, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
 }
 
 .login-visual__glow {
@@ -46,8 +50,12 @@
   height: 380px;
   border-radius: 50%;
   pointer-events: none;
-  background: radial-gradient(circle, rgba(10, 132, 255, 0.14), transparent 68%);
+  background: radial-gradient(circle, rgba(12, 10, 9, 0.06), transparent 68%);
   filter: blur(30px);
+}
+
+.app-dark .login-visual__glow {
+  background: radial-gradient(circle, rgba(250, 250, 249, 0.06), transparent 68%);
 }
 
 .login-visual__brand,
@@ -65,14 +73,15 @@
 }
 
 .login-visual__badge {
-  padding: 0.34rem 0.65rem;
+  padding: 0.38rem 0.7rem;
+  border: 1px solid var(--nv-text);
   border-radius: var(--nv-radius-pill);
-  color: var(--nv-primary);
+  color: var(--nv-text);
   font-size: var(--nv-text-overline);
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  background: var(--nv-primary-soft);
+  background: transparent;
 }
 
 .login-visual__copy {
@@ -81,10 +90,11 @@
 }
 
 .login-visual__copy h1 {
-  margin: 0.9rem 0 1rem;
+  margin: 1.1rem 0 1rem;
   font-size: clamp(2.4rem, 4.6vw, 4rem);
+  font-weight: 400;
   line-height: 1.02;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.015em;
 }
 
 .login-visual__copy p {
@@ -118,10 +128,11 @@
   height: 30px;
   flex: 0 0 30px;
   place-items: center;
+  border: 1px solid var(--nv-border);
   border-radius: 50%;
-  color: var(--nv-primary);
+  color: var(--nv-text);
   font-size: 0.75rem;
-  background: var(--nv-primary-soft);
+  background: var(--nv-surface);
 }
 
 .login-visual__footer {
@@ -139,9 +150,9 @@
 
 .login-visual__footer strong {
   font-family: var(--nv-font-display);
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .login-visual__footer span {
@@ -173,8 +184,9 @@
 }
 
 .login-card__header h2 {
-  margin: 0.45rem 0 0.4rem;
+  margin: 0.6rem 0 0.4rem;
   font-size: clamp(1.7rem, 3.5vw, 2rem);
+  font-weight: 400;
 }
 
 .login-card__header p {
@@ -231,8 +243,8 @@
 }
 
 .password-toggle:hover {
-  color: var(--nv-primary);
-  background: var(--nv-primary-soft);
+  color: var(--nv-text);
+  background: var(--nv-surface-2);
 }
 
 .field-error {
@@ -292,12 +304,10 @@
 }
 
 .auth-switch a {
-  color: var(--nv-primary);
+  color: var(--nv-text);
   font-weight: 600;
-}
-
-.auth-switch a:hover {
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* --------------------------------------------------------------------------

@@ -22,7 +22,7 @@
 
 .product-card:hover {
   transform: translateY(-4px);
-  border-color: transparent;
+  border-color: var(--nv-stone-300);
   box-shadow: var(--nv-shadow-md);
 }
 
@@ -33,7 +33,7 @@
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: var(--nv-gray-50);
+  background: var(--nv-surface-2);
 }
 
 .product-card__placeholder {
@@ -79,25 +79,25 @@
   position: absolute;
   top: 0.75rem;
   z-index: 3;
-  padding: 0.28rem 0.55rem;
+  padding: 0.28rem 0.6rem;
   border-radius: var(--nv-radius-pill);
   font-size: var(--nv-text-caption);
   font-weight: 600;
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .product-card__badge {
   left: 0.75rem;
-  color: var(--nv-gray-0);
-  background: var(--nv-primary);
-  box-shadow: var(--nv-shadow-xs);
+  border: 1px solid var(--nv-text);
+  color: var(--nv-text);
+  background: var(--nv-surface);
 }
 
 .product-card__discount {
   right: 0.75rem;
-  color: var(--nv-gray-0);
-  background: var(--nv-danger);
-  box-shadow: var(--nv-shadow-xs);
+  color: var(--nv-bg);
+  background: var(--nv-text);
 }
 
 .product-card__stock {
@@ -122,7 +122,7 @@
   color: var(--nv-text-dim);
   font-size: var(--nv-text-overline);
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
@@ -163,6 +163,7 @@
 }
 
 .product-card__rating-value {
+  font-family: var(--nv-font-mono);
   color: var(--nv-text-dim);
 }
 
@@ -187,10 +188,10 @@
 
 .product-card__price strong {
   font-family: var(--nv-font-display);
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 500;
   line-height: 1.1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   color: var(--nv-text);
 }
 
@@ -205,13 +206,13 @@
   align-items: center;
   gap: 0.4rem;
   min-height: 38px;
-  padding: 0.5rem 0.85rem;
-  border: 0;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--nv-text);
   border-radius: var(--nv-radius-sm);
-  color: var(--nv-primary);
+  color: var(--nv-text);
   font-size: var(--nv-text-footnote);
   font-weight: 600;
-  background: var(--nv-primary-soft);
+  background: transparent;
   transition:
     color var(--nv-duration-base) var(--nv-ease),
     background var(--nv-duration-base) var(--nv-ease),
@@ -219,8 +220,8 @@
 }
 
 .product-card__add:hover:not(:disabled) {
-  color: var(--nv-gray-0);
-  background: var(--nv-primary);
+  color: var(--nv-bg);
+  background: var(--nv-text);
 }
 
 .product-card__add:active:not(:disabled) {
@@ -228,6 +229,7 @@
 }
 
 .product-card__add:disabled {
+  border-color: transparent;
   color: var(--nv-text-dim);
   background: var(--nv-surface-3);
 }

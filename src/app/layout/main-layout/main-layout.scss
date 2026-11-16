@@ -6,11 +6,5 @@
 
 .content {
   flex: 1;
-  padding: var(--nv-space-8) 0 0;
-}
-
-@media (max-width: 760px) {
-  .content {
-    padding-top: var(--nv-space-5);
-  }
+  padding: 0;
 }
