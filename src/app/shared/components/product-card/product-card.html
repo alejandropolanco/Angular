@@ -1,0 +1,84 @@
+<article class="product-card" [class.product-card--sold-out]="isOutOfStock()">
+  <div
+    class="product-card__media"
+    [class.product-card__media--loading]="!imageLoaded()"
+    [class.product-card__media--failed]="imageFailed()"
+  >
+    @if (!imageLoaded()) {
+      <app-skeleton class="product-card__placeholder" width="100%" height="100%" radius="0" />
+    }
+
+    <img
+      [src]="'images/' + product().image"
+      [alt]="product().name"
+      width="640"
+      height="480"
+      loading="lazy"
+      decoding="async"
+      [class.is-loaded]="imageLoaded()"
+      (load)="onImageLoad()"
+      (error)="onImageError()"
+    />
+
+    @if (product().badge) {
+      <span class="product-card__badge">{{ product().badge }}</span>
+    }
+
+    @if (discount(); as discountValue) {
+      <span class="product-card__discount">-{{ discountValue }}%</span>
+    }
+
+    <span class="product-card__stock">
+      <p-tag [value]="stockLabel()" [severity]="severity()" />
+    </span>
+  </div>
+
+  <div class="product-card__body">
+    <span class="product-card__category">{{ product().category }}</span>
+    <h3>{{ product().name }}</h3>
+    <p class="product-card__description">{{ product().description }}</p>
+
+    <div
+      class="product-card__rating"
+      [attr.aria-label]="'Valoración ' + product().rating + ' de 5'"
+    >
+      <span class="product-card__stars" aria-hidden="true">
+        @for (star of stars; track star) {
+          <i
+            class="pi"
+            [class.pi-star-fill]="star <= product().rating"
+            [class.pi-star]="star > product().rating"
+          ></i>
+        }
+      </span>
+      <span class="product-card__rating-value">{{ product().rating }}.0</span>
+    </div>
+
+    <div class="product-card__footer">
+      <div class="product-card__price">
+        <strong>{{ product().price | currency: 'USD' : 'symbol-narrow' : '1.0-0' }}</strong>
+        @if (hasDiscount()) {
+          <span class="product-card__price-old">{{
+            product().oldPrice | currency: 'USD' : 'symbol-narrow' : '1.0-0'
+          }}</span>
+        }
+      </div>
+
+      <button
+        type="button"
+        class="product-card__add"
+        [disabled]="isOutOfStock()"
+        (click)="add.emit(product())"
+        [attr.aria-label]="'Añadir ' + product().name + ' al carrito'"
+      >
+        <i
+          class="pi"
+          [class.pi-plus]="!isOutOfStock()"
+          [class.pi-ban]="isOutOfStock()"
+          aria-hidden="true"
+        ></i>
+        {{ isOutOfStock() ? 'Agotado' : 'Añadir' }}
+      </button>
+    </div>
+  </div>
+</article>

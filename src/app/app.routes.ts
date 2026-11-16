@@ -1,54 +1,36 @@
 import { Routes } from '@angular/router';
-import { LoginPage } from './features/auth/pages/login-page/login-page';
-import { PagesStore } from './features/store/pages/pages-store';
-import { storeRoutes } from './features/store/store.routes';
-import { MainLayout } from './layout/main-layout/main-layout';
-import { PublicLayout } from './layout/public-layout/public-layout'
-import { CartPage } from './features/cart/pages/cart-page/cart-page';
-import {authGuard} from  './core/guards/auth-guard'
+import { authGuard } from './core/guards/auth-guard';
+import { rootRedirectGuard } from './core/guards/root-redirect-guard';
 
 export const routes: Routes = [
   {
     path: '',
-    component: PublicLayout,
-
+    pathMatch: 'full',
+    canActivate: [rootRedirectGuard],
+    children: [],
+  },
+  {
+    path: '',
+    loadChildren: () => import('./features/auth/auth.routes').then((m) => m.authRoutes),
+  },
+  {
+    path: '',
+    canActivate: [authGuard],
+    loadComponent: () => import('./layout/main-layout/main-layout').then((m) => m.MainLayout),
     children: [
       {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
+        path: 'store',
+        loadChildren: () => import('./features/store/store.routes').then((m) => m.storeRoutes),
       },
-
       {
-        path: 'login',
-        component: LoginPage
-      }
-
-    ]
+        path: 'cart',
+        loadChildren: () => import('./features/cart/cart.routes').then((m) => m.cartRoutes),
+      },
+    ],
   },
-
-{
-  path: '',
-  component: MainLayout,
-
-  canActivate:[authGuard],
-
-  children: [
-
-    {
-      path:'store',
-      component: PagesStore
-    },
-
-    {
-      path:'cart',
-      component: CartPage
-    }
-
-  ]
-}
-
-  
-
-
+  {
+    path: '**',
+    title: 'Página no encontrada | NovaStore',
+    loadComponent: () => import('./features/not-found/not-found-page').then((m) => m.NotFoundPage),
+  },
 ];

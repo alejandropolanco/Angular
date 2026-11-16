@@ -1,0 +1,15 @@
+<div class="empty-state neon-card">
+  <div class="empty-state__icon" aria-hidden="true">
+    <i [class]="icon()"></i>
+  </div>
+  <h3>{{ title() }}</h3>
+  @if (message()) {
+    <p>{{ message() }}</p>
+  }
+  @if (actionLabel()) {
+    <button type="button" class="empty-state__action" (click)="action.emit()">
+      {{ actionLabel() }}
+      <i class="pi pi-arrow-right" aria-hidden="true"></i>
+    </button>
+  }
+</div>

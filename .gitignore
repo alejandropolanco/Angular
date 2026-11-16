@@ -29,6 +29,15 @@ yarn-error.log
 !.vscode/mcp.json
 .history/*
 
+# Local data and secrets
+/data
+*.db
+*.db-wal
+*.db-shm
+.env
+.env.*
+!.env.example
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/
@@ -42,3 +51,6 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# OpenCode (skills y configuración local del agente)
+/.opencode/

@@ -1,10 +1,48 @@
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <app-brand-logo size="md" />
+      <p>
+        Tecnología premium y accesorios seleccionados para gamers, creadores y profesionales que
+        quieren más de su setup.
+      </p>
+      <div class="site-footer__social" aria-label="Redes sociales">
+        <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub">
+          <i class="pi pi-github" aria-hidden="true"></i>
+        </a>
+        <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
+          <i class="pi pi-twitter" aria-hidden="true"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+          <i class="pi pi-instagram" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
 
-<div class="footer">
+    <div class="site-footer__column">
+      <h4>Tienda</h4>
+      <a routerLink="/store">Productos</a>
+      <a routerLink="/store" fragment="catalogo">Catálogo</a>
+      <a routerLink="/cart">Carrito</a>
+    </div>
 
-  <h3>Mi Tienda Angular</h3>
+    <div class="site-footer__column">
+      <h4>Cuenta</h4>
+      <a routerLink="/login">Iniciar sesión</a>
+      <span>Compra protegida</span>
+      <span>Envío express</span>
+    </div>
 
-  <p>
-    Proyecto Angular + PrimeNG
-  </p>
+    <div class="site-footer__column site-footer__demo">
+      <h4>Demo</h4>
+      <p>Accede con las credenciales de prueba:</p>
+      <code>admin@gmail.com</code>
+      <code>1234</code>
+    </div>
+  </div>
 
-</div>
+  <div class="container site-footer__bottom">
+    <span>© {{ year }} NovaStore. Todos los derechos reservados.</span>
+    <span>Angular 21 · PrimeNG · SSR</span>
+  </div>
+</footer>

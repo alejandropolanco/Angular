@@ -1,15 +1,100 @@
-<p-menubar [model]="items">
+<header class="site-header">
+  <div class="site-header__inner container">
+    <a routerLink="/store" class="site-header__brand" aria-label="NovaStore, ir a la tienda">
+      <app-brand-logo size="sm" />
+    </a>
 
-  <ng-template pTemplate="end">
+    <nav class="site-nav" aria-label="Navegación principal">
+      <a
+        routerLink="/store"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Tienda</a
+      >
+      <a routerLink="/store" fragment="catalogo">Catálogo</a>
+      <a routerLink="/cart" routerLinkActive="is-active">Carrito</a>
+    </nav>
 
-    <button
-      pButton
-      icon="pi pi-shopping-cart"
-      class="p-button-text"
-      (click)="goToCart()"
-      label="({{ cartService.totalItems() }})"
-    ></button>
+    <div class="site-header__actions">
+      <a
+        routerLink="/cart"
+        class="cart-button"
+        [attr.aria-label]="'Carrito, ' + cartService.totalItems() + ' artículos'"
+      >
+        <i class="pi pi-shopping-cart" aria-hidden="true"></i>
+        @if (cartService.totalItems() > 0) {
+          <span class="cart-button__badge">{{ cartService.totalItems() }}</span>
+        }
+      </a>
 
-  </ng-template>
+      <div class="user-chip">
+        <span class="user-chip__avatar" aria-hidden="true">{{ userInitial() }}</span>
+        <span class="user-chip__name">{{ authService.user()?.name }}</span>
+      </div>
 
-</p-menubar>
+      <button
+        type="button"
+        class="icon-button logout-button"
+        (click)="logout()"
+        aria-label="Cerrar sesión"
+      >
+        <i class="pi pi-sign-out" aria-hidden="true"></i>
+      </button>
+
+      <button
+        type="button"
+        class="icon-button menu-toggle"
+        (click)="mobileOpen.set(true)"
+        aria-label="Abrir menú de navegación"
+      >
+        <i class="pi pi-bars" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<p-drawer
+  header="Menú"
+  position="right"
+  styleClass="mobile-drawer"
+  [visible]="mobileOpen()"
+  (visibleChange)="mobileOpen.set($event)"
+  [modal]="true"
+  [dismissible]="true"
+>
+  <div class="mobile-nav">
+    <div class="mobile-user">
+      <span class="user-chip__avatar" aria-hidden="true">{{ userInitial() }}</span>
+      <div>
+        <strong>{{ authService.user()?.name }}</strong>
+        <span>{{ authService.user()?.email }}</span>
+      </div>
+    </div>
+
+    <a
+      routerLink="/store"
+      routerLinkActive="is-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="closeMobile()"
+    >
+      <i class="pi pi-home" aria-hidden="true"></i>
+      Tienda
+    </a>
+    <a routerLink="/store" fragment="catalogo" (click)="closeMobile()">
+      <i class="pi pi-th-large" aria-hidden="true"></i>
+      Catálogo
+    </a>
+    <a routerLink="/cart" routerLinkActive="is-active" (click)="closeMobile()">
+      <i class="pi pi-shopping-cart" aria-hidden="true"></i>
+      Carrito
+      @if (cartService.totalItems() > 0) {
+        <span class="mobile-nav__badge">{{ cartService.totalItems() }}</span>
+      }
+    </a>
+
+    <button type="button" class="mobile-nav__logout" (click)="logout()">
+      <i class="pi pi-sign-out" aria-hidden="true"></i>
+      Cerrar sesión
+    </button>
+  </div>
+</p-drawer>

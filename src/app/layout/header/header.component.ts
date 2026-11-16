@@ -1,43 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
-import { MenubarModule } from 'primeng/menubar';
-import { MenuItem } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { DrawerModule } from 'primeng/drawer';
 import { CartService } from '../../features/cart/services/cart-service';
+import { AuthService } from '../../features/auth/services/auth.service';
+import { BrandLogo } from '../../shared/components/brand-logo/brand-logo';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, MenubarModule, ButtonModule],
+  imports: [RouterLink, RouterLinkActive, DrawerModule, BrandLogo],
   templateUrl: './header.html',
-  styleUrl: './header.scss'
+  styleUrl: './header.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
+  readonly cartService = inject(CartService);
+  readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
-  items: MenuItem[] = [];
+  readonly mobileOpen = signal(false);
 
-  constructor(
-    public cartService: CartService,
-    private router: Router
-  ) {}
+  readonly userInitial = computed(() => {
+    const name = this.authService.user()?.name ?? 'N';
+    return name.charAt(0).toUpperCase();
+  });
 
-  ngOnInit() {
-
-    this.items = [
-      {
-        label: 'Inicio',
-        icon: 'pi pi-home',
-        routerLink: '/'
-      },
-      {
-        label: 'Productos',
-        icon: 'pi pi-shopping-bag',
-        routerLink: '/store'
-      }
-    ];
+  logout(): void {
+    this.authService.logout();
+    this.mobileOpen.set(false);
+    this.router.navigateByUrl('/login');
   }
 
-  goToCart() {
-    this.router.navigateByUrl('/cart');
+  closeMobile(): void {
+    this.mobileOpen.set(false);
   }
 }

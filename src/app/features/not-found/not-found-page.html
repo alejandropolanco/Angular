@@ -1,0 +1,15 @@
+<div class="not-found">
+  <div class="not-found__glow" aria-hidden="true"></div>
+
+  <app-brand-logo size="lg" />
+
+  <div class="not-found__code" aria-hidden="true">404</div>
+  <span class="eyebrow">Señal perdida</span>
+  <h1>Esta página se desintegró</h1>
+  <p>La ruta que buscas no existe o fue movida a otra dimensión.</p>
+
+  <a class="not-found__action" [routerLink]="authService.isAuthenticated() ? '/store' : '/login'">
+    <i class="pi pi-arrow-left" aria-hidden="true"></i>
+    {{ authService.isAuthenticated() ? 'Volver a la tienda' : 'Ir al inicio de sesión' }}
+  </a>
+</div>

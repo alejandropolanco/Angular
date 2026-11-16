@@ -1,0 +1,93 @@
+@use '../../styles/auth-shell';
+
+:host {
+  display: block;
+}
+
+.register-card {
+  width: min(100%, 500px);
+}
+
+.password-strength {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.15rem;
+}
+
+.strength-bars {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.3rem;
+}
+
+.strength-bar {
+  height: 4px;
+  border-radius: var(--nv-radius-pill);
+  background: var(--nv-surface-3);
+  transition: background var(--nv-duration-base) var(--nv-ease);
+}
+
+.password-strength--weak .strength-bar--filled {
+  background: var(--nv-danger);
+}
+
+.password-strength--medium .strength-bar--filled {
+  background: var(--nv-warning);
+}
+
+.password-strength--strong .strength-bar--filled {
+  background: var(--nv-success);
+}
+
+.strength-label {
+  color: var(--nv-text-dim);
+  font-size: var(--nv-text-caption);
+}
+
+.terms-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.terms-field input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  margin-top: 0.1rem;
+  accent-color: var(--nv-primary);
+}
+
+.terms-field label {
+  color: var(--nv-text-muted);
+  font-size: var(--nv-text-footnote);
+  line-height: 1.45;
+}
+
+.terms-error {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0.9rem 0 0;
+  color: var(--nv-text-dim);
+  font-size: var(--nv-text-caption);
+}
+
+.security-note i {
+  color: var(--nv-success);
+  font-size: 0.7rem;
+}
+
+@media (max-width: 520px) {
+  .register-card {
+    padding: 1.35rem;
+  }
+}

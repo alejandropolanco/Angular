@@ -1,9 +1,17 @@
 import { Routes } from '@angular/router';
-import { LoginPage } from './pages/login-page/login-page';
+import { guestGuard } from '../../core/guards/guest-guard';
 
 export const authRoutes: Routes = [
   {
     path: 'login',
-    component: LoginPage
-  }
+    canActivate: [guestGuard],
+    title: 'Iniciar sesión | NovaStore',
+    loadComponent: () => import('./pages/login-page/login-page').then((m) => m.LoginPage),
+  },
+  {
+    path: 'register',
+    canActivate: [guestGuard],
+    title: 'Crear cuenta | NovaStore',
+    loadComponent: () => import('./pages/register-page/register-page').then((m) => m.RegisterPage),
+  },
 ];

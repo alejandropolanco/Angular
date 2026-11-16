@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
@@ -6,23 +7,16 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import { registerApi } from './server/api/app';
+import { cleanupExpiredSessions } from './server/api/sessions';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
 
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
+registerApi(app);
+
+const angularApp = new AngularNodeAppEngine();
 
 /**
  * Serve static files from /browser
@@ -41,9 +35,7 @@ app.use(
 app.use((req, res, next) => {
   angularApp
     .handle(req)
-    .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next(),
-    )
+    .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
     .catch(next);
 });
 
@@ -61,6 +53,11 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
+
+cleanupExpiredSessions();
+
+const cleanupTimer = setInterval(cleanupExpiredSessions, 60 * 60 * 1000);
+cleanupTimer.unref();
 
 /**
  * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.

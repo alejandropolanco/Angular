@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+.empty-state {
+  display: flex;
+  min-height: 320px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  border: 1px solid var(--nv-border);
+  border-radius: var(--nv-radius-xl);
+  background: var(--nv-surface);
+  box-shadow: var(--nv-shadow-xs);
+}
+
+.empty-state__icon {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 1.25rem;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--nv-primary);
+  background: var(--nv-primary-soft);
+}
+
+.empty-state__icon i {
+  font-size: 1.6rem;
+}
+
+.empty-state h3 {
+  margin-bottom: 0.45rem;
+  font-size: var(--nv-text-h3);
+}
+
+.empty-state p {
+  max-width: 400px;
+  margin-bottom: 1.4rem;
+  color: var(--nv-text-muted);
+  font-size: var(--nv-text-footnote);
+  line-height: 1.6;
+}
+
+.empty-state__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.7rem 1.15rem;
+  border: 0;
+  border-radius: var(--nv-radius-md);
+  color: var(--nv-primary);
+  font-size: var(--nv-text-footnote);
+  font-weight: 600;
+  background: var(--nv-primary-soft);
+  transition:
+    color var(--nv-duration-base) var(--nv-ease),
+    background var(--nv-duration-base) var(--nv-ease);
+}
+
+.empty-state__action:hover {
+  color: var(--nv-gray-0);
+  background: var(--nv-primary);
+}

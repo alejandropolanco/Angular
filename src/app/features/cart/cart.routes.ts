@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { CartComponent } from './cart-component/cart-component';
-
-export const storeRoutes: Routes = [
+export const cartRoutes: Routes = [
   {
-    path: 'cart',
-    component: CartComponent
-  }
+    path: '',
+    title: 'Carrito | NovaStore',
+    loadComponent: () => import('./pages/cart-page/cart-page').then((m) => m.CartPage),
+  },
 ];

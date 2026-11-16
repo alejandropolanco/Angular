@@ -1,0 +1,9 @@
+<span
+  class="skeleton"
+  [class.skeleton--circle]="circle()"
+  [class.skeleton--text]="text()"
+  [style.width]="width()"
+  [style.height]="circle() ? width() : height()"
+  [style.borderRadius]="circle() ? '50%' : radius()"
+  aria-hidden="true"
+></span>

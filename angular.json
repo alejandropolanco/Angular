@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "nombre-proyecto": {
+    "shop-tex": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -30,33 +30,30 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "node_modules/primeicons/primeicons.css",
-                "node_modules/primeflex/primeflex.css",
-              "src/styles.scss"
-            ],
+            "styles": ["node_modules/primeicons/primeicons.css", "src/styles.scss"],
             "scripts": [],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
-              "allowedHosts": []
+              "allowedHosts": ["localhost", "127.0.0.1"]
             },
             "ssr": {
               "entry": "src/server.ts"
-            }
+            },
+            "externalDependencies": ["better-sqlite3"]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2.5MB",
+                  "maximumError": "3MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "20kB",
+                  "maximumError": "30kB"
                 }
               ],
               "outputHashing": "all"
@@ -71,12 +68,15 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
-              "buildTarget": "nombre-proyecto:build:production"
+              "buildTarget": "shop-tex:build:production"
             },
             "development": {
-              "buildTarget": "nombre-proyecto:build:development"
+              "buildTarget": "shop-tex:build:development"
             }
           },
           "defaultConfiguration": "development"

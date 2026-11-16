@@ -1,0 +1,197 @@
+/* ==========================================================================
+   NovaStore — Design Tokens ("Quiet Tech")
+   Capa 1: primitivos · Capa 2: semánticos · Capa 3: componentes
+   Fuente de verdad: design-system/novastore/MASTER.md
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------
+     1. Primitivos — color
+     ------------------------------------------------------------------ */
+  --nv-blue-50: #eaf4ff;
+  --nv-blue-100: #d5e9ff;
+  --nv-blue-200: #aed3ff;
+  --nv-blue-300: #7ab8ff;
+  --nv-blue-400: #3d97ff;
+  --nv-blue-500: #0a84ff;
+  --nv-blue-600: #0066cc;
+  --nv-blue-700: #0052a3;
+
+  --nv-indigo-500: #5e5ce6;
+  --nv-indigo-50: #eeedff;
+
+  --nv-green-600: #248a3d;
+  --nv-green-50: #e8f8ec;
+  --nv-orange-600: #b25000;
+  --nv-orange-50: #fff4e5;
+  --nv-red-600: #d70015;
+  --nv-red-50: #ffeceb;
+  --nv-yellow-500: #ffb800;
+
+  --nv-gray-0: #ffffff;
+  --nv-gray-50: #f9f9fb;
+  --nv-gray-100: #f2f2f7;
+  --nv-gray-200: #e5e5ea;
+  --nv-gray-300: #d1d1d6;
+  --nv-gray-400: #c7c7cc;
+  --nv-gray-500: #aeaeb2;
+  --nv-gray-600: #8e8e93;
+  --nv-gray-700: #6e6e73;
+  --nv-gray-800: #48484a;
+  --nv-gray-900: #1d1d1f;
+  --nv-black: #000000;
+
+  /* ------------------------------------------------------------------
+     2. Semánticos — superficies y texto (modo claro)
+     ------------------------------------------------------------------ */
+  --nv-bg: var(--nv-gray-100);
+  --nv-bg-soft: var(--nv-gray-50);
+  --nv-surface: var(--nv-gray-0);
+  --nv-surface-2: var(--nv-gray-50);
+  --nv-surface-3: var(--nv-gray-200);
+  --nv-surface-glass: rgba(255, 255, 255, 0.78);
+
+  --nv-border: rgba(60, 60, 67, 0.12);
+  --nv-border-strong: rgba(10, 132, 255, 0.32);
+
+  --nv-text: var(--nv-gray-900);
+  --nv-text-muted: var(--nv-gray-700);
+  --nv-text-dim: var(--nv-gray-600);
+
+  /* Acciones y estados */
+  --nv-primary: var(--nv-blue-500);
+  --nv-primary-strong: var(--nv-blue-600);
+  --nv-primary-soft: var(--nv-blue-50);
+  --nv-secondary: var(--nv-indigo-500);
+  --nv-secondary-soft: var(--nv-indigo-50);
+
+  --nv-success: var(--nv-green-600);
+  --nv-success-soft: var(--nv-green-50);
+  --nv-warning: var(--nv-orange-600);
+  --nv-warning-soft: var(--nv-orange-50);
+  --nv-danger: var(--nv-red-600);
+  --nv-danger-soft: var(--nv-red-50);
+  --nv-star: var(--nv-yellow-500);
+
+  /* Alias heredados */
+  --nv-lime: var(--nv-green-600);
+  --nv-violet: var(--nv-indigo-500);
+
+  /* ------------------------------------------------------------------
+     3. Forma — radios y sombras
+     ------------------------------------------------------------------ */
+  --nv-radius-xs: 6px;
+  --nv-radius-sm: 10px;
+  --nv-radius-md: 14px;
+  --nv-radius-lg: 18px;
+  --nv-radius-xl: 24px;
+  --nv-radius-2xl: 28px;
+  --nv-radius-pill: 999px;
+
+  --nv-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --nv-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --nv-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.07);
+  --nv-shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.1);
+  --nv-shadow: var(--nv-shadow-md);
+  --nv-focus-ring: 0 0 0 4px rgba(10, 132, 255, 0.18);
+  --nv-glow: var(--nv-focus-ring);
+
+  /* ------------------------------------------------------------------
+     4. Tipografía
+     ------------------------------------------------------------------ */
+  --nv-font-body:
+    'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  --nv-font-display: var(--nv-font-body);
+  --nv-font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, monospace;
+
+  --nv-text-display: clamp(2.5rem, 6vw, 4rem);
+  --nv-text-h1: clamp(2rem, 4vw, 3rem);
+  --nv-text-h2: clamp(1.5rem, 3vw, 2rem);
+  --nv-text-h3: 1.25rem;
+  --nv-text-headline: 1.0625rem;
+  --nv-text-body: 1rem;
+  --nv-text-callout: 0.9375rem;
+  --nv-text-subhead: 0.875rem;
+  --nv-text-footnote: 0.8125rem;
+  --nv-text-caption: 0.75rem;
+  --nv-text-overline: 0.6875rem;
+
+  /* ------------------------------------------------------------------
+     5. Espaciado y layout
+     ------------------------------------------------------------------ */
+  --nv-space-1: 4px;
+  --nv-space-2: 8px;
+  --nv-space-3: 12px;
+  --nv-space-4: 16px;
+  --nv-space-5: 20px;
+  --nv-space-6: 24px;
+  --nv-space-7: 28px;
+  --nv-space-8: 32px;
+  --nv-space-10: 40px;
+  --nv-space-12: 48px;
+  --nv-space-16: 64px;
+  --nv-space-20: 80px;
+  --nv-space-24: 96px;
+
+  --nv-section: clamp(3rem, 7vw, 6rem);
+  --nv-max-width: 1200px;
+  --nv-gutter: clamp(1rem, 4vw, 2rem);
+  --nv-header-height: 64px;
+
+  /* ------------------------------------------------------------------
+     6. Movimiento
+     ------------------------------------------------------------------ */
+  --nv-duration-fast: 120ms;
+  --nv-duration-base: 200ms;
+  --nv-duration-slow: 320ms;
+  --nv-duration-reveal: 620ms;
+  --nv-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --nv-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --nv-transition: var(--nv-duration-base) var(--nv-ease);
+
+  /* ------------------------------------------------------------------
+     7. Skeleton loading
+     ------------------------------------------------------------------ */
+  --nv-skeleton-base: #e9e9ee;
+  --nv-skeleton-shine: #f5f5f7;
+  --nv-skeleton-radius: var(--nv-radius-sm);
+}
+
+/* ==========================================================================
+   Modo oscuro opcional — activado por la clase .app-dark en <html>
+   ========================================================================== */
+.app-dark {
+  --nv-bg: var(--nv-black);
+  --nv-bg-soft: #0a0a0c;
+  --nv-surface: #1c1c1e;
+  --nv-surface-2: #2c2c2e;
+  --nv-surface-3: #3a3a3c;
+  --nv-surface-glass: rgba(28, 28, 30, 0.72);
+
+  --nv-border: rgba(84, 84, 88, 0.6);
+  --nv-border-strong: rgba(10, 132, 255, 0.42);
+
+  --nv-text: #f5f5f7;
+  --nv-text-muted: #a1a1a6;
+  --nv-text-dim: #8e8e93;
+
+  --nv-primary-soft: rgba(10, 132, 255, 0.16);
+  --nv-secondary-soft: rgba(94, 92, 230, 0.18);
+
+  --nv-success: #30d158;
+  --nv-success-soft: rgba(48, 209, 88, 0.16);
+  --nv-warning: #ff9f0a;
+  --nv-warning-soft: rgba(255, 159, 10, 0.16);
+  --nv-danger: #ff453a;
+  --nv-danger-soft: rgba(255, 69, 58, 0.16);
+  --nv-star: #ffd60a;
+
+  --nv-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --nv-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --nv-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --nv-shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.55);
+  --nv-shadow: var(--nv-shadow-md);
+
+  --nv-skeleton-base: #2c2c2e;
+  --nv-skeleton-shine: #3a3a3c;
+}

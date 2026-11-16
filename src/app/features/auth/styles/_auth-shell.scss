@@ -1,0 +1,352 @@
+/* ==========================================================================
+   Auth shell compartido (login / register)
+   ========================================================================== */
+
+.login-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  min-height: 100dvh;
+}
+
+/* --------------------------------------------------------------------------
+   Panel visual
+   -------------------------------------------------------------------------- */
+.login-visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: clamp(2rem, 5vw, 3.75rem);
+  background:
+    radial-gradient(circle at 82% 12%, rgba(94, 92, 230, 0.16), transparent 42%),
+    radial-gradient(circle at 8% 92%, rgba(10, 132, 255, 0.14), transparent 46%),
+    var(--nv-surface);
+}
+
+.login-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background:
+    linear-gradient(var(--nv-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--nv-border) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(130deg, black, transparent 72%);
+  -webkit-mask-image: linear-gradient(130deg, black, transparent 72%);
+}
+
+.login-visual__glow {
+  position: absolute;
+  top: -18%;
+  left: -10%;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(10, 132, 255, 0.14), transparent 68%);
+  filter: blur(30px);
+}
+
+.login-visual__brand,
+.login-visual__copy,
+.login-visual__footer {
+  position: relative;
+  z-index: 1;
+}
+
+.login-visual__brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.login-visual__badge {
+  padding: 0.34rem 0.65rem;
+  border-radius: var(--nv-radius-pill);
+  color: var(--nv-primary);
+  font-size: var(--nv-text-overline);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--nv-primary-soft);
+}
+
+.login-visual__copy {
+  max-width: 560px;
+  padding: 3rem 0;
+}
+
+.login-visual__copy h1 {
+  margin: 0.9rem 0 1rem;
+  font-size: clamp(2.4rem, 4.6vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.login-visual__copy p {
+  max-width: 46ch;
+  margin-bottom: 1.6rem;
+  color: var(--nv-text-muted);
+  font-size: var(--nv-text-body);
+  line-height: 1.65;
+}
+
+.login-visual__features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.login-visual__features li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--nv-text-muted);
+  font-size: var(--nv-text-footnote);
+}
+
+.login-visual__features i {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--nv-primary);
+  font-size: 0.75rem;
+  background: var(--nv-primary-soft);
+}
+
+.login-visual__footer {
+  display: flex;
+  gap: 2.5rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--nv-border);
+}
+
+.login-visual__footer div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+
+.login-visual__footer strong {
+  font-family: var(--nv-font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.login-visual__footer span {
+  color: var(--nv-text-muted);
+  font-size: var(--nv-text-caption);
+}
+
+/* --------------------------------------------------------------------------
+   Panel del formulario
+   -------------------------------------------------------------------------- */
+.login-panel {
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--nv-bg);
+}
+
+.login-card {
+  width: min(100%, 440px);
+  padding: clamp(1.6rem, 4vw, 2.5rem);
+  border: 1px solid var(--nv-border);
+  border-radius: var(--nv-radius-2xl);
+  background: var(--nv-surface);
+  box-shadow: var(--nv-shadow-md);
+}
+
+.login-card__header {
+  margin-bottom: 1.7rem;
+}
+
+.login-card__header h2 {
+  margin: 0.45rem 0 0.4rem;
+  font-size: clamp(1.7rem, 3.5vw, 2rem);
+}
+
+.login-card__header p {
+  margin: 0;
+  color: var(--nv-text-muted);
+  font-size: var(--nv-text-footnote);
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   Campos
+   -------------------------------------------------------------------------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.05rem;
+}
+
+.field label {
+  color: var(--nv-text-muted);
+  font-size: var(--nv-text-footnote);
+  font-weight: 500;
+}
+
+.field .p-inputtext {
+  padding: 0.78rem 0.9rem;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field .p-inputtext {
+  padding-right: 3rem;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.45rem;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  border-radius: var(--nv-radius-xs);
+  color: var(--nv-text-muted);
+  background: transparent;
+  transform: translateY(-50%);
+  transition:
+    color var(--nv-duration-base) var(--nv-ease),
+    background var(--nv-duration-base) var(--nv-ease);
+}
+
+.password-toggle:hover {
+  color: var(--nv-primary);
+  background: var(--nv-primary-soft);
+}
+
+.field-error {
+  color: var(--nv-danger);
+  font-size: var(--nv-text-caption);
+}
+
+/* --------------------------------------------------------------------------
+   Mensajes de estado
+   -------------------------------------------------------------------------- */
+.login-error,
+.login-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--nv-radius-sm);
+  font-size: var(--nv-text-footnote);
+  line-height: 1.45;
+}
+
+.login-error {
+  color: var(--nv-danger);
+  background: var(--nv-danger-soft);
+}
+
+.login-error i {
+  margin-top: 0.1rem;
+  color: var(--nv-danger);
+}
+
+.login-success {
+  color: var(--nv-success);
+  background: var(--nv-success-soft);
+}
+
+.login-success i {
+  margin-top: 0.1rem;
+  color: var(--nv-success);
+}
+
+/* --------------------------------------------------------------------------
+   Acciones
+   -------------------------------------------------------------------------- */
+.login-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.2rem;
+}
+
+.auth-switch {
+  margin: 1.15rem 0 0;
+  color: var(--nv-text-muted);
+  font-size: var(--nv-text-footnote);
+  text-align: center;
+}
+
+.auth-switch a {
+  color: var(--nv-primary);
+  font-weight: 600;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 1000px) {
+  .login-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .login-visual {
+    min-height: 320px;
+    padding: 2rem;
+  }
+
+  .login-visual__copy {
+    padding: 1.75rem 0 0.75rem;
+  }
+
+  .login-visual__copy h1 {
+    font-size: clamp(2.1rem, 7vw, 3rem);
+  }
+
+  .login-visual__features,
+  .login-visual__footer {
+    display: none;
+  }
+
+  .login-panel {
+    padding: 1.75rem 1rem 3rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .login-visual {
+    min-height: 230px;
+    padding: 1.35rem;
+  }
+
+  .login-visual__badge {
+    display: none;
+  }
+
+  .login-visual__copy p {
+    display: none;
+  }
+
+  .login-card {
+    padding: 1.35rem;
+    border-radius: var(--nv-radius-xl);
+  }
+}

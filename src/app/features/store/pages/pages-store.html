@@ -1,40 +1,146 @@
-<div class="card">
+<div class="container store-page">
+  <section class="store-hero">
+    <div class="store-hero__content">
+      <span class="eyebrow"
+        ><i class="pi pi-sparkles" aria-hidden="true"></i> Nueva colección 2026</span
+      >
+      <h1>Tu setup, <span class="gradient-text">al siguiente nivel</span></h1>
+      <p>
+        Periféricos y tecnología premium seleccionados para gamers, creadores y profesionales que
+        quieren más de su equipo.
+      </p>
 
-  <div class="grid">
-
-    <div class="col-12" *ngFor="let item of products">
-
-      <div class="flex justify-content-between align-items-center p-4 border-bottom-1 surface-border">
-
-        <div>
-
-          <h3>{{ item.name }}</h3>
-          <img [src]="'images/' + item.image" [alt]="item.name" width="200" />
-
-          <p>{{ item.category }}</p>
-
-          <p>${{ item.price }}</p>
-
-
-        </div>
-
-        <div>
-
-          <p-tag [value]="item.inventoryStatus" [severity]="getSeverity(item)" />
-
-
-          <br><br>
-
-
-          <p-button label="Comprar" icon="pi pi-shopping-cart" (onClick)="addToCart(item)" />
-
-
-        </div>
-
+      <div class="store-hero__actions">
+        <a class="hero-cta" href="#catalogo">
+          Explorar catálogo
+          <i class="pi pi-arrow-down" aria-hidden="true"></i>
+        </a>
+        <span class="store-hero__shipping">
+          <i class="pi pi-truck" aria-hidden="true"></i>
+          Envío gratis desde $1,500
+        </span>
       </div>
-
     </div>
 
-  </div>
+    <div class="store-hero__stats" aria-label="Datos de la tienda">
+      <div class="stat">
+        <strong>09</strong>
+        <span>productos premium</span>
+      </div>
+      <div class="stat">
+        <strong>24h</strong>
+        <span>envío express</span>
+      </div>
+      <div class="stat">
+        <strong>4.8</strong>
+        <span>valoración media</span>
+      </div>
+      <div class="stat stat--accent">
+        <i class="pi pi-shield" aria-hidden="true"></i>
+        <span>Compra protegida</span>
+      </div>
+    </div>
+  </section>
 
+  <section
+    id="catalogo"
+    class="catalog"
+    aria-labelledby="catalog-title"
+    [attr.aria-busy]="isLoading()"
+  >
+    <div class="catalog__header">
+      <div>
+        <span class="eyebrow">Catálogo</span>
+        <h2 id="catalog-title">Productos destacados</h2>
+      </div>
+      @if (!isLoading()) {
+        <span class="catalog__count" aria-live="polite">{{ resultLabel() }}</span>
+      }
+    </div>
+
+    <div class="catalog__toolbar">
+      <div class="search-field">
+        <i class="pi pi-search" aria-hidden="true"></i>
+        <input
+          pInputText
+          type="search"
+          placeholder="Buscar por nombre, categoría o descripción..."
+          [value]="search()"
+          (input)="onSearchInput($event)"
+          aria-label="Buscar productos"
+        />
+        @if (search()) {
+          <button
+            type="button"
+            class="search-field__clear"
+            (click)="clearSearch()"
+            aria-label="Limpiar búsqueda"
+          >
+            <i class="pi pi-times" aria-hidden="true"></i>
+          </button>
+        }
+      </div>
+
+      <div class="category-chips" aria-label="Filtrar por categoría">
+        @for (categoryName of categories(); track categoryName) {
+          <button
+            type="button"
+            class="chip"
+            [class.chip--active]="categoryName === category()"
+            [attr.aria-pressed]="categoryName === category()"
+            (click)="selectCategory(categoryName)"
+          >
+            {{ categoryName }}
+          </button>
+        }
+      </div>
+
+      <p-select
+        inputId="sort"
+        [options]="sortOptions"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="sort()"
+        (ngModelChange)="onSortChange($event)"
+        ariaLabel="Ordenar productos"
+        styleClass="sort-select"
+        panelStyleClass="sort-select-panel"
+        [panelStyle]="{ minWidth: '17rem' }"
+      />
+    </div>
+
+    @if (isLoading()) {
+      <div class="products-grid" aria-hidden="true">
+        @for (item of skeletonItems; track item) {
+          <app-product-card-skeleton />
+        }
+      </div>
+      <p class="sr-only" role="status">Cargando catálogo de productos…</p>
+    } @else if (filteredProducts().length > 0) {
+      <div class="products-grid">
+        @for (product of filteredProducts(); track product.id; let i = $index) {
+          <app-product-card
+            [product]="product"
+            (add)="addToCart($event)"
+            [style.animation-delay.ms]="i * 75"
+          />
+        }
+      </div>
+    } @else {
+      <app-empty-state
+        icon="pi pi-search"
+        title="No encontramos resultados"
+        message="Prueba con otra búsqueda o limpia los filtros para ver todo el catálogo."
+        actionLabel="Limpiar filtros"
+        (action)="clearFilters()"
+      />
+    }
+
+    @if (!isLoading() && hasActiveFilters() && filteredProducts().length > 0) {
+      <button type="button" class="clear-filters" (click)="clearFilters()">
+        <i class="pi pi-filter-slash" aria-hidden="true"></i>
+        Limpiar filtros
+      </button>
+    }
+  </section>
 </div>

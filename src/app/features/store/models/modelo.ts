@@ -1,17 +1,14 @@
+export type InventoryStatus = 'INSTOCK' | 'LOWSTOCK' | 'OUTOFSTOCK';
+
 export interface Product {
-
   id: string;
-
   name: string;
-
   category: string;
-
   image: string;
-
   price: number;
-
-  inventoryStatus: string;
-
+  oldPrice?: number;
+  description: string;
+  inventoryStatus: InventoryStatus;
   rating: number;
-
+  badge?: string;
 }

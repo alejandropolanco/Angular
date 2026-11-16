@@ -1,7 +1,16 @@
+:host {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+}
+
 .content {
+  flex: 1;
+  padding: var(--nv-space-8) 0 0;
+}
 
-  min-height: 80vh;
-
-  padding: 2rem;
-
+@media (max-width: 760px) {
+  .content {
+    padding-top: var(--nv-space-5);
+  }
 }

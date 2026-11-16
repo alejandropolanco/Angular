@@ -1,0 +1,263 @@
+:host {
+  display: block;
+  height: 100%;
+  animation: card-in var(--nv-duration-reveal) var(--nv-ease-spring) both;
+}
+
+.product-card {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--nv-border);
+  border-radius: var(--nv-radius-xl);
+  background: var(--nv-surface);
+  box-shadow: var(--nv-shadow-sm);
+  transition:
+    transform var(--nv-duration-base) var(--nv-ease),
+    box-shadow var(--nv-duration-base) var(--nv-ease),
+    border-color var(--nv-duration-base) var(--nv-ease);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: transparent;
+  box-shadow: var(--nv-shadow-md);
+}
+
+/* --------------------------------------------------------------------------
+   Media + skeleton de imagen
+   -------------------------------------------------------------------------- */
+.product-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--nv-gray-50);
+}
+
+.product-card__placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.product-card__media img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 1.15rem;
+  object-fit: contain;
+  opacity: 0;
+  transition:
+    opacity var(--nv-duration-base) var(--nv-ease),
+    transform var(--nv-duration-slow) var(--nv-ease);
+}
+
+.product-card__media img.is-loaded {
+  opacity: 1;
+}
+
+.product-card:hover .product-card__media img {
+  transform: scale(1.04);
+}
+
+.product-card__media--failed {
+  background: linear-gradient(145deg, var(--nv-surface-2), var(--nv-surface-3));
+}
+
+.product-card__media--failed img {
+  opacity: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Badges sobre la imagen
+   -------------------------------------------------------------------------- */
+.product-card__badge,
+.product-card__discount {
+  position: absolute;
+  top: 0.75rem;
+  z-index: 3;
+  padding: 0.28rem 0.55rem;
+  border-radius: var(--nv-radius-pill);
+  font-size: var(--nv-text-caption);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.product-card__badge {
+  left: 0.75rem;
+  color: var(--nv-gray-0);
+  background: var(--nv-primary);
+  box-shadow: var(--nv-shadow-xs);
+}
+
+.product-card__discount {
+  right: 0.75rem;
+  color: var(--nv-gray-0);
+  background: var(--nv-danger);
+  box-shadow: var(--nv-shadow-xs);
+}
+
+.product-card__stock {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.7rem;
+  z-index: 3;
+}
+
+/* --------------------------------------------------------------------------
+   Cuerpo
+   -------------------------------------------------------------------------- */
+.product-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.15rem 1.2rem 1.2rem;
+}
+
+.product-card__category {
+  margin-bottom: 0.35rem;
+  color: var(--nv-text-dim);
+  font-size: var(--nv-text-overline);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.product-card h3 {
+  margin-bottom: 0.45rem;
+  font-size: var(--nv-text-headline);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.product-card__description {
+  display: -webkit-box;
+  min-height: 2.7em;
+  margin-bottom: 0.8rem;
+  overflow: hidden;
+  color: var(--nv-text-muted);
+  font-size: var(--nv-text-footnote);
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.product-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.95rem;
+  color: var(--nv-text-muted);
+  font-size: var(--nv-text-caption);
+  font-weight: 500;
+}
+
+.product-card__stars {
+  display: inline-flex;
+  gap: 0.08rem;
+  color: var(--nv-star);
+  font-size: 0.7rem;
+}
+
+.product-card__rating-value {
+  color: var(--nv-text-dim);
+}
+
+/* --------------------------------------------------------------------------
+   Footer: precio + CTA
+   -------------------------------------------------------------------------- */
+.product-card__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.85rem;
+  margin-top: auto;
+  padding-top: 0.95rem;
+  border-top: 1px solid var(--nv-border);
+}
+
+.product-card__price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+
+.product-card__price strong {
+  font-family: var(--nv-font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--nv-text);
+}
+
+.product-card__price-old {
+  color: var(--nv-text-dim);
+  font-size: var(--nv-text-caption);
+  text-decoration: line-through;
+}
+
+.product-card__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 38px;
+  padding: 0.5rem 0.85rem;
+  border: 0;
+  border-radius: var(--nv-radius-sm);
+  color: var(--nv-primary);
+  font-size: var(--nv-text-footnote);
+  font-weight: 600;
+  background: var(--nv-primary-soft);
+  transition:
+    color var(--nv-duration-base) var(--nv-ease),
+    background var(--nv-duration-base) var(--nv-ease),
+    transform var(--nv-duration-fast) var(--nv-ease);
+}
+
+.product-card__add:hover:not(:disabled) {
+  color: var(--nv-gray-0);
+  background: var(--nv-primary);
+}
+
+.product-card__add:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.product-card__add:disabled {
+  color: var(--nv-text-dim);
+  background: var(--nv-surface-3);
+}
+
+/* --------------------------------------------------------------------------
+   Agotado
+   -------------------------------------------------------------------------- */
+.product-card--sold-out .product-card__media img.is-loaded {
+  opacity: 0.5;
+  filter: grayscale(0.6);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    animation: none;
+  }
+
+  .product-card:hover,
+  .product-card:hover .product-card__media img {
+    transform: none;
+  }
+}

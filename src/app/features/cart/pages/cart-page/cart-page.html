@@ -1,55 +1,156 @@
+<div class="container cart-page">
+  <header class="cart-header">
+    <div>
+      <span class="eyebrow"><i class="pi pi-shopping-cart" aria-hidden="true"></i> Tu compra</span>
+      <h1>Carrito</h1>
+    </div>
+    @if (!cartService.isEmpty()) {
+      <span class="cart-header__count">
+        {{ cartService.totalItems() }}
+        {{ cartService.totalItems() === 1 ? 'artículo' : 'artículos' }}
+      </span>
+    }
+  </header>
 
-<h2>🛒 Carrito de compras</h2>
+  @if (!cartService.isEmpty()) {
+    <div class="cart-layout">
+      <div class="cart-items">
+        @for (item of cartService.cartItems(); track item.id) {
+          <article class="cart-item neon-card">
+            <div class="cart-item__media">
+              <img
+                [src]="'images/' + item.image"
+                [alt]="item.name"
+                width="220"
+                height="180"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
 
-<p-table [value]="cartService.cartItems()">
+            <div class="cart-item__info">
+              <span class="cart-item__category">{{ item.category }}</span>
+              <h3>{{ item.name }}</h3>
+              <p>{{ item.price | currency: 'USD' : 'symbol-narrow' : '1.0-0' }} c/u</p>
+            </div>
 
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Producto</th>
-      <th>Precio</th>
-      <th>Cantidad</th>
-      <th>Total</th>
-      <th>Acciones</th>
-    </tr>
-  </ng-template>
+            <div class="cart-item__controls">
+              <div class="quantity-stepper" [attr.aria-label]="'Cantidad de ' + item.name">
+                <button
+                  type="button"
+                  (click)="cartService.decrement(item.id)"
+                  [disabled]="item.quantity <= 1"
+                  [attr.aria-label]="'Quitar una unidad de ' + item.name"
+                >
+                  <i class="pi pi-minus" aria-hidden="true"></i>
+                </button>
+                <span>{{ item.quantity }}</span>
+                <button
+                  type="button"
+                  (click)="cartService.increment(item.id)"
+                  [disabled]="item.quantity >= 99"
+                  [attr.aria-label]="'Añadir una unidad de ' + item.name"
+                >
+                  <i class="pi pi-plus" aria-hidden="true"></i>
+                </button>
+              </div>
 
-  <ng-template pTemplate="body" let-item>
-    <tr>
+              <strong class="cart-item__total">
+                {{ item.price * item.quantity | currency: 'USD' : 'symbol-narrow' : '1.0-0' }}
+              </strong>
 
-      <td>
-        <img
-           [src]="'images/' + item.image" [alt]="item.name" width="200" 
-        />
-        {{ item.name }}
-      </td>
+              <button
+                type="button"
+                class="cart-item__remove"
+                (click)="remove(item.id)"
+                [attr.aria-label]="'Eliminar ' + item.name + ' del carrito'"
+              >
+                <i class="pi pi-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </article>
+        }
+      </div>
 
-      <td>${{ item.price }}</td>
+      <aside class="cart-summary neon-card" aria-label="Resumen del pedido">
+        <span class="eyebrow">Resumen</span>
+        <h2>Tu pedido</h2>
 
-      <td>{{ item.quantity }}</td>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <strong>{{
+            cartService.subtotal() | currency: 'USD' : 'symbol-narrow' : '1.0-0'
+          }}</strong>
+        </div>
 
-      <td>
-        ${{ item.price * item.quantity }}
-      </td>
+        <div class="summary-row">
+          <span>Envío</span>
+          <strong class="summary-row__free">
+            {{
+              cartService.shipping() === 0
+                ? 'Gratis'
+                : (cartService.shipping() | currency: 'USD' : 'symbol-narrow' : '1.0-0')
+            }}
+          </strong>
+        </div>
 
-      <td>
-        <p-button
-          icon="pi pi-trash"
-          severity="danger"
-          (onClick)="cartService.removeFromCart(item.id)"
-        ></p-button>
-      </td>
+        @if (cartService.remainingForFreeShipping() > 0) {
+          <div class="shipping-progress">
+            <p>
+              Te faltan
+              <strong>{{
+                cartService.remainingForFreeShipping() | currency: 'USD' : 'symbol-narrow' : '1.0-0'
+              }}</strong>
+              para envío gratis
+            </p>
+            <div class="shipping-progress__track">
+              <span [style.width.%]="cartService.freeShippingProgress()"></span>
+            </div>
+          </div>
+        } @else {
+          <div class="shipping-success">
+            <i class="pi pi-check-circle" aria-hidden="true"></i>
+            ¡Tienes envío gratis!
+          </div>
+        }
 
-    </tr>
-  </ng-template>
+        <div class="summary-total">
+          <span>Total</span>
+          <strong>{{
+            cartService.totalPrice() | currency: 'USD' : 'symbol-narrow' : '1.0-0'
+          }}</strong>
+        </div>
 
-</p-table>
+        <button type="button" class="checkout-button" (click)="checkout()">
+          <i class="pi pi-lock" aria-hidden="true"></i>
+          Finalizar compra
+        </button>
 
-<hr>
+        <button type="button" class="clear-button" (click)="confirmClear()">
+          <i class="pi pi-trash" aria-hidden="true"></i>
+          Vaciar carrito
+        </button>
 
-<h3>Total: ${{ cartService.totalPrice() }}</h3>
+        <button type="button" class="continue-button" (click)="goToStore()">
+          <i class="pi pi-arrow-left" aria-hidden="true"></i>
+          Seguir comprando
+        </button>
 
-<p-button
-  label="Vaciar carrito"
-  severity="danger"
-  (onClick)="cartService.clearCart()"
-></p-button>
+        <p class="secure-note">
+          <i class="pi pi-shield" aria-hidden="true"></i>
+          Pago seguro · Demo sin cargos
+        </p>
+      </aside>
+    </div>
+  } @else {
+    <app-empty-state
+      icon="pi pi-shopping-cart"
+      title="Tu carrito está vacío"
+      message="Añade productos desde el catálogo y aparecerán aquí, listos para tu próximo setup."
+      actionLabel="Explorar productos"
+      (action)="goToStore()"
+    />
+  }
+</div>
+
+<p-confirmdialog />
