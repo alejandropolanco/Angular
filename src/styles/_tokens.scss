@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NovaStore — Design Tokens ("Hardware Press")
+   NovaStore — Design Tokens ("Quiet Tech")
    Capa 1: primitivos · Capa 2: semánticos · Capa 3: componentes
    Fuente de verdad: design-system/novastore/MASTER.md
    ========================================================================== */
@@ -8,80 +8,62 @@
   /* ------------------------------------------------------------------
      1. Primitivos — color
      ------------------------------------------------------------------ */
-  --nv-ink: #0b0b0c;
-  --nv-paper: #f5f2e9;
-  --nv-white: #ffffff;
+  --nv-blue-50: #eaf4ff;
+  --nv-blue-100: #d5e9ff;
+  --nv-blue-200: #aed3ff;
+  --nv-blue-300: #7ab8ff;
+  --nv-blue-400: #3d97ff;
+  --nv-blue-500: #0a84ff;
+  --nv-blue-600: #0066cc;
+  --nv-blue-700: #0052a3;
 
-  --nv-acid: #dfe104;
-  --nv-acid-hover: #c9cb00;
-  --nv-acid-strong: #b3b600;
+  --nv-indigo-500: #5e5ce6;
+  --nv-indigo-50: #eeedff;
 
-  --nv-blue: #0047ff;
-  --nv-blue-50: #eef2ff;
-  --nv-blue-100: #dbe4ff;
-  --nv-blue-200: #b8caff;
-  --nv-blue-300: #8aa8ff;
-  --nv-blue-400: #5b86ff;
-  --nv-blue-500: #0047ff;
-  --nv-blue-600: #0038cc;
-  --nv-blue-700: #002ca3;
-
-  --nv-indigo-500: #0047ff;
-  --nv-indigo-50: #eef2ff;
-
-  --nv-green-600: #067a4c;
-  --nv-green-50: #e7f8ef;
-  --nv-orange-600: #9a4b00;
-  --nv-orange-50: #fff2df;
-  --nv-red-600: #c81e1e;
-  --nv-red-50: #feeceb;
-  --nv-yellow-500: #f0b400;
+  --nv-green-600: #248a3d;
+  --nv-green-50: #e8f8ec;
+  --nv-orange-600: #b25000;
+  --nv-orange-50: #fff4e5;
+  --nv-red-600: #d70015;
+  --nv-red-50: #ffeceb;
+  --nv-yellow-500: #ffb800;
 
   --nv-gray-0: #ffffff;
-  --nv-gray-50: #faf8f2;
-  --nv-gray-100: #f5f2e9;
-  --nv-gray-200: #ede9de;
-  --nv-gray-300: #ddd7c8;
-  --nv-gray-400: #c2bbaa;
-  --nv-gray-500: #8f887c;
-  --nv-gray-600: #6b655b;
-  --nv-gray-700: #57534e;
-  --nv-gray-800: #33322f;
-  --nv-gray-900: #0b0b0c;
+  --nv-gray-50: #f9f9fb;
+  --nv-gray-100: #f2f2f7;
+  --nv-gray-200: #e5e5ea;
+  --nv-gray-300: #d1d1d6;
+  --nv-gray-400: #c7c7cc;
+  --nv-gray-500: #aeaeb2;
+  --nv-gray-600: #8e8e93;
+  --nv-gray-700: #6e6e73;
+  --nv-gray-800: #48484a;
+  --nv-gray-900: #1d1d1f;
   --nv-black: #000000;
 
   /* ------------------------------------------------------------------
      2. Semánticos — superficies y texto (modo claro)
      ------------------------------------------------------------------ */
-  --nv-bg: var(--nv-paper);
-  --nv-bg-soft: #ede9de;
-  --nv-surface: var(--nv-white);
-  --nv-surface-2: #ede9de;
-  --nv-surface-3: #ddd7c8;
-  --nv-surface-glass: rgba(245, 242, 233, 0.96);
+  --nv-bg: var(--nv-gray-100);
+  --nv-bg-soft: var(--nv-gray-50);
+  --nv-surface: var(--nv-gray-0);
+  --nv-surface-2: var(--nv-gray-50);
+  --nv-surface-3: var(--nv-gray-200);
+  --nv-surface-glass: rgba(255, 255, 255, 0.78);
 
-  --nv-border: var(--nv-ink);
-  --nv-border-strong: var(--nv-blue);
-  --nv-border-width: 2px;
-  --nv-grid-line: rgba(11, 11, 12, 0.05);
+  --nv-border: rgba(60, 60, 67, 0.12);
+  --nv-border-strong: rgba(10, 132, 255, 0.32);
 
-  --nv-text: var(--nv-ink);
-  --nv-text-muted: #57534e;
-  --nv-text-dim: #6b655b;
+  --nv-text: var(--nv-gray-900);
+  --nv-text-muted: var(--nv-gray-700);
+  --nv-text-dim: var(--nv-gray-600);
 
   /* Acciones y estados */
-  --nv-primary: var(--nv-ink);
-  --nv-primary-strong: #2a2a2e;
-  --nv-primary-soft: #ede9de;
-  --nv-on-primary: var(--nv-white);
-
-  --nv-accent: var(--nv-acid);
-  --nv-accent-hover: var(--nv-acid-hover);
-  --nv-accent-strong: var(--nv-acid-strong);
-  --nv-on-accent: var(--nv-ink);
-
-  --nv-secondary: var(--nv-blue);
-  --nv-secondary-soft: var(--nv-blue-50);
+  --nv-primary: var(--nv-blue-500);
+  --nv-primary-strong: var(--nv-blue-600);
+  --nv-primary-soft: var(--nv-blue-50);
+  --nv-secondary: var(--nv-indigo-500);
+  --nv-secondary-soft: var(--nv-indigo-50);
 
   --nv-success: var(--nv-green-600);
   --nv-success-soft: var(--nv-green-50);
@@ -92,43 +74,39 @@
   --nv-star: var(--nv-yellow-500);
 
   /* Alias heredados */
-  --nv-lime: var(--nv-acid);
-  --nv-violet: var(--nv-blue);
+  --nv-lime: var(--nv-green-600);
+  --nv-violet: var(--nv-indigo-500);
 
   /* ------------------------------------------------------------------
      3. Forma — radios y sombras
      ------------------------------------------------------------------ */
-  --nv-radius-xs: 0;
-  --nv-radius-sm: 0;
-  --nv-radius-md: 0;
-  --nv-radius-lg: 0;
-  --nv-radius-xl: 0;
-  --nv-radius-2xl: 0;
-  --nv-radius-pill: 0;
+  --nv-radius-xs: 6px;
+  --nv-radius-sm: 10px;
+  --nv-radius-md: 14px;
+  --nv-radius-lg: 18px;
+  --nv-radius-xl: 24px;
+  --nv-radius-2xl: 28px;
+  --nv-radius-pill: 999px;
 
-  --nv-shadow-color: var(--nv-ink);
-  --nv-shadow-xs: 2px 2px 0 var(--nv-shadow-color);
-  --nv-shadow-sm: 4px 4px 0 var(--nv-shadow-color);
-  --nv-shadow-md: 6px 6px 0 var(--nv-shadow-color);
-  --nv-shadow-lg: 8px 8px 0 var(--nv-shadow-color);
-  --nv-shadow: var(--nv-shadow-sm);
-  --nv-focus-ring: 0 0 0 3px var(--nv-blue);
+  --nv-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --nv-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --nv-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.07);
+  --nv-shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.1);
+  --nv-shadow: var(--nv-shadow-md);
+  --nv-focus-ring: 0 0 0 4px rgba(10, 132, 255, 0.18);
   --nv-glow: var(--nv-focus-ring);
-  --nv-focus-outline: 3px solid var(--nv-blue);
 
   /* ------------------------------------------------------------------
      4. Tipografía
      ------------------------------------------------------------------ */
-  --nv-font-display:
-    'Archivo Black', 'Arial Black', 'Helvetica Neue', 'Segoe UI', sans-serif;
   --nv-font-body:
-    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --nv-font-mono:
-    'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  --nv-font-display: var(--nv-font-body);
+  --nv-font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, monospace;
 
-  --nv-text-display: clamp(3rem, 8vw, 6rem);
-  --nv-text-h1: clamp(2.4rem, 5vw, 4rem);
-  --nv-text-h2: clamp(1.8rem, 3vw, 2.6rem);
+  --nv-text-display: clamp(2.5rem, 6vw, 4rem);
+  --nv-text-h1: clamp(2rem, 4vw, 3rem);
+  --nv-text-h2: clamp(1.5rem, 3vw, 2rem);
   --nv-text-h3: 1.25rem;
   --nv-text-headline: 1.0625rem;
   --nv-text-body: 1rem;
@@ -156,75 +134,64 @@
   --nv-space-24: 96px;
 
   --nv-section: clamp(3rem, 7vw, 6rem);
-  --nv-max-width: 1240px;
+  --nv-max-width: 1200px;
   --nv-gutter: clamp(1rem, 4vw, 2rem);
-  --nv-marquee-height: 32px;
-  --nv-bar-height: 64px;
-  --nv-header-height: calc(var(--nv-marquee-height) + var(--nv-bar-height));
+  --nv-header-height: 64px;
 
   /* ------------------------------------------------------------------
      6. Movimiento
      ------------------------------------------------------------------ */
   --nv-duration-fast: 120ms;
-  --nv-duration-base: 180ms;
+  --nv-duration-base: 200ms;
   --nv-duration-slow: 320ms;
-  --nv-duration-reveal: 380ms;
-  --nv-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --nv-ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --nv-duration-reveal: 620ms;
+  --nv-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --nv-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
   --nv-transition: var(--nv-duration-base) var(--nv-ease);
-  --nv-stagger: 40ms;
 
   /* ------------------------------------------------------------------
      7. Skeleton loading
      ------------------------------------------------------------------ */
-  --nv-skeleton-base: #e4dfd3;
-  --nv-skeleton-shine: #f2eee3;
-  --nv-skeleton-radius: 0;
+  --nv-skeleton-base: #e9e9ee;
+  --nv-skeleton-shine: #f5f5f7;
+  --nv-skeleton-radius: var(--nv-radius-sm);
 }
 
 /* ==========================================================================
    Modo oscuro opcional — activado por la clase .app-dark en <html>
    ========================================================================== */
 .app-dark {
-  --nv-bg: #0b0b0c;
-  --nv-bg-soft: #111113;
-  --nv-surface: #17171a;
-  --nv-surface-2: #1f1f23;
-  --nv-surface-3: #2b2b31;
-  --nv-surface-glass: rgba(11, 11, 12, 0.96);
+  --nv-bg: var(--nv-black);
+  --nv-bg-soft: #0a0a0c;
+  --nv-surface: #1c1c1e;
+  --nv-surface-2: #2c2c2e;
+  --nv-surface-3: #3a3a3c;
+  --nv-surface-glass: rgba(28, 28, 30, 0.72);
 
-  --nv-border: #f5f2e9;
-  --nv-border-strong: #7aa2ff;
-  --nv-grid-line: rgba(245, 242, 233, 0.055);
+  --nv-border: rgba(84, 84, 88, 0.6);
+  --nv-border-strong: rgba(10, 132, 255, 0.42);
 
-  --nv-text: #f5f2e9;
-  --nv-text-muted: #a8a29e;
-  --nv-text-dim: #9a948d;
+  --nv-text: #f5f5f7;
+  --nv-text-muted: #a1a1a6;
+  --nv-text-dim: #8e8e93;
 
-  --nv-primary: #f5f2e9;
-  --nv-primary-strong: #ffffff;
-  --nv-primary-soft: #1f1f23;
-  --nv-on-primary: var(--nv-ink);
+  --nv-primary-soft: rgba(10, 132, 255, 0.16);
+  --nv-secondary-soft: rgba(94, 92, 230, 0.18);
 
-  --nv-accent: var(--nv-acid);
-  --nv-accent-hover: var(--nv-acid-hover);
-  --nv-accent-strong: #eef02a;
-  --nv-on-accent: var(--nv-ink);
+  --nv-success: #30d158;
+  --nv-success-soft: rgba(48, 209, 88, 0.16);
+  --nv-warning: #ff9f0a;
+  --nv-warning-soft: rgba(255, 159, 10, 0.16);
+  --nv-danger: #ff453a;
+  --nv-danger-soft: rgba(255, 69, 58, 0.16);
+  --nv-star: #ffd60a;
 
-  --nv-secondary: #7aa2ff;
-  --nv-secondary-soft: #16234d;
+  --nv-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --nv-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --nv-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --nv-shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.55);
+  --nv-shadow: var(--nv-shadow-md);
 
-  --nv-success: #34d399;
-  --nv-success-soft: #0d2b21;
-  --nv-warning: #fbbf24;
-  --nv-warning-soft: #2c2110;
-  --nv-danger: #ff6b5e;
-  --nv-danger-soft: #2e1514;
-  --nv-star: #facc15;
-
-  --nv-blue: #7aa2ff;
-  --nv-shadow-color: #3f3f46;
-
-  --nv-skeleton-base: #232327;
-  --nv-skeleton-shine: #303036;
+  --nv-skeleton-base: #2c2c2e;
+  --nv-skeleton-shine: #3a3a3c;
 }

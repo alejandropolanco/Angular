@@ -1,8 +1,8 @@
-# NovaStore — Design System "Hardware Press" (v2)
+# NovaStore — Design System "Quiet Tech"
 
 > Fuente de verdad visual para la tienda online de periféricos NovaStore.
 > Stack: Angular 21 · PrimeNG 21 · SCSS · SSR.
-> Última actualización: 2026-11-15.
+> Última actualización: 2026-11-14.
 
 ---
 
@@ -17,128 +17,122 @@ alto y la comparación es constante.
 
 | Necesidad | Decisión de diseño |
 | --- | --- |
-| Que el producto se vea premium y deseable | Fotografía grande sobre blanco fijo, marco de 2px, tipografía precisa y cero decoración compitiendo. |
-| Que el precio y la disponibilidad se entiendan en < 2 s | Precio en mono, stock como bloque sólido con texto, descuento como bloque rojo. |
-| Reducir fricción de compra | CTA "Añadir" de ancho completo, carrito persistente y badge de cantidad en el header. |
-| Generar confianza | Compra protegida, envío 24 h, valoraciones, estados vacíos claros y demo explícita. |
+| Que el producto se vea premium y deseable | Fotografía grande sobre superficie neutra, tarjetas limpias, tipografía precisa, sombras suaves. |
+| Que el precio y la disponibilidad se entiendan en < 2 s | Precio jerárquico, descuento como pill, stock como tag semántico. |
+| Reducir fricción de compra | CTA "Añadir" siempre visible, carrito persistente, badge de cantidad en el header. |
+| Generar confianza | Compra protegida, envío express, valoraciones, estados vacíos claros, checkout demo explícito. |
 | Incentivar ticket promedio | Progreso de envío gratis (umbral $1,500) visible en el carrito. |
-| Que se sienta profesional, no "plantilla Gen Z" | Grilla estricta, paleta limitada, un solo acento, radios 0 y tipografía editorial. |
-| Rendimiento percibido | Skeleton loading con dimensiones idénticas al contenido final (cero CLS). |
+| Que se sienta moderna y "Apple-like" | Estilo iOS: superficies blancas, glass solo en navegación, esquinas continuas, azul de acción, movimiento con spring. |
+| Rendimiento percibido | Skeleton loading con dimensiones estables (cero layout shift) y feedback inmediato. |
 
 ### Principios
 
-1. **La foto manda, la interfaz enmarca.** El producto es el protagonista; los bordes separan, no decoran.
-2. **Un solo acento de acción.** El ácido `#DFE104` se reserva para CTA y highlights; el azul `#0047FF` solo para foco y enlaces.
-3. **Forma dura, información blanda.** Bordes 2px, radios 0 y sombras offset; el contenido se ordena con jerarquía tipográfica, no con efectos.
-4. **Ritmo seco.** Movimiento de 120–320 ms; sin rebotes ni parallax.
-5. **Contraste primero.** Texto ≥ 4.5:1, foco siempre visible, movimiento reducido respetado.
+1. **Claridad antes que decoración.** El producto es el protagonista; la UI desaparece.
+2. **Un solo acento de acción.** Azul iOS para lo accionable; el resto es neutro.
+3. **Profundidad suave.** Sombras cortas y difusas, nunca glow neón.
+4. **Continuidad.** Radios generosos, superficies translúcidas solo donde hay scroll detrás.
+5. **Movimiento con propósito.** Micro-interacciones < 300 ms; respeta `prefers-reduced-motion`.
 
 ### Anti-patrones (prohibido en este proyecto)
 
-- Gradientes, glows, glassmorphism y blur decorativo.
-- Radios distintos de 0 en superficies, botones o inputs.
-- Sombras difusas con blur; solo offsets duros.
+- Gradientes neón cian/púrpura, glows, grids cyberpunk.
 - Más de un color de acento compitiendo por atención.
-- Rotaciones en tarjetas (solo se permite -2° en un sticker aislado).
+- Glassmorphism en contenido denso o tarjetas de producto.
+- Sombras negras duras o bordes de 1 px de color saturado.
+- Emojis como iconos estructurales (usar PrimeIcons).
 - Skeletons que cambian el alto/ancho del layout final.
-- Spinners en áreas de contenido (solo `[loading]` en botones de submit).
+- Spinners en áreas de contenido (solo en botones de submit).
 
 ---
 
 ## 2. Dirección visual
 
-**"Hardware Press"** es neo-brutalismo editorial: la energía visual del
-neubrutalismo (bordes visibles, bloques sólidos, tipografía pesada) domesticada
-con una grilla suiza, una paleta de papel y tinta y un único acento ácido. Se
-lee como una ficha técnica impresa: precisa, directa, profesional.
+**"Quiet Tech"**: la limpieza de la Apple Store con la precisión de un producto
+de hardware. Fondo gris sistema iOS (`#F2F2F7`), superficies blancas, tipografía
+Inter, azul de acción `#0A84FF`, y un índigo secundario reservado para detalles
+de marca. Sin ruido.
 
-- **Modo:** automático según `prefers-color-scheme`. El script externo
-  `public/theme-init.js` aplica `.app-dark` en `<html>` antes del primer paint y
-  escucha cambios en vivo. Es externo porque el CSP del servidor
-  (`script-src 'self'`) bloquea scripts inline.
+- **Modo:** automático según `prefers-color-scheme` del sistema. El script externo
+  `public/theme-init.js` aplica `.app-dark` en `<html>` antes del primer paint y escucha
+  cambios en vivo; no hay flash de tema claro ni toggle manual. Es un archivo externo
+  porque el CSP del servidor (`script-src 'self'`) bloquea scripts inline.
 - **Densidad:** cómoda en marketing/catálogo; compacta en tablas y carrito.
-- **Personalidad:** técnica, segura, editorial, sin adornos.
-
-### Referencias de criterio (ui-ux-pro-max)
-
-- Estilo base: **Neubrutalism** (conversión V High; mobile adaptable).
-- Patrón de landing: **Feature-Rich Showcase** (e-commerce).
-- Reglas UX aplicadas: skeleton/loading y content-jumping son severidad High.
-- Stack: Angular standalone, signals, `@if/@for`, `input()/output()`, OnPush.
+- **Personalidad:** sereno, preciso, confiable, premium.
 
 ---
 
 ## 3. Tokens (3 capas)
 
 Arquitectura: **Primitive → Semantic → Component**. En código viven en
-`src/styles/_tokens.scss` como Custom Properties CSS con prefijo `--nv-`.
+`src/styles/_tokens.scss` como Custom Properties CSS.
 
 ### 3.1 Color — primitivos
 
 | Token | Valor | Uso |
 | --- | --- | --- |
-| `--nv-ink` | `#0B0B0C` | Tinta / texto / bordes |
-| `--nv-paper` | `#F5F2E9` | Papel / fondo claro |
-| `--nv-white` | `#FFFFFF` | Superficie de producto |
-| `--nv-acid` | `#DFE104` | Acento único (CTA, highlight) |
-| `--nv-acid-hover` | `#C9CB00` | Hover del acento |
-| `--nv-blue` | `#0047FF` | Foco y enlaces |
-| `--nv-green-600` | `#067A4C` | Disponible / éxito |
-| `--nv-orange-600` | `#9A4B00` | Últimas unidades |
-| `--nv-red-600` | `#C81E1E` | Agotado / destructivo |
-| `--nv-yellow-500` | `#F0B400` | Estrellas de valoración |
-
-Escala `--nv-gray-*` cálida: `0 #FFFFFF` · `50 #FAF8F2` · `100 #F5F2E9` ·
-`200 #EDE9DE` · `300 #DDD7C8` · `400 #C2BBAA` · `500 #8F887C` · `600 #6B655B` ·
-`700 #57534E` · `800 #33322F` · `900 #0B0B0C`.
+| `--nv-blue-500` | `#0A84FF` | Acción primaria (iOS blue) |
+| `--nv-blue-600` | `#0066CC` | Hover / pressed |
+| `--nv-blue-50` | `#EAF4FF` | Tinte de selección |
+| `--nv-indigo-500` | `#5E5CE6` | Acento de marca secundario |
+| `--nv-green-600` | `#248A3D` | Disponible / éxito |
+| `--nv-orange-600` | `#B25000` | Últimas unidades |
+| `--nv-red-600` | `#D70015` | Agotado / destructivo |
+| `--nv-yellow-500` | `#FFB800` | Estrellas de valoración |
+| `--nv-gray-0` | `#FFFFFF` | Superficie |
+| `--nv-gray-50` | `#F9F9FB` | Superficie suave |
+| `--nv-gray-100` | `#F2F2F7` | Fondo de app (iOS system background) |
+| `--nv-gray-200` | `#E5E5EA` | Separadores sólidos |
+| `--nv-gray-400` | `#C7C7CC` | Placeholder / deshabilitado |
+| `--nv-gray-600` | `#8E8E93` | Texto terciario |
+| `--nv-gray-700` | `#6E6E73` | Texto secundario |
+| `--nv-gray-900` | `#1D1D1F` | Texto primario |
+| `--nv-black` | `#000000` | Fondo dark |
 
 ### 3.2 Color — semánticos
 
 | Token | Claro | Dark (`.app-dark`) |
 | --- | --- | --- |
-| `--nv-bg` | `#F5F2E9` | `#0B0B0C` |
-| `--nv-bg-soft` | `#EDE9DE` | `#111113` |
-| `--nv-surface` | `#FFFFFF` | `#17171A` |
-| `--nv-surface-2` | `#EDE9DE` | `#1F1F23` |
-| `--nv-surface-3` | `#DDD7C8` | `#2B2B31` |
-| `--nv-border` | `#0B0B0C` | `#F5F2E9` |
-| `--nv-border-strong` | `#0047FF` | `#7AA2FF` |
-| `--nv-text` | `#0B0B0C` | `#F5F2E9` |
-| `--nv-text-muted` | `#57534E` | `#A8A29E` |
-| `--nv-text-dim` | `#6B655B` | `#9A948D` |
-| `--nv-primary` | `#0B0B0C` | `#F5F2E9` |
-| `--nv-on-primary` | `#FFFFFF` | `#0B0B0C` |
-| `--nv-accent` | `#DFE104` | `#DFE104` |
-| `--nv-on-accent` | `#0B0B0C` | `#0B0B0C` |
-| `--nv-success` | `#067A4C` | `#34D399` |
-| `--nv-warning` | `#9A4B00` | `#FBBF24` |
-| `--nv-danger` | `#C81E1E` | `#FF6B5E` |
-| `--nv-star` | `#F0B400` | `#FACC15` |
-| `--nv-shadow-color` | `#0B0B0C` | `#3F3F46` |
+| `--nv-bg` | `#F2F2F7` | `#000000` |
+| `--nv-bg-soft` | `#F9F9FB` | `#0A0A0C` |
+| `--nv-surface` | `#FFFFFF` | `#1C1C1E` |
+| `--nv-surface-2` | `#F9F9FB` | `#2C2C2E` |
+| `--nv-surface-3` | `#E5E5EA` | `#3A3A3C` |
+| `--nv-surface-glass` | `rgba(255,255,255,.78)` | `rgba(28,28,30,.72)` |
+| `--nv-border` | `rgba(60,60,67,.12)` | `rgba(84,84,88,.60)` |
+| `--nv-border-strong` | `rgba(10,132,255,.32)` | `rgba(10,132,255,.42)` |
+| `--nv-text` | `#1D1D1F` | `#F5F5F7` |
+| `--nv-text-muted` | `#6E6E73` | `#A1A1A6` |
+| `--nv-text-dim` | `#8E8E93` | `#8E8E93` |
+| `--nv-primary` | `#0A84FF` | `#0A84FF` |
+| `--nv-primary-strong` | `#0066CC` | `#409CFF` |
+| `--nv-primary-soft` | `#EAF4FF` | `rgba(10,132,255,.16)` |
+| `--nv-success` | `#248A3D` | `#30D158` |
+| `--nv-warning` | `#B25000` | `#FF9F0A` |
+| `--nv-danger` | `#D70015` | `#FF453A` |
+| `--nv-star` | `#FFB800` | `#FFD60A` |
 
-**Contraste:** tinta sobre papel ≈ 18:1; tinta sobre ácido ≈ 13:1; muted ≈ 7:1.
-Cumple AA/AAA en texto normal en ambos modos.
+**Contraste:** texto primario y secundario ≥ 4.5:1 sobre su superficie en ambos
+modos. El acento nunca es el único indicador de estado (se acompaña de texto/icono).
 
 ### 3.3 Tipografía
 
-| Rol | Familia | Token / uso |
-| --- | --- | --- |
-| Display | **Archivo Black** | Títulos H1/H2, wordmark, números grandes |
-| UI / body | **Inter** 400–700 | Texto, labels, botones, párrafos |
-| Datos | **JetBrains Mono** 500/700 | Precios, SKU, contadores, labels técnicos |
+- Familia única: **Inter**, fallback `-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif`.
+- Display y body comparten familia; el display se diferencia por peso y tracking.
+- `font-display: swap` (Google Fonts ya lo incluye).
 
-Carga única con `display=swap` desde Google Fonts (preconnect ya configurado).
-
-| Rol | Token | Tamaño / línea | Tracking |
-| --- | --- | --- | --- |
-| Display | `--nv-text-display` | `clamp(3rem, 8vw, 6rem)` / 0.98 | -0.03em, uppercase |
-| H1 | `--nv-text-h1` | `clamp(2.4rem, 5vw, 4rem)` / 0.98 | -0.03em, uppercase |
-| H2 | `--nv-text-h2` | `clamp(1.8rem, 3vw, 2.6rem)` / 0.98 | -0.03em, uppercase |
-| H3 | `--nv-text-h3` | `1.25rem` / 1.25 | -0.01em, Inter 700 |
-| Body | `--nv-text-body` | `1rem` / 1.6 | 0, Inter 400 |
-| Subhead | `--nv-text-subhead` | `0.875rem` / 1.4 | 0, Inter 500 |
-| Caption | `--nv-text-caption` | `0.75rem` / 1.3 | Inter 500 |
-| Overline | `--nv-text-overline` | `0.6875rem` / 1.2 | 0.14em, mono 700, uppercase |
+| Rol | Token | Tamaño / línea | Peso | Tracking |
+| --- | --- | --- | --- | --- |
+| Display | `--nv-text-display` | `clamp(2.5rem, 6vw, 4rem)` / 1.05 | 700 | -0.03em |
+| H1 | `--nv-text-h1` | `clamp(2rem, 4vw, 3rem)` / 1.1 | 700 | -0.025em |
+| H2 | `--nv-text-h2` | `clamp(1.5rem, 3vw, 2rem)` / 1.15 | 700 | -0.02em |
+| H3 | `--nv-text-h3` | `1.25rem` / 1.3 | 600 | -0.015em |
+| Headline | `--nv-text-headline` | `1.0625rem` / 1.3 | 600 | -0.01em |
+| Body | `--nv-text-body` | `1rem` / 1.5 | 400 | 0 |
+| Callout | `--nv-text-callout` | `0.9375rem` / 1.4 | 400 | 0 |
+| Subhead | `--nv-text-subhead` | `0.875rem` / 1.35 | 500 | 0 |
+| Footnote | `--nv-text-footnote` | `0.8125rem` / 1.35 | 400 | 0 |
+| Caption | `--nv-text-caption` | `0.75rem` / 1.3 | 500 | 0 |
+| Overline | `--nv-text-overline` | `0.6875rem` / 1.2 | 700 | 0.12em, uppercase |
 
 ### 3.4 Espaciado (base 4 pt, ritmo 8 pt)
 
@@ -147,175 +141,144 @@ Carga única con `display=swap` desde Google Fonts (preconnect ya configurado).
 
 Secciones: `--nv-section: clamp(3rem, 7vw, 6rem)`.
 Gutter: `--nv-gutter: clamp(1rem, 4vw, 2rem)`.
-Ancho máximo: `1240px`.
 
-### 3.5 Forma — radios, bordes y sombras
+### 3.5 Radios y sombras
 
-- **Radios:** `0` en todo (`--nv-radius-*: 0`). Las únicas curvas permitidas son
-  `border-radius: 50%` en avatares decorativos y spinners nativos.
-- **Bordes:** `--nv-border-width: 2px` sólido con `--nv-border`; 3px en foco/active.
-- **Sombras offset duras**, sin blur:
+| Token | Valor | Uso |
+| --- | --- | --- |
+| `--nv-radius-xs` | `6px` | Chips pequeños, badges |
+| `--nv-radius-sm` | `10px` | Inputs internos, botones pequeños |
+| `--nv-radius-md` | `14px` | Botones, steppers |
+| `--nv-radius-lg` | `18px` | Tarjetas compactas |
+| `--nv-radius-xl` | `24px` | Tarjetas de producto, paneles |
+| `--nv-radius-2xl` | `28px` | Hero, sheets |
+| `--nv-radius-pill` | `999px` | Tags, chips, avatares |
 
-| Token | Valor |
+| Sombra | Valor |
 | --- | --- |
-| `--nv-shadow-xs` | `2px 2px 0 var(--nv-shadow-color)` |
-| `--nv-shadow-sm` | `4px 4px 0 var(--nv-shadow-color)` |
-| `--nv-shadow-md` | `6px 6px 0 var(--nv-shadow-color)` |
-| `--nv-shadow-lg` | `8px 8px 0 var(--nv-shadow-color)` |
-| `--nv-focus-ring` | `0 0 0 3px var(--nv-blue)` |
-
-- **Foco global:** `outline: 3px solid var(--nv-blue); outline-offset: 3px`.
-- **Hover de superficie:** `translate(-2px, -2px)` + una sombra mayor.
-- **Press:** `translate(2px, 2px)` + sombra 0.
+| `--nv-shadow-xs` | `0 1px 2px rgba(0,0,0,.04)` |
+| `--nv-shadow-sm` | `0 2px 8px rgba(0,0,0,.05)` |
+| `--nv-shadow-md` | `0 8px 24px rgba(0,0,0,.07)` |
+| `--nv-shadow-lg` | `0 20px 48px rgba(0,0,0,.10)` |
+| `--nv-focus-ring` | `0 0 0 4px rgba(10,132,255,.18)` |
 
 ### 3.6 Movimiento
 
 | Token | Valor |
 | --- | --- |
 | `--nv-duration-fast` | `120ms` |
-| `--nv-duration-base` | `180ms` |
+| `--nv-duration-base` | `200ms` |
 | `--nv-duration-slow` | `320ms` |
-| `--nv-duration-reveal` | `380ms` (entrada de tarjetas) |
-| `--nv-stagger` | `40ms` |
-| `--nv-ease` | `cubic-bezier(.2,.8,.2,1)` |
-| `--nv-transition` | `180ms cubic-bezier(.2,.8,.2,1)` |
+| `--nv-duration-reveal` | `620ms` (entrada de tarjetas, stagger 75ms) |
+| `--nv-ease` | `cubic-bezier(.25,.1,.25,1)` |
+| `--nv-ease-spring` | `cubic-bezier(.22,1,.36,1)` |
+| `--nv-transition` | `200ms cubic-bezier(.25,.1,.25,1)` |
 
-- Entrada de tarjetas: `opacity 0→1` + `translateY(10px→0)`, 380 ms + 40 ms de stagger.
-- Marquee del header: 28 s lineal; estático con `prefers-reduced-motion`.
-- Todo movimiento se desactiva bajo `prefers-reduced-motion: reduce`.
+Press en botones: `transform: scale(.98)` sin cambiar bounds.
+Entrada de tarjetas: `opacity 0→1` + `translateY(8px→0)` con spring.
+Todo desactivado bajo `prefers-reduced-motion: reduce`.
 
 ### 3.7 Layout
 
-- Header sticky total `96px` = marquee `32px` + barra `64px`.
-- `scroll-padding-top`: header + 24 px.
-- Breakpoints: `520`, `760`, `980`, `1100`, `1280`.
-- Grid catálogo: `repeat(auto-fill, minmax(250px, 1fr))`, gap `24px`.
+- Ancho máximo: `1200px`.
+- Header sticky: `64px`, glass (`blur(20px) saturate(180%)`).
+- Breakpoints: `480`, `768`, `1024`, `1280`.
+- Grid catálogo: `repeat(auto-fill, minmax(240px, 1fr))`, gap `20px`.
 - Contenido de texto: máx. `68ch`.
 
 ---
 
 ## 4. Componentes
 
-### Botones
+### Botones (`p-button` + `.btn`)
 
-| Variante | Fondo | Texto | Borde | Sombra |
-| --- | --- | --- | --- | --- |
-| Primary / CTA | `--nv-accent` | `--nv-on-accent` | 2px tinta | 2px offset |
-| Outline | transparente | `--nv-text` | 2px tinta | 2px offset |
-| Ink (acción neutra) | `--nv-primary` | `--nv-on-primary` | 2px tinta | 2px offset |
-| Destructive | `--nv-danger` | `#FFFFFF` | 2px tinta | 2px offset |
+| Variante | Fondo | Texto | Borde |
+| --- | --- | --- | --- |
+| Primary | `--nv-primary` | `#FFFFFF` | ninguno |
+| Tinted | `--nv-primary-soft` | `--nv-primary` | ninguno |
+| Ghost | transparente | `--nv-text-muted` | ninguno |
+| Destructive | `--nv-danger-soft` | `--nv-danger` | ninguno |
 
-Altura mínima 44 px (48 en móvil), radio 0, mono 12 px 700, tracking 0.1em,
-uppercase. Hover `translate(-2px,-2px)` + sombra mayor. Press invierte el offset.
-Disabled: opacidad 0.45 y sin desplazamiento.
+Altura 44 px (48 en móvil), radio `14px`, peso 600, icono 16 px.
+Hover: `--nv-primary-strong`. Press: `scale(.98)`. Disabled: opacidad `.4`.
 
 ### Inputs
 
-Altura 44 px, borde 2px tinta, radio 0, fondo `--nv-surface`, texto `--nv-text`.
-Placeholder `--nv-text-dim`. Focus: outline azul de 3px con offset 2px.
-Error: borde `--nv-danger` + mensaje en `--nv-text-caption`.
+Altura 44 px, radio `12px`, fondo `--nv-surface`, borde `--nv-border`.
+Focus: borde `--nv-primary` + `--nv-focus-ring`. Label 13 px / 600.
+Error: borde `--nv-danger` + mensaje `--nv-text-footnote`.
 
-### Header y navegación
+### Tarjeta de producto (`app-product-card`)
 
-- Marquee de 32 px en tinta con texto papel y mono 11 px: envío 24 h · compra
-  protegida · 30 días de devolución. Se repite en loop; estático con reduced motion.
-- Barra de 64 px con borde inferior 2px y fondo papel sólido (sin blur).
-- Wordmark con marca en bloque ácido.
-- Links en mono uppercase; activo con bloque ácido y borde 2px.
-- Carrito cuadrado de 44 px con borde 2px, badge cuadrado ácido.
-- Menú móvil en drawer de borde izquierdo 2px y sombra offset.
+- Media 4:3 sobre `--nv-gray-50`, imagen `object-fit: contain`.
+- Radio `--nv-radius-xl`, superficie blanca, borde hairline, `--nv-shadow-sm`.
+- Hover: `translateY(-4px)` + `--nv-shadow-md` (sin glow).
+- Badge (Top ventas/Nuevo) pill azul; descuento pill rojo.
+- Stock tag semántico (verde/naranja/rojo) con texto.
+- Rating con estrellas `--nv-star` + valor numérico.
+- Precio `1.35rem` 700; precio anterior tachado en terciario.
+- CTA "Añadir" tinted azul; deshabilitado si agotado.
 
-### Hero del catálogo
+### Navegación
 
-- Grilla 7/5: contenido a la izquierda, pieza visual a la derecha.
-- Eyebrow mono `01 / CATÁLOGO`.
-- H1 display con la última palabra resaltada en bloque ácido con borde.
-- CTA ácido `VER CATÁLOGO` + CTA outline `ARMAR SETUP`.
-- Pieza visual: marco 2px, fondo blanco fijo, sombra `8px 8px 0`, sticker
-  "NUEVO DROP" rotado -2° y caption mono.
-- Barra de stats: 4 bloques con separadores de 2px; uno en ácido.
-- Banda de beneficios: 3 bloques con iconos outline y etiquetas mono.
+Header glass sticky con borde hairline. Links pill; activo con tinte azul.
+Carrito circular 44 px con badge contador. Drawer móvil tipo sheet iOS
+(radio superior 24 px, scrim `.32`).
 
-### Toolbar del catálogo
+### Chips de categoría
 
-Sticky bajo el header, borde 2px, fondo papel sólido y sombra `6px 6px 0`.
-Buscador con borde 2px y botón de limpiar cuadrado. Chips de categoría
-cuadrados; activo en tinta con texto papel. Select de orden con overlay
-cuadrado de borde 2px y sombra dura (se monta en `<body>`).
+Pill 34 px, fondo `--nv-surface-2`, texto secundario. Activo: fondo azul,
+texto blanco. Scroll horizontal en móvil, sin scrollbar visible.
 
-### Tarjeta de producto
+### Tags de stock
 
-- Borde 2px, radio 0, sombra `4px 4px 0`; hover `translate(-2,-2)` + `6px 6px 0`.
-- Media 4:3 sobre **blanco fijo en ambos temas**, con borde inferior 2px.
-- Badge (Top ventas/Nuevo) en bloque ácido con borde; descuento en bloque rojo.
-- Categoría en mono uppercase; nombre en Inter 700 a 2 líneas.
-- Rating con estrellas + valor en mono.
-- Precio en JetBrains Mono 700; precio anterior tachado.
-- CTA "Añadir" de ancho completo, ácido, con borde 2px y sombra offset.
-- Agotado: imagen al 50 % y grayscale; CTA deshabilitado.
+Pill tintado, texto ≥ 12 px, peso 600. Colores semánticos suaves.
 
-### Carrito
+### Toast / Dialog / Confirm
 
-Filas tipo tabla con borde 2px y sombra `2px`. Media cuadrada con borde.
-Stepper cuadrado de 3 celdas con bordes internos. Total en mono.
-Resumen sticky con borde 2px, sombra `8px 8px 0`, total display y CTA ácido.
-Barra de envío gratis de 8 px con relleno ácido y borde 2px.
+Superficie glass, radio 18 px, `--nv-shadow-lg`, texto primario.
 
-### Auth
+### Empty state
 
-- Panel izquierdo en tinta con grilla técnica tenue y texto papel.
-- Wordmark grande + titular display; highlights en bloque ácido.
-- Features con iconos en bloques ácido cuadrados.
-- Panel derecho en papel; card con borde 2px y sombra `8px 8px 0`.
-- Inputs cuadrados; labels mono uppercase; errores en bloque rojo con borde.
-
-### Empty state y 404
-
-- Empty state: contenedor 2px con sombra `6px 6px 0`, icono en bloque ácido
-  cuadrado, título display uppercase, mensaje ≤ 400 px y CTA ácido.
-- 404: "404" display gigante con sombra ácida offset, fondo con grilla técnica
-  y CTA ácido.
-
-### Toast / Dialog / Drawer
-
-Superficie sólida (sin glass), borde 2px, radio 0, sombra `8px 8px 0`.
-El drawer móvil usa borde izquierdo 2px y máscara `rgba(11,11,12,.55)` sin blur.
+Icono en círculo tintado azul, título H3, mensaje ≤ 400 px, CTA tinted.
+Altura mínima 320 px para evitar saltos.
 
 ---
 
-## 5. Skeleton loading
+## 5. Skeleton loading (especificación profesional)
 
 El skeleton debe **parecer el contenido final**, no una caja genérica.
 
 ### Reglas
 
-1. **Cero layout shift:** mismo alto/ancho, padding, aspect-ratio y líneas que
-   el contenido real.
+1. **Cero layout shift:** el skeleton ocupa exactamente el mismo alto/ancho,
+   padding, aspect-ratio y cantidad de líneas que el contenido real.
 2. **Solo para esperas perceptibles:** mostrar si la carga supera ~200 ms.
-3. **Shimmer sutil:** `--nv-skeleton-base → --nv-skeleton-shine`, 1.4 s; bloques
-   con radio 0.
-4. **Accesibilidad:** contenedor `aria-busy="true"`; skeleton `aria-hidden="true"`;
-   resultado anunciado con `aria-live="polite"`.
-5. **Reduced motion:** shimmer estático.
-6. **Imágenes:** placeholder detrás de la imagen hasta `load`; fade de 180 ms.
+   Para operaciones casi instantáneas no parpadear.
+3. **Shimmer sutil:** gradiente neutro `--nv-skeleton-base → --nv-skeleton-shine`
+   con `background-size: 200% 100%` y animación de 1.4 s.
+4. **Accesibilidad:** contenedor con `aria-busy="true"`; skeleton `aria-hidden="true"`.
+   Anunciar el resultado con `aria-live="polite"` cuando llegue.
+5. **Reduced motion:** shimmer estático (sin animación).
+6. **Imágenes:** placeholder shimmer detrás de la imagen hasta el evento `load`;
+   fade-in de 200 ms. Si falla, se mantiene un placeholder neutro.
 7. **Botones:** nunca skeleton; usan `[loading]` de PrimeNG.
 
 ### Piezas
 
 - `app-skeleton`: primitiva (`width`, `height`, `radius`, `circle`, `text`).
-- `app-product-card-skeleton`: réplica exacta de la tarjeta (media 4:3, categoría,
-  título, 2 líneas, rating, footer con precio y CTA full width).
+- `app-product-card-skeleton`: réplica de la tarjeta (media 4:3, 2 líneas de
+  descripción, footer de precio + CTA).
 - Catálogo: grid de 6 skeletons mientras `isLoading()`.
+- Carrito: filas skeleton si la hidratación del carrito lo requiere.
 
 ### Tokens de skeleton
 
 ```scss
---nv-skeleton-base: #e4dfd3;
---nv-skeleton-shine: #f2eee3;
---nv-skeleton-radius: 0;
+--nv-skeleton-base: #e9e9ee;
+--nv-skeleton-shine: #f5f5f7;
+--nv-skeleton-radius: 10px;
 ```
-
-Dark: `#232327` / `#303036`.
 
 ---
 
@@ -330,25 +293,21 @@ Dark: `#232327` / `#303036`.
 | Fuentes / meta | `src/index.html` |
 | Skeleton primitiva | `src/app/shared/components/skeleton/` |
 | Skeleton de tarjeta | `src/app/shared/components/product-card-skeleton/` |
-| Tarjeta real | `src/app/shared/components/product-card/` |
-| Vacío / logo | `src/app/shared/components/empty-state/`, `brand-logo/` |
 | Catálogo | `src/app/features/store/pages/` |
-| Header / Footer | `src/app/layout/` |
+| Tarjeta real | `src/app/shared/components/product-card/` |
+| Header / Footer / Layout | `src/app/layout/` |
 | Carrito | `src/app/features/cart/pages/cart-page/` |
 | Auth | `src/app/features/auth/` |
-| 404 | `src/app/features/not-found/` |
 
 ---
 
 ## 7. Checklist de entrega
 
 - [ ] Contraste ≥ 4.5:1 en texto normal (claro y oscuro).
-- [ ] Foco visible azul de 3px en todos los interactivos.
+- [ ] Foco visible en todos los interactivos (≥ 3:1).
 - [ ] Touch targets ≥ 44×44 px.
 - [ ] Sin layout shift al pasar de skeleton a contenido.
-- [ ] `prefers-reduced-motion` respetado (marquee, stagger, hover).
-- [ ] Radios 0 y bordes 2px consistentes.
-- [ ] Un solo acento de acción por vista (ácido).
+- [ ] `prefers-reduced-motion` respetado.
 - [ ] Iconos solo de PrimeIcons, con `aria-hidden` cuando son decorativos.
 - [ ] Estados vacíos, loading y error definidos para cada vista.
-- [ ] Modo oscuro automático sin flash y sin violaciones de CSP.
+- [ ] Un solo acento de acción por vista.

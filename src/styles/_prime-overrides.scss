@@ -1,98 +1,58 @@
 /* ==========================================================================
-   NovaStore — Overrides de PrimeNG ("Hardware Press")
-   Objetivo: componentes cuadrados, bordes de 2px y sombras offset duras.
+   NovaStore — Overrides de PrimeNG
+   Objetivo: alinear los componentes PrimeNG con los tokens "Quiet Tech".
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    Botones
    -------------------------------------------------------------------------- */
 .p-button {
-  border: var(--nv-border-width) solid var(--nv-border) !important;
-  border-radius: 0 !important;
-  padding: 0.68rem 1.05rem;
-  color: var(--nv-on-accent) !important;
-  font-family: var(--nv-font-mono);
-  font-size: var(--nv-text-caption);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background: var(--nv-accent) !important;
-  box-shadow: var(--nv-shadow-xs);
+  border-radius: var(--nv-radius-md);
+  font-weight: 600;
+  letter-spacing: 0;
   transition:
-    background var(--nv-duration-fast) var(--nv-ease),
-    color var(--nv-duration-fast) var(--nv-ease),
-    transform var(--nv-duration-fast) var(--nv-ease),
-    box-shadow var(--nv-duration-fast) var(--nv-ease);
+    background var(--nv-transition),
+    border-color var(--nv-transition),
+    color var(--nv-transition),
+    box-shadow var(--nv-transition),
+    transform var(--nv-duration-fast) var(--nv-ease);
 }
 
-.p-button:not(:disabled):hover {
-  color: var(--nv-on-accent) !important;
-  background: var(--nv-accent-hover) !important;
-  border-color: var(--nv-border) !important;
-  box-shadow: var(--nv-shadow-sm);
-  transform: translate(-2px, -2px);
-}
-
-.p-button:not(:disabled):active {
+.p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-danger):not(
+    .p-button-secondary
+  ) {
+  border-color: transparent;
+  color: var(--nv-gray-0);
+  background: var(--nv-primary);
   box-shadow: none;
-  transform: translate(2px, 2px);
+}
+
+.p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-danger):not(
+    .p-button-secondary
+  ):hover {
+  border-color: transparent;
+  color: var(--nv-gray-0);
+  background: var(--nv-primary-strong);
+  box-shadow: var(--nv-shadow-sm);
+}
+
+.p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-danger):not(
+    .p-button-secondary
+  ):active {
+  transform: scale(0.98);
 }
 
 .p-button:focus-visible {
-  outline: var(--nv-focus-outline);
-  outline-offset: 3px;
-  box-shadow: none;
+  box-shadow: var(--nv-focus-ring);
 }
 
-.p-button:disabled {
-  opacity: 0.45;
-}
-
-.p-button .p-button-icon {
-  font-size: 0.85rem;
-}
-
-/* Outlined: bloque transparente con borde de tinta. */
-.p-button.p-button-outlined {
-  color: var(--nv-text) !important;
-  background: transparent !important;
-  border-color: var(--nv-border) !important;
-  box-shadow: var(--nv-shadow-xs);
-}
-
-.p-button.p-button-outlined:not(:disabled):hover {
-  color: var(--nv-on-primary) !important;
-  background: var(--nv-primary) !important;
-}
-
-/* Texto y secundario. */
 .p-button.p-button-text {
-  color: var(--nv-text-muted) !important;
-  background: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none;
+  color: var(--nv-text-muted);
 }
 
-.p-button.p-button-text:not(:disabled):hover {
-  color: var(--nv-text) !important;
-  background: var(--nv-primary-soft) !important;
-  transform: none;
-}
-
-.p-button.p-button-secondary {
-  color: var(--nv-text) !important;
-  background: var(--nv-surface) !important;
-  border-color: var(--nv-border) !important;
-}
-
-.p-button.p-button-danger {
-  color: var(--nv-white) !important;
-  background: var(--nv-danger) !important;
-  border-color: var(--nv-border) !important;
-}
-
-.p-button .p-button-label {
-  font-weight: 700;
+.p-button.p-button-text:hover {
+  color: var(--nv-primary);
+  background: var(--nv-primary-soft);
 }
 
 /* --------------------------------------------------------------------------
@@ -100,27 +60,24 @@
    -------------------------------------------------------------------------- */
 .p-inputtext {
   width: 100%;
+  border: 1px solid var(--nv-border);
+  border-radius: var(--nv-radius-sm);
   padding: 0.72rem 0.9rem;
-  border: var(--nv-border-width) solid var(--nv-border) !important;
-  border-radius: 0 !important;
   color: var(--nv-text);
-  font-family: var(--nv-font-body);
   background: var(--nv-surface);
   box-shadow: none;
   transition:
-    background var(--nv-transition),
+    border-color var(--nv-transition),
     box-shadow var(--nv-transition);
 }
 
 .p-inputtext:enabled:hover {
-  border-color: var(--nv-border) !important;
+  border-color: var(--nv-gray-300);
 }
 
 .p-inputtext:enabled:focus {
-  border-color: var(--nv-border) !important;
-  outline: var(--nv-focus-outline);
-  outline-offset: 2px;
-  box-shadow: none;
+  border-color: var(--nv-primary);
+  box-shadow: var(--nv-focus-ring);
 }
 
 .p-inputtext::placeholder {
@@ -128,89 +85,71 @@
 }
 
 /* --------------------------------------------------------------------------
-   Select / overlay
+   Select
    -------------------------------------------------------------------------- */
 .p-select {
-  border: var(--nv-border-width) solid var(--nv-border) !important;
-  border-radius: 0 !important;
-  background: var(--nv-surface) !important;
+  border: 1px solid var(--nv-border);
+  border-radius: var(--nv-radius-sm);
+  background: var(--nv-surface);
   transition:
-    box-shadow var(--nv-transition),
-    background var(--nv-transition);
+    border-color var(--nv-transition),
+    box-shadow var(--nv-transition);
 }
 
 .p-select:not(.p-disabled):hover {
-  border-color: var(--nv-border) !important;
+  border-color: var(--nv-gray-300);
 }
 
 .p-select:not(.p-disabled).p-focus {
-  border-color: var(--nv-border) !important;
-  outline: var(--nv-focus-outline);
-  outline-offset: 2px;
-  box-shadow: none;
+  border-color: var(--nv-primary);
+  box-shadow: var(--nv-focus-ring);
 }
 
 .p-select-label {
   color: var(--nv-text);
-  font-size: var(--nv-text-subhead);
-}
-
-.p-select-dropdown {
-  color: var(--nv-text);
 }
 
 .p-select-overlay {
-  border: var(--nv-border-width) solid var(--nv-border) !important;
-  border-radius: 0 !important;
+  border: 1px solid var(--nv-border);
+  border-radius: var(--nv-radius-md);
   color: var(--nv-text);
-  background: var(--nv-surface) !important;
-  box-shadow: var(--nv-shadow-lg) !important;
+  background: var(--nv-surface);
+  box-shadow: var(--nv-shadow-lg);
 }
 
 .p-select-option {
-  border-radius: 0;
   color: var(--nv-text-muted);
-  font-size: var(--nv-text-subhead);
 }
 
 .p-select-option.p-select-option-selected,
 .p-select-option:hover {
-  color: var(--nv-text) !important;
-  background: var(--nv-accent) !important;
-}
-
-.p-select-option.p-select-option-selected {
-  font-weight: 700;
+  color: var(--nv-text);
+  background: var(--nv-primary-soft);
 }
 
 /* Dropdown de ordenamiento del catálogo: se monta en <body>, por eso vive aquí. */
 .sort-select-panel {
   min-width: 17rem;
-  padding: 0;
+  padding: 0.35rem;
 }
 
 .sort-select-panel .p-select-option {
-  padding: 0.65rem 0.8rem;
-  border-bottom: 1px solid var(--nv-grid-line);
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--nv-radius-xs);
   white-space: nowrap;
-}
-
-.sort-select-panel .p-select-option:last-child {
-  border-bottom: 0;
 }
 
 /* --------------------------------------------------------------------------
    Tags (stock)
    -------------------------------------------------------------------------- */
 .p-tag {
-  border: 1px solid currentColor;
-  border-radius: 0;
-  padding: 0.26rem 0.5rem;
-  font-family: var(--nv-font-mono);
-  font-size: var(--nv-text-overline);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  border: 0;
+  border-radius: var(--nv-radius-pill);
+  padding: 0.3rem 0.62rem;
+  font-size: var(--nv-text-caption);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .p-tag.p-tag-success {
@@ -232,90 +171,65 @@
    Toast
    -------------------------------------------------------------------------- */
 .p-toast .p-toast-message {
-  border: var(--nv-border-width) solid var(--nv-border);
-  border-radius: 0;
+  border: 1px solid var(--nv-border);
+  border-radius: var(--nv-radius-lg);
   color: var(--nv-text);
-  background: var(--nv-surface);
-  box-shadow: var(--nv-shadow-md);
+  background: var(--nv-surface-glass);
+  box-shadow: var(--nv-shadow-lg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 .p-toast .p-toast-message .p-toast-message-content {
-  padding: 0.9rem 1rem;
+  padding: 0.95rem 1rem;
 }
 
 .p-toast .p-toast-summary {
   font-family: var(--nv-font-display);
-  font-size: var(--nv-text-callout);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .p-toast .p-toast-detail {
   color: var(--nv-text-muted);
-  font-size: var(--nv-text-footnote);
-}
-
-.p-toast .p-toast-icon-close {
-  color: var(--nv-text-muted);
 }
 
 /* --------------------------------------------------------------------------
-   Drawer (menú móvil)
+   Drawer (sheet iOS en móvil)
    -------------------------------------------------------------------------- */
 .p-drawer.mobile-drawer {
-  width: min(88vw, 380px);
-  border-left: var(--nv-border-width) solid var(--nv-border);
-  border-radius: 0;
+  width: min(88vw, 360px);
+  border-left: 1px solid var(--nv-border);
   color: var(--nv-text);
   background: var(--nv-surface);
-  box-shadow: -8px 0 0 var(--nv-shadow-color);
+  box-shadow: var(--nv-shadow-lg);
 }
 
 .p-drawer.mobile-drawer .p-drawer-header {
-  border-bottom: var(--nv-border-width) solid var(--nv-border);
-  border-radius: 0;
+  border-bottom: 1px solid var(--nv-border);
   color: var(--nv-text);
-  font-family: var(--nv-font-display);
-  text-transform: uppercase;
 }
 
 .p-drawer-mask {
-  background: rgba(11, 11, 12, 0.55);
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(2px);
 }
 
 /* --------------------------------------------------------------------------
    Dialog / Confirm
    -------------------------------------------------------------------------- */
 .p-dialog {
-  border: var(--nv-border-width) solid var(--nv-border);
-  border-radius: 0;
+  border: 1px solid var(--nv-border);
+  border-radius: var(--nv-radius-xl);
   color: var(--nv-text);
   background: var(--nv-surface);
   box-shadow: var(--nv-shadow-lg);
 }
 
-.p-dialog .p-dialog-header {
-  border-bottom: var(--nv-border-width) solid var(--nv-border);
-  border-radius: 0;
-  color: var(--nv-text);
-  background: var(--nv-surface);
-}
-
-.p-dialog .p-dialog-header .p-dialog-title {
-  font-family: var(--nv-font-display);
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
+.p-dialog .p-dialog-header,
 .p-dialog .p-dialog-content,
 .p-dialog .p-dialog-footer {
   color: var(--nv-text);
-  background: var(--nv-surface);
-}
-
-.p-dialog .p-dialog-footer {
-  border-top: var(--nv-border-width) solid var(--nv-border);
+  background: transparent;
 }
 
 .p-confirmdialog-icon {
@@ -335,7 +249,7 @@
 }
 
 .p-skeleton {
-  border-radius: 0;
+  border-radius: var(--nv-radius-sm);
   background: linear-gradient(
     90deg,
     var(--nv-skeleton-base) 25%,

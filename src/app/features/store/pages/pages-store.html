@@ -1,86 +1,45 @@
 <div class="container store-page">
-  <section class="store-hero" aria-labelledby="hero-title">
-    <div class="store-hero__copy">
-      <span class="eyebrow">01 / Catálogo 2026</span>
-      <h1 id="hero-title">Hardware que <span class="gradient-text">rinde</span></h1>
+  <section class="store-hero">
+    <div class="store-hero__content">
+      <span class="eyebrow"
+        ><i class="pi pi-sparkles" aria-hidden="true"></i> Nueva colección 2026</span
+      >
+      <h1>Tu setup, <span class="gradient-text">al siguiente nivel</span></h1>
       <p>
-        Periféricos y tecnología seleccionados para gamers, creadores y profesionales que
-        necesitan que su equipo trabaje tan duro como ellos.
+        Periféricos y tecnología premium seleccionados para gamers, creadores y profesionales que
+        quieren más de su equipo.
       </p>
 
       <div class="store-hero__actions">
-        <a class="btn-brutal" href="#catalogo">
-          Ver catálogo
+        <a class="hero-cta" href="#catalogo">
+          Explorar catálogo
           <i class="pi pi-arrow-down" aria-hidden="true"></i>
         </a>
-        <a class="btn-brutal btn-brutal--ghost" href="#catalogo">
-          Armar setup
-          <i class="pi pi-sliders-h" aria-hidden="true"></i>
-        </a>
-      </div>
-
-      <div class="store-hero__meta">
-        <span><i class="pi pi-truck" aria-hidden="true"></i> Envío gratis desde $1,500</span>
-        <span><i class="pi pi-shield" aria-hidden="true"></i> Compra protegida</span>
+        <span class="store-hero__shipping">
+          <i class="pi pi-truck" aria-hidden="true"></i>
+          Envío gratis desde $1,500
+        </span>
       </div>
     </div>
 
-    <figure class="store-hero__figure">
-      <span class="store-hero__sticker">Nuevo drop</span>
-      <img
-        src="images/teclado.png"
-        alt="Teclado mecánico de la colección NovaStore 2026"
-        width="720"
-        height="540"
-      />
-      <figcaption>
-        <span>Ref. NV-2026</span>
-        <span>Stock verificado</span>
-      </figcaption>
-    </figure>
-  </section>
-
-  <section class="store-stats" aria-label="Datos de la tienda">
-    <div class="stat">
-      <strong>09</strong>
-      <span>productos premium</span>
-    </div>
-    <div class="stat">
-      <strong>24h</strong>
-      <span>envío express</span>
-    </div>
-    <div class="stat">
-      <strong>4.8</strong>
-      <span>valoración media</span>
-    </div>
-    <div class="stat stat--accent">
-      <i class="pi pi-shield" aria-hidden="true"></i>
-      <span>Compra protegida</span>
-    </div>
-  </section>
-
-  <section class="store-benefits" aria-label="Beneficios de compra">
-    <article class="benefit">
-      <i class="pi pi-truck" aria-hidden="true"></i>
-      <div>
-        <strong>Envío express 24 h</strong>
-        <span>Despachamos el mismo día en pedidos antes de las 15:00.</span>
+    <div class="store-hero__stats" aria-label="Datos de la tienda">
+      <div class="stat">
+        <strong>09</strong>
+        <span>productos premium</span>
       </div>
-    </article>
-    <article class="benefit">
-      <i class="pi pi-lock" aria-hidden="true"></i>
-      <div>
-        <strong>Pago protegido</strong>
-        <span>Checkout demo sin cargos y datos cifrados en el servidor.</span>
+      <div class="stat">
+        <strong>24h</strong>
+        <span>envío express</span>
       </div>
-    </article>
-    <article class="benefit">
-      <i class="pi pi-refresh" aria-hidden="true"></i>
-      <div>
-        <strong>30 días de devolución</strong>
-        <span>Si el equipo no rinde, lo cambiás sin preguntas.</span>
+      <div class="stat">
+        <strong>4.8</strong>
+        <span>valoración media</span>
       </div>
-    </article>
+      <div class="stat stat--accent">
+        <i class="pi pi-shield" aria-hidden="true"></i>
+        <span>Compra protegida</span>
+      </div>
+    </div>
   </section>
 
   <section
@@ -91,8 +50,8 @@
   >
     <div class="catalog__header">
       <div>
-        <span class="eyebrow">02 / Catálogo</span>
-        <h2 id="catalog-title">Equipo seleccionado</h2>
+        <span class="eyebrow">Catálogo</span>
+        <h2 id="catalog-title">Productos destacados</h2>
       </div>
       @if (!isLoading()) {
         <span class="catalog__count" aria-live="polite">{{ resultLabel() }}</span>
@@ -163,14 +122,14 @@
           <app-product-card
             [product]="product"
             (add)="addToCart($event)"
-            [style.animation-delay.ms]="i * 40"
+            [style.animation-delay.ms]="i * 75"
           />
         }
       </div>
     } @else {
       <app-empty-state
         icon="pi pi-search"
-        title="Sin resultados"
+        title="No encontramos resultados"
         message="Prueba con otra búsqueda o limpia los filtros para ver todo el catálogo."
         actionLabel="Limpiar filtros"
         (action)="clearFilters()"
@@ -183,13 +142,5 @@
         Limpiar filtros
       </button>
     }
-  </section>
-
-  <section class="store-cta" aria-label="Empezá tu setup">
-    <p>Tu setup empieza acá.</p>
-    <a class="btn-brutal" href="#catalogo">
-      Elegir hardware
-      <i class="pi pi-arrow-up" aria-hidden="true"></i>
-    </a>
   </section>
 </div>
