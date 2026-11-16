@@ -10,21 +10,23 @@
   justify-content: center;
   padding: 3rem 1.5rem;
   text-align: center;
-  border: 1px solid var(--nv-border);
-  border-radius: var(--nv-radius-xl);
+  border: var(--nv-border-width) solid var(--nv-border);
+  border-radius: 0;
   background: var(--nv-surface);
-  box-shadow: var(--nv-shadow-xs);
+  box-shadow: var(--nv-shadow-md);
 }
 
 .empty-state__icon {
   display: grid;
   width: 72px;
   height: 72px;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.35rem;
   place-items: center;
-  border-radius: 50%;
-  color: var(--nv-primary);
-  background: var(--nv-primary-soft);
+  border: var(--nv-border-width) solid var(--nv-border);
+  border-radius: 0;
+  color: var(--nv-on-accent);
+  background: var(--nv-accent);
+  box-shadow: var(--nv-shadow-xs);
 }
 
 .empty-state__icon i {
@@ -32,13 +34,17 @@
 }
 
 .empty-state h3 {
-  margin-bottom: 0.45rem;
-  font-size: var(--nv-text-h3);
+  margin-bottom: 0.5rem;
+  font-family: var(--nv-font-display);
+  font-size: var(--nv-text-h2);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
 
 .empty-state p {
   max-width: 400px;
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.5rem;
   color: var(--nv-text-muted);
   font-size: var(--nv-text-footnote);
   line-height: 1.6;
@@ -46,22 +52,33 @@
 
 .empty-state__action {
   display: inline-flex;
+  min-height: 44px;
   align-items: center;
   gap: 0.5rem;
-  min-height: 44px;
   padding: 0.7rem 1.15rem;
-  border: 0;
-  border-radius: var(--nv-radius-md);
-  color: var(--nv-primary);
-  font-size: var(--nv-text-footnote);
-  font-weight: 600;
-  background: var(--nv-primary-soft);
+  border: var(--nv-border-width) solid var(--nv-border);
+  border-radius: 0;
+  color: var(--nv-on-accent);
+  font-family: var(--nv-font-mono);
+  font-size: var(--nv-text-caption);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--nv-accent);
+  box-shadow: var(--nv-shadow-xs);
   transition:
-    color var(--nv-duration-base) var(--nv-ease),
-    background var(--nv-duration-base) var(--nv-ease);
+    background var(--nv-duration-fast) var(--nv-ease),
+    box-shadow var(--nv-duration-fast) var(--nv-ease),
+    transform var(--nv-duration-fast) var(--nv-ease);
 }
 
 .empty-state__action:hover {
-  color: var(--nv-gray-0);
-  background: var(--nv-primary);
+  background: var(--nv-accent-hover);
+  box-shadow: var(--nv-shadow-sm);
+  transform: translate(-2px, -2px);
+}
+
+.empty-state__action:active {
+  box-shadow: none;
+  transform: translate(2px, 2px);
 }

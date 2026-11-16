@@ -2,23 +2,25 @@ import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 
 /**
- * Tema PrimeNG de NovaStore — "Quiet Tech".
+ * Tema PrimeNG de NovaStore — "Hardware Press".
  * Alineado con src/styles/_tokens.scss y design-system/novastore/MASTER.md.
+ * Los detalles visuales duros (bordes 2px, sombras offset) viven en
+ * src/styles/_prime-overrides.scss; aquí se define la base cromática y la forma.
  */
 export const NovaPreset = definePreset(Aura, {
   semantic: {
     primary: {
-      50: '#eaf4ff',
-      100: '#d5e9ff',
-      200: '#aed3ff',
-      300: '#7ab8ff',
-      400: '#3d97ff',
-      500: '#0a84ff',
-      600: '#0066cc',
-      700: '#0052a3',
-      800: '#003d7a',
-      900: '#002952',
-      950: '#001733',
+      50: '#eef2ff',
+      100: '#dbe4ff',
+      200: '#b8caff',
+      300: '#8aa8ff',
+      400: '#5b86ff',
+      500: '#0047ff',
+      600: '#0038cc',
+      700: '#002ca3',
+      800: '#00217a',
+      900: '#001652',
+      950: '#000c2e',
     },
     colorScheme: {
       light: {
@@ -30,55 +32,55 @@ export const NovaPreset = definePreset(Aura, {
         },
         surface: {
           0: '#ffffff',
-          50: '#f9f9fb',
-          100: '#f2f2f7',
-          200: '#e5e5ea',
-          300: '#d1d1d6',
-          400: '#c7c7cc',
-          500: '#aeaeb2',
-          600: '#8e8e93',
-          700: '#6e6e73',
-          800: '#48484a',
-          900: '#1d1d1f',
+          50: '#faf8f2',
+          100: '#f5f2e9',
+          200: '#ede9de',
+          300: '#ddd7c8',
+          400: '#c2bbaa',
+          500: '#8f887c',
+          600: '#6b655b',
+          700: '#57534e',
+          800: '#33322f',
+          900: '#0b0b0c',
           950: '#000000',
         },
         text: {
-          color: '#1d1d1f',
-          mutedColor: '#6e6e73',
+          color: '#0b0b0c',
+          mutedColor: '#57534e',
         },
         content: {
           background: '#ffffff',
-          borderColor: 'rgba(60, 60, 67, 0.12)',
+          borderColor: '#0b0b0c',
         },
       },
       dark: {
         primary: {
-          color: '{primary.500}',
-          inverseColor: '#04121f',
-          hoverColor: '{primary.400}',
-          activeColor: '{primary.300}',
+          color: '{primary.400}',
+          inverseColor: '#0b0b0c',
+          hoverColor: '{primary.300}',
+          activeColor: '{primary.200}',
         },
         surface: {
           0: '#ffffff',
-          50: '#f5f5f7',
-          100: '#e5e5ea',
-          200: '#d1d1d6',
-          300: '#aeaeb2',
-          400: '#8e8e93',
-          500: '#636366',
-          600: '#48484a',
-          700: '#3a3a3c',
-          800: '#2c2c2e',
-          900: '#1c1c1e',
-          950: '#000000',
+          50: '#f5f2e9',
+          100: '#ede9de',
+          200: '#ddd7c8',
+          300: '#c2bbaa',
+          400: '#8f887c',
+          500: '#6b655b',
+          600: '#57534e',
+          700: '#2b2b31',
+          800: '#1f1f23',
+          900: '#17171a',
+          950: '#0b0b0c',
         },
         text: {
-          color: '#f5f5f7',
-          mutedColor: '#a1a1a6',
+          color: '#f5f2e9',
+          mutedColor: '#a8a29e',
         },
         content: {
-          background: '#1c1c1e',
-          borderColor: 'rgba(84, 84, 88, 0.6)',
+          background: '#17171a',
+          borderColor: '#f5f2e9',
         },
       },
     },
@@ -86,37 +88,45 @@ export const NovaPreset = definePreset(Aura, {
   components: {
     button: {
       root: {
-        borderRadius: '14px',
+        borderRadius: '0',
         paddingX: '1.05rem',
         paddingY: '0.68rem',
         label: {
-          fontWeight: '600',
+          fontWeight: '700',
+        },
+        focusRing: {
+          width: '3px',
+          style: 'solid',
+          offset: '3px',
         },
       },
     },
     inputtext: {
       root: {
-        borderRadius: '10px',
+        borderRadius: '0',
       },
     },
     select: {
       root: {
-        borderRadius: '10px',
+        borderRadius: '0',
+      },
+      overlay: {
+        borderRadius: '0',
       },
     },
     card: {
       root: {
-        borderRadius: '24px',
+        borderRadius: '0',
       },
     },
     tag: {
       root: {
-        borderRadius: '999px',
+        borderRadius: '0',
       },
     },
     dialog: {
       root: {
-        borderRadius: '24px',
+        borderRadius: '0',
       },
     },
   },

@@ -11,9 +11,12 @@
   gap: 0.45rem;
   margin-top: 1.4rem;
   padding-top: 1.1rem;
-  border-top: 1px solid var(--nv-border);
-  color: var(--nv-text-dim);
-  font-size: var(--nv-text-caption);
+  border-top: var(--nv-border-width) solid var(--nv-border);
+  color: var(--nv-text-muted);
+  font-family: var(--nv-font-mono);
+  font-size: var(--nv-text-overline);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .demo-hint span {
@@ -21,16 +24,16 @@
   align-items: center;
   gap: 0.35rem;
   margin-right: 0.15rem;
-  color: var(--nv-primary);
-  font-weight: 600;
+  color: var(--nv-text);
+  font-weight: 700;
 }
 
 .demo-hint code {
   padding: 0.2rem 0.45rem;
   border: 1px solid var(--nv-border);
-  border-radius: var(--nv-radius-xs);
+  border-radius: 0;
   color: var(--nv-text-muted);
   font-family: var(--nv-font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   background: var(--nv-surface-2);
 }

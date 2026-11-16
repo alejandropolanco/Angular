@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NovaStore — Base, reset y utilidades globales
+   NovaStore — Base, reset y utilidades globales ("Hardware Press")
    ========================================================================== */
 
 *,
@@ -32,15 +32,19 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Grilla técnica de fondo: papel milimetrado muy tenue. */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(circle at 14% -6%, rgba(10, 132, 255, 0.08), transparent 28rem),
-    radial-gradient(circle at 92% 4%, rgba(94, 92, 230, 0.06), transparent 26rem);
+  background-image:
+    linear-gradient(to right, var(--nv-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--nv-grid-line) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.35) 70%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.35) 70%, transparent);
 }
 
 h1,
@@ -52,34 +56,46 @@ p {
 }
 
 h1,
-h2,
-h3,
-h4 {
+h2 {
   font-family: var(--nv-font-display);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.12;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  text-transform: uppercase;
+  text-wrap: balance;
 }
 
 h1 {
   font-size: var(--nv-text-h1);
-  letter-spacing: -0.025em;
 }
 
 h2 {
   font-size: var(--nv-text-h2);
 }
 
+h3,
+h4 {
+  font-family: var(--nv-font-body);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
 h3 {
   font-size: var(--nv-text-h3);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.3;
+}
+
+h4 {
+  font-size: var(--nv-text-headline);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+p {
+  line-height: 1.6;
 }
 
 img,
@@ -104,12 +120,12 @@ button:disabled {
 }
 
 ::selection {
-  color: var(--nv-gray-0);
-  background: var(--nv-primary);
+  color: var(--nv-on-accent);
+  background: var(--nv-accent);
 }
 
 :focus-visible {
-  outline: 2px solid var(--nv-primary);
+  outline: var(--nv-focus-outline);
   outline-offset: 3px;
 }
 
@@ -123,8 +139,8 @@ button:disabled {
 
 .surface-card,
 .neon-card {
-  border: 1px solid var(--nv-border);
-  border-radius: var(--nv-radius-xl);
+  border: var(--nv-border-width) solid var(--nv-border);
+  border-radius: 0;
   background: var(--nv-surface);
   box-shadow: var(--nv-shadow-sm);
 }
@@ -132,23 +148,90 @@ button:disabled {
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  color: var(--nv-primary);
+  gap: 0.5rem;
+  color: var(--nv-text-muted);
+  font-family: var(--nv-font-mono);
   font-size: var(--nv-text-overline);
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+  background: var(--nv-accent);
+  border: 1px solid var(--nv-border);
+}
+
+.mono {
+  font-family: var(--nv-font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 .muted {
   color: var(--nv-text-muted);
 }
 
+/* Reemplaza el viejo degradado: resaltado editorial en bloque. */
 .gradient-text {
-  background: linear-gradient(100deg, var(--nv-primary) 10%, var(--nv-secondary) 92%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  display: inline-block;
+  padding: 0 0.14em;
+  color: var(--nv-on-accent);
+  background: var(--nv-accent);
+  border: var(--nv-border-width) solid var(--nv-border);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.rule-top {
+  border-top: var(--nv-border-width) solid var(--nv-border);
+}
+
+.btn-brutal {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.15rem;
+  border: var(--nv-border-width) solid var(--nv-border);
+  border-radius: 0;
+  color: var(--nv-on-accent);
+  font-family: var(--nv-font-mono);
+  font-size: var(--nv-text-caption);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--nv-accent);
+  box-shadow: var(--nv-shadow-xs);
+  transition:
+    transform var(--nv-duration-fast) var(--nv-ease),
+    box-shadow var(--nv-duration-fast) var(--nv-ease),
+    background var(--nv-duration-fast) var(--nv-ease);
+}
+
+.btn-brutal:hover {
+  background: var(--nv-accent-hover);
+  box-shadow: var(--nv-shadow-sm);
+  transform: translate(-2px, -2px);
+}
+
+.btn-brutal:active {
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+
+.btn-brutal--ghost {
+  color: var(--nv-text);
+  background: var(--nv-bg);
+}
+
+.btn-brutal--ghost:hover {
+  color: var(--nv-on-primary);
+  background: var(--nv-primary);
 }
 
 .sr-only {
@@ -163,24 +246,24 @@ button:disabled {
   border: 0;
 }
 
-/* Scrollbar discreto (WebKit) */
+/* Scrollbar cuadrada (WebKit) */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--nv-bg-soft);
 }
 
 ::-webkit-scrollbar-thumb {
-  border: 3px solid var(--nv-bg);
-  border-radius: var(--nv-radius-pill);
-  background: var(--nv-gray-400);
+  border: 3px solid var(--nv-bg-soft);
+  border-radius: 0;
+  background: var(--nv-text-muted);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--nv-gray-500);
+  background: var(--nv-text);
 }
 
 /* --------------------------------------------------------------------------

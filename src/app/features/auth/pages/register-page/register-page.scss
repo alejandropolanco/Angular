@@ -5,26 +5,27 @@
 }
 
 .register-card {
-  width: min(100%, 500px);
+  width: min(100%, 520px);
 }
 
 .password-strength {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  margin-top: 0.15rem;
+  margin-top: 0.2rem;
 }
 
 .strength-bars {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.3rem;
+  gap: 3px;
 }
 
 .strength-bar {
-  height: 4px;
-  border-radius: var(--nv-radius-pill);
-  background: var(--nv-surface-3);
+  height: 6px;
+  border: 1px solid var(--nv-border);
+  border-radius: 0;
+  background: var(--nv-surface-2);
   transition: background var(--nv-duration-base) var(--nv-ease);
 }
 
@@ -41,8 +42,11 @@
 }
 
 .strength-label {
-  color: var(--nv-text-dim);
-  font-size: var(--nv-text-caption);
+  color: var(--nv-text-muted);
+  font-family: var(--nv-font-mono);
+  font-size: var(--nv-text-overline);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .terms-field {
@@ -57,7 +61,7 @@
   height: 18px;
   flex: 0 0 18px;
   margin-top: 0.1rem;
-  accent-color: var(--nv-primary);
+  accent-color: var(--nv-blue);
 }
 
 .terms-field label {
@@ -77,8 +81,10 @@
   justify-content: center;
   gap: 0.4rem;
   margin: 0.9rem 0 0;
-  color: var(--nv-text-dim);
-  font-size: var(--nv-text-caption);
+  color: var(--nv-text-muted);
+  font-family: var(--nv-font-mono);
+  font-size: var(--nv-text-overline);
+  letter-spacing: 0.04em;
 }
 
 .security-note i {
