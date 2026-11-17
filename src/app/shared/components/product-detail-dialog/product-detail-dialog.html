@@ -1,0 +1,110 @@
+<p-dialog
+  [visible]="visible()"
+  (visibleChange)="visible.set($event)"
+  [modal]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [closeOnEscape]="true"
+  [header]="product()?.name ?? ''"
+  [style]="{ width: 'min(940px, 94vw)' }"
+  [contentStyle]="{ padding: '0' }"
+  styleClass="product-detail-dialog"
+  appendTo="body"
+>
+  @if (product(); as p) {
+    <div class="product-detail">
+      <div class="product-detail__media">
+        <img
+          [src]="'images/' + p.image"
+          [alt]="p.name"
+          width="800"
+          height="800"
+          loading="eager"
+          decoding="async"
+        />
+
+        @if (p.badge) {
+          <span class="product-detail__badge">{{ p.badge }}</span>
+        }
+
+        @if (discount(); as discountValue) {
+          <span class="product-detail__discount">-{{ discountValue }}%</span>
+        }
+      </div>
+
+      <div class="product-detail__body">
+        <span class="product-detail__category">{{ p.category }}</span>
+
+        <div
+          class="product-detail__rating"
+          [attr.aria-label]="'Valoración ' + p.rating + ' de 5'"
+        >
+          <span class="product-detail__stars" aria-hidden="true">
+            @for (star of stars; track star) {
+              <i
+                class="pi"
+                [class.pi-star-fill]="star <= p.rating"
+                [class.pi-star]="star > p.rating"
+              ></i>
+            }
+          </span>
+          <span class="product-detail__rating-value">{{ p.rating }}.0</span>
+        </div>
+
+        <p class="product-detail__lead">{{ p.description }}</p>
+
+        @if (p.details) {
+          <p class="product-detail__details">{{ p.details }}</p>
+        }
+
+        @if (p.highlights?.length) {
+          <ul class="product-detail__highlights">
+            @for (highlight of p.highlights; track highlight) {
+              <li>
+                <i class="pi pi-check" aria-hidden="true"></i>
+                {{ highlight }}
+              </li>
+            }
+          </ul>
+        }
+
+        <div class="product-detail__footer">
+          <div class="product-detail__price">
+            <strong>{{ p.price | currency: 'USD' : 'symbol-narrow' : '1.0-0' }}</strong>
+            @if (hasDiscount()) {
+              <span class="product-detail__price-old">{{
+                p.oldPrice | currency: 'USD' : 'symbol-narrow' : '1.0-0'
+              }}</span>
+            }
+          </div>
+          <p-tag [value]="stockLabel()" [severity]="severity()" />
+        </div>
+
+        <div class="product-detail__actions">
+          @if (purchasable()) {
+            <button
+              type="button"
+              class="product-detail__add"
+              [disabled]="isOutOfStock()"
+              (click)="add.emit(p)"
+            >
+              <i
+                class="pi"
+                [class.pi-shopping-cart]="!isOutOfStock()"
+                [class.pi-ban]="isOutOfStock()"
+                aria-hidden="true"
+              ></i>
+              {{ isOutOfStock() ? 'Agotado' : 'Añadir al carrito' }}
+            </button>
+          } @else {
+            <a routerLink="/login" class="product-detail__add">
+              <i class="pi pi-sign-in" aria-hidden="true"></i>
+              Inicia sesión para comprar
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</p-dialog>

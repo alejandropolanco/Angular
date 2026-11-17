@@ -74,6 +74,17 @@ describe('PagesStore', () => {
     expect(component['cartService'].cartItems().length).toBe(1);
   });
 
+  it('opens the detail dialog for a product', () => {
+    const product = component.products()[0];
+
+    expect(component.detailVisible()).toBe(false);
+
+    component.openDetail(product);
+
+    expect(component.selectedProduct()).toBe(product);
+    expect(component.detailVisible()).toBe(true);
+  });
+
   it('keeps the scroll position when syncing filters to the URL', () => {
     const router = TestBed.inject(Router);
     const navigate = vi.spyOn(router, 'navigate').mockResolvedValue(true);

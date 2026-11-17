@@ -1,0 +1,191 @@
+<div class="home-page">
+  <!-- =====================================================================
+       Portada — hero editorial full-bleed
+       ===================================================================== -->
+  <section class="home-hero">
+    <div class="home-hero__media" aria-hidden="true">
+      <img
+        src="images/fondo.jpg"
+        alt=""
+        width="6000"
+        height="4000"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+
+    <div class="home-hero__inner container">
+      <span class="eyebrow home-hero__eyebrow" appReveal>Nueva colección · 2026</span>
+      <h1 class="home-hero__title" appReveal [appRevealDelay]="70">
+        El detalle<br />
+        <span class="gradient-text">lo cambia todo</span>
+      </h1>
+      <p class="home-hero__lead" appReveal [appRevealDelay]="140">
+        Periféricos y tecnología seleccionados para quienes miden su equipo por lo que es capaz de
+        hacer, no por lo que promete.
+      </p>
+
+      <div class="home-hero__actions" appReveal [appRevealDelay]="210">
+        <button type="button" class="hero-cta" (click)="scrollToCollection()">
+          Descubrir la colección
+          <i class="pi pi-arrow-down" aria-hidden="true"></i>
+        </button>
+        <a class="hero-cta hero-cta--ghost" routerLink="/store">
+          Ir a la tienda
+          <i class="pi pi-arrow-right" aria-hidden="true"></i>
+        </a>
+        <span class="home-hero__shipping">
+          <i class="pi pi-truck" aria-hidden="true"></i>
+          Envío gratis desde $1,500
+        </span>
+      </div>
+    </div>
+
+    <div class="home-hero__meta container" appReveal aria-label="Datos de la tienda">
+      <span><b>09</b> piezas curadas</span>
+      <span><b>24h</b> envío express</span>
+      <span><b>4.8</b> valoración media</span>
+      <span><b>100%</b> compra protegida</span>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       Valores — manifiesto en tres tiempos
+       ===================================================================== -->
+  <section class="home-values container" aria-label="Cómo trabaja NovaStore">
+    <article class="value" appReveal>
+      <span class="value__index">01</span>
+      <h3>Curaduría, no catálogo infinito</h3>
+      <p>
+        Probamos cada pieza antes de venderla. Si no mejora tu escritorio, no entra en la colección.
+      </p>
+    </article>
+
+    <article class="value" appReveal [appRevealDelay]="90">
+      <span class="value__index">02</span>
+      <h3>Precios claros, sin letra chica</h3>
+      <p>
+        El precio que ves es el que pagás. Descuentos marcados, stock real y envío gratis desde
+        $1,500.
+      </p>
+    </article>
+
+    <article class="value" appReveal [appRevealDelay]="180">
+      <span class="value__index">03</span>
+      <h3>Soporte de gente que la usa</h3>
+      <p>
+        Respondemos dudas de compatibilidad y armado de setup. Comprás una pieza, no un ticket.
+      </p>
+    </article>
+  </section>
+
+  <!-- =====================================================================
+       Vista previa de la colección (pública)
+       ===================================================================== -->
+  <section id="coleccion" class="home-collection container" aria-labelledby="collection-title">
+    <div class="home-collection__header" appReveal>
+      <div class="home-collection__intro">
+        <span class="eyebrow">La colección</span>
+        <h2 id="collection-title">Un adelanto de lo que tenemos</h2>
+        <p class="home-collection__lead">
+          Mira la colección sin registrarte. Para comprar, crea tu cuenta en segundos.
+        </p>
+      </div>
+      <a class="editorial-link home-collection__link" routerLink="/store">
+        Ver todo el catálogo
+        <i class="pi pi-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    @if (isLoading()) {
+      <div class="products-grid" aria-hidden="true">
+        @for (item of skeletonItems; track item) {
+          <app-product-card-skeleton />
+        }
+      </div>
+      <p class="sr-only" role="status">Cargando la colección…</p>
+    } @else {
+      <div class="products-grid">
+        @for (product of preview(); track product.id; let i = $index) {
+          <app-product-card
+            appReveal
+            [appRevealDelay]="(i % 3) * 80"
+            [product]="product"
+            [purchasable]="purchasable()"
+            (add)="addToCart($event)"
+            (open)="openDetail($event)"
+          />
+        }
+      </div>
+    }
+  </section>
+
+  <!-- =====================================================================
+       Editorial — doble página con cita destacada
+       ===================================================================== -->
+  <section class="home-editorial" aria-labelledby="editorial-title">
+    <div class="home-editorial__media" appReveal="left" aria-hidden="true">
+      <img
+        src="images/fondo.1.jpg"
+        alt=""
+        width="1766"
+        height="3140"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+
+    <div class="home-editorial__body">
+      <span class="eyebrow" appReveal>La casa</span>
+      <h2 id="editorial-title" class="sr-only">Sobre NovaStore</h2>
+      <blockquote class="home-editorial__quote" appReveal [appRevealDelay]="80">
+        “Diseñamos para el escritorio, no para la vitrina.”
+      </blockquote>
+      <p class="home-editorial__text" appReveal [appRevealDelay]="150">
+        NovaStore nace de una obsesión simple: que cada pieza del setup se sienta inevitable. Elegimos
+        menos productos y los probamos más, para que decidir sea rápido y comprar sea tranquilo.
+      </p>
+
+      <div class="home-editorial__stats" appReveal [appRevealDelay]="210">
+        <div>
+          <strong>+1.2K</strong>
+          <span>setups armados</span>
+        </div>
+        <div>
+          <strong>4.8/5</strong>
+          <span>valoración media</span>
+        </div>
+        <div>
+          <strong>24h</strong>
+          <span>despacho express</span>
+        </div>
+      </div>
+
+      <a class="editorial-link home-editorial__link" routerLink="/store" appReveal>
+        Ver la colección
+        <i class="pi pi-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       Cierre
+       ===================================================================== -->
+  <section class="home-cta">
+    <div class="container home-cta__inner" appReveal>
+      <span class="eyebrow home-cta__eyebrow">Empezá hoy</span>
+      <h2 class="home-cta__title">Tu próximo setup empieza con una pieza.</h2>
+      <a class="hero-cta hero-cta--inverse" routerLink="/register">
+        Crear mi cuenta
+        <i class="pi pi-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </section>
+
+  <app-product-detail-dialog
+    [(visible)]="detailVisible"
+    [product]="selectedProduct()"
+    [purchasable]="purchasable()"
+    (add)="addToCart($event)"
+  />
+</div>

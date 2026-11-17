@@ -1,0 +1,117 @@
+/* ==========================================================================
+   NovaStore — Sistema de animaciones
+   Scroll-reveal (directiva `[appReveal]`) + microinteracciones.
+   Principios:
+   - El estado oculto solo existe en cliente y bajo `prefers-reduced-motion:
+     no-preference`; en SSR y con movimiento reducido todo es visible (sin CLS).
+   - Solo se animan `opacity` y `transform` (compositor-friendly).
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .nv-reveal {
+    opacity: 0;
+    transition:
+      opacity var(--nv-duration-reveal) var(--nv-ease-spring),
+      transform var(--nv-duration-reveal) var(--nv-ease-spring);
+    transition-delay: var(--nv-reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  .nv-reveal--up {
+    transform: translate3d(0, 30px, 0);
+  }
+
+  .nv-reveal--down {
+    transform: translate3d(0, -30px, 0);
+  }
+
+  .nv-reveal--left {
+    transform: translate3d(-38px, 0, 0);
+  }
+
+  .nv-reveal--right {
+    transform: translate3d(38px, 0, 0);
+  }
+
+  .nv-reveal--scale {
+    transform: scale(0.94);
+  }
+
+  .nv-reveal--fade {
+    transform: none;
+  }
+
+  .nv-reveal.nv-revealed {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  /* Microinteracción: se aplica mientras el navegador prepara el parallax. */
+  .nv-parallax {
+    will-change: transform;
+  }
+}
+
+/* ==========================================================================
+   Detalle de producto — entrada escalonada del contenido
+   ========================================================================== */
+@keyframes nv-detail-media {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes nv-detail-item {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .product-detail__media img {
+    animation: nv-detail-media 560ms var(--nv-ease-spring) both;
+  }
+
+  .product-detail__body > * {
+    animation: nv-detail-item 460ms var(--nv-ease-spring) both;
+  }
+
+  .product-detail__body > *:nth-child(1) {
+    animation-delay: 70ms;
+  }
+
+  .product-detail__body > *:nth-child(2) {
+    animation-delay: 120ms;
+  }
+
+  .product-detail__body > *:nth-child(3) {
+    animation-delay: 170ms;
+  }
+
+  .product-detail__body > *:nth-child(4) {
+    animation-delay: 220ms;
+  }
+
+  .product-detail__body > *:nth-child(5) {
+    animation-delay: 270ms;
+  }
+
+  .product-detail__body > *:nth-child(6) {
+    animation-delay: 320ms;
+  }
+
+  .product-detail__body > *:nth-child(7) {
+    animation-delay: 370ms;
+  }
+}

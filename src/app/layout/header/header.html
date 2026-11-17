@@ -1,14 +1,14 @@
-<header class="site-header">
+<header class="site-header" [class.site-header--scrolled]="isScrolled()">
   <div class="site-header__inner container">
-    <a routerLink="/store" class="site-header__brand" aria-label="NovaStore, ir a la tienda">
+    <a routerLink="/" class="site-header__brand" aria-label="NovaStore, ir al inicio">
       <app-brand-logo size="sm" />
     </a>
 
     <nav class="site-nav" aria-label="Navegación principal">
-      <a
-        routerLink="/store"
-        routerLinkActive="is-active"
-        [routerLinkActiveOptions]="{ exact: true }"
+      <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }"
+        >Inicio</a
+      >
+      <a routerLink="/store" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }"
         >Tienda</a
       >
       <a routerLink="/store" fragment="catalogo">Catálogo</a>
@@ -27,19 +27,24 @@
         }
       </a>
 
-      <div class="user-chip">
-        <span class="user-chip__avatar" aria-hidden="true">{{ userInitial() }}</span>
-        <span class="user-chip__name">{{ authService.user()?.name }}</span>
-      </div>
+      @if (isAuthenticated()) {
+        <div class="user-chip">
+          <span class="user-chip__avatar" aria-hidden="true">{{ userInitial() }}</span>
+          <span class="user-chip__name">{{ authService.user()?.name }}</span>
+        </div>
 
-      <button
-        type="button"
-        class="icon-button logout-button"
-        (click)="logout()"
-        aria-label="Cerrar sesión"
-      >
-        <i class="pi pi-sign-out" aria-hidden="true"></i>
-      </button>
+        <button
+          type="button"
+          class="icon-button logout-button"
+          (click)="logout()"
+          aria-label="Cerrar sesión"
+        >
+          <i class="pi pi-sign-out" aria-hidden="true"></i>
+        </button>
+      } @else {
+        <a routerLink="/login" class="header-auth header-auth--ghost">Iniciar sesión</a>
+        <a routerLink="/register" class="header-auth">Crear cuenta</a>
+      }
 
       <button
         type="button"
@@ -53,35 +58,52 @@
   </div>
 </header>
 
+<!--
+  `appendTo="body"` es imprescindible: el panel del drawer usa `position: fixed`
+  y el `backdrop-filter` del header crea un containing block que lo encogía al
+  alto del header, además de dejarlo por debajo de la máscara.
+-->
 <p-drawer
   header="Menú"
   position="right"
   styleClass="mobile-drawer"
+  appendTo="body"
   [visible]="mobileOpen()"
   (visibleChange)="mobileOpen.set($event)"
   [modal]="true"
   [dismissible]="true"
 >
   <div class="mobile-nav">
-    <div class="mobile-user">
-      <span class="user-chip__avatar" aria-hidden="true">{{ userInitial() }}</span>
-      <div>
-        <strong>{{ authService.user()?.name }}</strong>
-        <span>{{ authService.user()?.email }}</span>
+    @if (isAuthenticated()) {
+      <div class="mobile-user">
+        <span class="user-chip__avatar" aria-hidden="true">{{ userInitial() }}</span>
+        <div>
+          <strong>{{ authService.user()?.name }}</strong>
+          <span>{{ authService.user()?.email }}</span>
+        </div>
       </div>
-    </div>
+    }
 
+    <a
+      routerLink="/"
+      routerLinkActive="is-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="closeMobile()"
+    >
+      <i class="pi pi-home" aria-hidden="true"></i>
+      Inicio
+    </a>
     <a
       routerLink="/store"
       routerLinkActive="is-active"
       [routerLinkActiveOptions]="{ exact: true }"
       (click)="closeMobile()"
     >
-      <i class="pi pi-home" aria-hidden="true"></i>
+      <i class="pi pi-th-large" aria-hidden="true"></i>
       Tienda
     </a>
     <a routerLink="/store" fragment="catalogo" (click)="closeMobile()">
-      <i class="pi pi-th-large" aria-hidden="true"></i>
+      <i class="pi pi-list" aria-hidden="true"></i>
       Catálogo
     </a>
     <a routerLink="/cart" routerLinkActive="is-active" (click)="closeMobile()">
@@ -92,9 +114,24 @@
       }
     </a>
 
-    <button type="button" class="mobile-nav__logout" (click)="logout()">
-      <i class="pi pi-sign-out" aria-hidden="true"></i>
-      Cerrar sesión
-    </button>
+    @if (isAuthenticated()) {
+      <button type="button" class="mobile-nav__logout" (click)="logout()">
+        <i class="pi pi-sign-out" aria-hidden="true"></i>
+        Cerrar sesión
+      </button>
+    } @else {
+      <a routerLink="/login" class="mobile-nav__auth" (click)="closeMobile()">
+        <i class="pi pi-sign-in" aria-hidden="true"></i>
+        Iniciar sesión
+      </a>
+      <a
+        routerLink="/register"
+        class="mobile-nav__auth mobile-nav__auth--primary"
+        (click)="closeMobile()"
+      >
+        <i class="pi pi-user-plus" aria-hidden="true"></i>
+        Crear cuenta
+      </a>
+    }
   </div>
 </p-drawer>

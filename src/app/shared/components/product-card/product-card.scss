@@ -1,7 +1,6 @@
 :host {
   display: block;
   height: 100%;
-  animation: card-in var(--nv-duration-reveal) var(--nv-ease-spring) both;
 }
 
 .product-card {
@@ -105,6 +104,48 @@
   right: 0.7rem;
   bottom: 0.7rem;
   z-index: 3;
+}
+
+/* Capa clicable que abre el detalle ampliado del producto. */
+.product-card__open {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0.7rem;
+  border: 0;
+  background: transparent;
+}
+
+.product-card__open-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 0.75rem;
+  border-radius: var(--nv-radius-pill);
+  color: var(--nv-bg);
+  font-size: var(--nv-text-caption);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--nv-text);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--nv-duration-base) var(--nv-ease),
+    transform var(--nv-duration-base) var(--nv-ease-spring);
+}
+
+.product-card:hover .product-card__open-hint,
+.product-card__open:focus-visible .product-card__open-hint {
+  opacity: 1;
+  transform: none;
+}
+
+.product-card__open-hint i {
+  font-size: 0.7rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -242,22 +283,7 @@
   filter: grayscale(0.6);
 }
 
-@keyframes card-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  :host {
-    animation: none;
-  }
-
   .product-card:hover,
   .product-card:hover .product-card__media img {
     transform: none;

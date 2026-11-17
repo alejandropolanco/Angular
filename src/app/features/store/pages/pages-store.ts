@@ -14,11 +14,13 @@ import { MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ProductService } from '../service/service';
-import { InventoryStatus, Product } from '../models/modelo';
+import { Product } from '../models/modelo';
 import { CartService } from '../../cart/services/cart-service';
 import { ProductCard } from '../../../shared/components/product-card/product-card';
 import { ProductCardSkeleton } from '../../../shared/components/product-card-skeleton/product-card-skeleton';
+import { ProductDetailDialog } from '../../../shared/components/product-detail-dialog/product-detail-dialog';
 import { EmptyState } from '../../../shared/components/empty-state/empty-state';
+import { ScrollReveal } from '../../../shared/directives/scroll-reveal/scroll-reveal';
 
 type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'rating' | 'name';
 
@@ -29,7 +31,16 @@ interface SortSelectOption {
 
 @Component({
   selector: 'app-store-page',
-  imports: [FormsModule, InputTextModule, SelectModule, ProductCard, ProductCardSkeleton, EmptyState],
+  imports: [
+    FormsModule,
+    InputTextModule,
+    SelectModule,
+    ProductCard,
+    ProductCardSkeleton,
+    ProductDetailDialog,
+    EmptyState,
+    ScrollReveal,
+  ],
   templateUrl: './pages-store.html',
   styleUrl: './pages-store.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,6 +58,9 @@ export class PagesStore implements OnInit {
   readonly search = signal('');
   readonly category = signal('Todas');
   readonly sort = signal<SortOption>('featured');
+
+  readonly selectedProduct = signal<Product | null>(null);
+  readonly detailVisible = signal(false);
 
   private catalogLoaded = false;
 
@@ -186,15 +200,9 @@ export class PagesStore implements OnInit {
     });
   }
 
-  getStatusLabel(status: InventoryStatus): string {
-    switch (status) {
-      case 'INSTOCK':
-        return 'Disponible';
-      case 'LOWSTOCK':
-        return 'Últimas unidades';
-      case 'OUTOFSTOCK':
-        return 'Agotado';
-    }
+  openDetail(product: Product): void {
+    this.selectedProduct.set(product);
+    this.detailVisible.set(true);
   }
 
   private syncQueryParams(clear = false): void {

@@ -7,22 +7,32 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TagModule } from 'primeng/tag';
 import { Skeleton } from '../skeleton/skeleton';
-import { InventoryStatus, Product } from '../../../features/store/models/modelo';
-
-type TagSeverity = 'success' | 'warn' | 'danger';
+import { Product } from '../../../features/store/models/modelo';
+import {
+  getDiscountPercent,
+  getStockLabel,
+  getStockSeverity,
+  hasDiscount,
+  isOutOfStock,
+} from '../../utils/product-status';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CurrencyPipe, TagModule, Skeleton],
+  imports: [CurrencyPipe, RouterLink, TagModule, Skeleton],
   templateUrl: './product-card.html',
   styleUrl: './product-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCard {
   readonly product = input.required<Product>();
+  /** Si es `false`, el CTA invita a iniciar sesión en lugar de añadir. */
+  readonly purchasable = input(true);
   readonly add = output<Product>();
+  /** Emite al pedir el detalle ampliado del producto. */
+  readonly open = output<Product>();
 
   readonly stars = [1, 2, 3, 4, 5] as const;
 
@@ -30,25 +40,15 @@ export class ProductCard {
   readonly imageLoaded = signal(false);
   readonly imageFailed = signal(false);
 
-  readonly isOutOfStock = computed(() => this.product().inventoryStatus === 'OUTOFSTOCK');
+  readonly isOutOfStock = computed(() => isOutOfStock(this.product()));
 
-  readonly severity = computed<TagSeverity>(() => this.getSeverity(this.product().inventoryStatus));
+  readonly severity = computed(() => getStockSeverity(this.product().inventoryStatus));
 
-  readonly stockLabel = computed(() => this.getStockLabel(this.product().inventoryStatus));
+  readonly stockLabel = computed(() => getStockLabel(this.product().inventoryStatus));
 
-  readonly hasDiscount = computed(() => {
-    const oldPrice = this.product().oldPrice;
-    return oldPrice !== undefined && oldPrice > this.product().price;
-  });
+  readonly hasDiscount = computed(() => hasDiscount(this.product()));
 
-  readonly discount = computed(() => {
-    const oldPrice = this.product().oldPrice;
-    if (oldPrice === undefined || oldPrice <= this.product().price) {
-      return null;
-    }
-
-    return Math.round(((oldPrice - this.product().price) / oldPrice) * 100);
-  });
+  readonly discount = computed(() => getDiscountPercent(this.product()));
 
   onImageLoad(): void {
     this.imageLoaded.set(true);
@@ -57,27 +57,5 @@ export class ProductCard {
   onImageError(): void {
     this.imageFailed.set(true);
     this.imageLoaded.set(true);
-  }
-
-  private getSeverity(status: InventoryStatus): TagSeverity {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warn';
-      case 'OUTOFSTOCK':
-        return 'danger';
-    }
-  }
-
-  private getStockLabel(status: InventoryStatus): string {
-    switch (status) {
-      case 'INSTOCK':
-        return 'Disponible';
-      case 'LOWSTOCK':
-        return 'Últimas unidades';
-      case 'OUTOFSTOCK':
-        return 'Agotado';
-    }
   }
 }

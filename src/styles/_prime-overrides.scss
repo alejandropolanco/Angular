@@ -238,6 +238,32 @@
   font-family: var(--nv-font-display);
 }
 
+/* Detalle de producto (se monta en <body>, por eso vive aquí). */
+.p-dialog.product-detail-dialog {
+  overflow: hidden;
+  max-height: 92dvh;
+}
+
+.p-dialog.product-detail-dialog .p-dialog-header {
+  padding: 1.05rem 1.4rem;
+  border-bottom: 1px solid var(--nv-border);
+}
+
+.p-dialog.product-detail-dialog .p-dialog-title {
+  font-family: var(--nv-font-display);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.p-dialog.product-detail-dialog .p-dialog-content {
+  overflow-y: auto;
+}
+
+.p-dialog.product-detail-dialog .p-dialog-close-button {
+  color: var(--nv-text-muted);
+}
+
 .p-confirmdialog-icon {
   color: var(--nv-warning);
 }

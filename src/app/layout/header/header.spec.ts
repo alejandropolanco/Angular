@@ -1,5 +1,6 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { HeaderComponent } from './header.component';
@@ -7,6 +8,7 @@ import { HeaderComponent } from './header.component';
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
+  let logout: ReturnType<typeof vi.fn>;
 
   const user = {
     id: '1',
@@ -16,7 +18,19 @@ describe('HeaderComponent', () => {
     createdAt: new Date().toISOString(),
   };
 
+  const isAuthenticated = signal(true);
+  const currentUser = signal<typeof user | null>(user);
+
+  function setScrollY(value: number): void {
+    Object.defineProperty(window, 'scrollY', { value, configurable: true });
+  }
+
   beforeEach(async () => {
+    isAuthenticated.set(true);
+    currentUser.set(user);
+    logout = vi.fn();
+    setScrollY(0);
+
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
       providers: [
@@ -24,11 +38,7 @@ describe('HeaderComponent', () => {
         MessageService,
         {
           provide: AuthService,
-          useValue: {
-            user: () => user,
-            isAuthenticated: () => true,
-            logout: () => undefined,
-          },
+          useValue: { user: currentUser, isAuthenticated, logout },
         },
       ],
     }).compileComponents();
@@ -37,6 +47,10 @@ describe('HeaderComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    document.querySelectorAll('.p-drawer-mask, .mobile-drawer').forEach((el) => el.remove());
   });
 
   it('should create', () => {
@@ -49,6 +63,15 @@ describe('HeaderComponent', () => {
     expect(component.mobileOpen()).toBe(true);
     component.closeMobile();
     expect(component.mobileOpen()).toBe(false);
+  });
+
+  it('appends the mobile drawer to the body', async () => {
+    component.mobileOpen.set(true);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(document.body.querySelector('.mobile-drawer')).not.toBeNull();
   });
 
   it('shows the cart badge only when there are items', () => {
@@ -71,7 +94,51 @@ describe('HeaderComponent', () => {
     component.cartService.clearCart();
   });
 
-  it('shows the authenticated user initial', () => {
+  it('shows the authenticated user initial and account controls', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+
     expect(component.userInitial()).toBe('A');
+    expect(compiled.querySelector('.user-chip__name')?.textContent).toContain('Administrador');
+    expect(compiled.querySelector('.logout-button')).not.toBeNull();
+    expect(compiled.querySelector('.header-auth')).toBeNull();
+  });
+
+  it('shows sign-in actions for guests', () => {
+    isAuthenticated.set(false);
+    currentUser.set(null);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const actions = Array.from(compiled.querySelectorAll('.header-auth')).map((el) =>
+      el.textContent?.trim(),
+    );
+
+    expect(actions).toContain('Iniciar sesión');
+    expect(actions).toContain('Crear cuenta');
+    expect(compiled.querySelector('.logout-button')).toBeNull();
+  });
+
+  it('logs out and returns to the landing page', () => {
+    const router = TestBed.inject(Router);
+    const navigate = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+    component.mobileOpen.set(true);
+
+    component.logout();
+
+    expect(logout).toHaveBeenCalled();
+    expect(component.mobileOpen()).toBe(false);
+    expect(navigate).toHaveBeenCalledWith('/');
+  });
+
+  it('raises the scrolled state only after scrolling', () => {
+    expect(component.isScrolled()).toBe(false);
+
+    setScrollY(48);
+    window.dispatchEvent(new Event('scroll'));
+    expect(component.isScrolled()).toBe(true);
+
+    setScrollY(0);
+    window.dispatchEvent(new Event('scroll'));
+    expect(component.isScrolled()).toBe(false);
   });
 });

@@ -10,7 +10,9 @@ Tienda de tecnología premium construida con **Angular 21**, **PrimeNG**, **SSR*
 
 ## Características
 
-- Diseño oscuro premium con bordes neón, gradientes y tipografías Space Grotesk + Inter.
+- Diseño **Clean Tech Monocromo**: papel cálido, tinta como único acento y tipografías Bodoni Moda + Inter + JetBrains Mono.
+- **Portada editorial pública** (`/`) tipo revista, accesible sin iniciar sesión.
+- **Animaciones por scroll** con la directiva `[appReveal]`, respetando `prefers-reduced-motion`.
 - Catálogo de productos con búsqueda por nombre, categoría o descripción.
 - Filtros por categoría y ordenamiento por precio, valoración y nombre.
 - Filtros sincronizados con la URL (`?q=`, `?cat=`, `?sort=`) sin perder la posición de scroll.
@@ -18,8 +20,9 @@ Tienda de tecnología premium construida con **Angular 21**, **PrimeNG**, **SSR*
 - Registro de usuarios con validación en cliente y servidor.
 - Sesiones con cookie `httpOnly`, token aleatorio y hash SHA-256 almacenado en SQLite.
 - Contraseñas con hash bcrypt (coste 12) y política mínima de seguridad.
+- Detalle de producto ampliado en un diálogo con entrada animada.
 - Rutas protegidas con guards, redirección de retorno y página 404 personalizada.
-- SSR con renderizado en cliente para las rutas privadas.
+- SSR con prerenderizado de la portada y renderizado en cliente para las rutas privadas.
 - API con Helmet, CSP, rate limiting, validación Zod y protección de origen.
 
 ## Requisitos
@@ -121,14 +124,14 @@ La validación devuelve `422` con el detalle por campo en `error.fields`.
 
 ## Rutas principales
 
-| Ruta        | Descripción                               | Acceso         |
-| ----------- | ----------------------------------------- | -------------- |
-| `/`         | Redirige según el estado de autenticación | Público        |
-| `/login`    | Inicio de sesión                          | Solo invitados |
-| `/register` | Registro de cuenta                        | Solo invitados |
-| `/store`    | Catálogo de productos                     | Autenticado    |
-| `/cart`     | Carrito de compras                        | Autenticado    |
-| `/**`       | Página 404                                | Público        |
+| Ruta        | Descripción                                        | Acceso         |
+| ----------- | -------------------------------------------------- | -------------- |
+| `/`         | Portada editorial pública (landing)                | Público        |
+| `/login`    | Inicio de sesión                                   | Solo invitados |
+| `/register` | Registro de cuenta                                 | Solo invitados |
+| `/store`    | Catálogo de productos                              | Autenticado    |
+| `/cart`     | Carrito de compras                                 | Autenticado    |
+| `/**`       | Página 404                                         | Público        |
 
 ## Estructura del proyecto
 
@@ -136,16 +139,18 @@ La validación devuelve `422` con el detalle por campo en `error.fields`.
 src/
 ├── app/
 │   ├── core/
-│   │   ├── guards/          # authGuard, guestGuard, rootRedirectGuard
+│   │   ├── guards/          # authGuard y guestGuard
 │   │   ├── interceptors/    # withCredentials para /api
 │   │   └── theme/           # Preset de PrimeNG (NovaPreset)
 │   ├── features/
 │   │   ├── auth/            # Login, registro, sesión y modelos
 │   │   ├── cart/            # Carrito, totales y persistencia
+│   │   ├── home/            # Portada editorial pública
 │   │   ├── not-found/       # Página 404
 │   │   └── store/           # Catálogo, productos y filtros
-│   ├── layout/              # Header, footer y layouts
-│   └── shared/              # BrandLogo, EmptyState, ProductCard
+│   ├── layout/              # Header, footer, main layout
+│   └── shared/              # BrandLogo, EmptyState, ProductCard,
+│                            # ProductDetailDialog, directivas y utilidades
 ├── server/
 │   ├── api/
 │   │   ├── app.ts           # Montaje de la API y manejo de errores
@@ -156,7 +161,7 @@ src/
 │   │   ├── sessions.ts      # Sesiones y cookies
 │   │   └── standalone.ts    # API independiente para desarrollo
 │   └── server.ts            # Express + Angular SSR + API
-├── styles/                  # Tokens, base y overrides de PrimeNG
+├── styles/                  # Tokens, base, animaciones y overrides de PrimeNG
 ├── styles.scss
 └── index.html
 ```
@@ -168,8 +173,11 @@ src/
 - **Angular SSR + API en un solo proceso:** en producción `src/server.ts` monta `/api` antes de los archivos estáticos y del render de Angular.
 - **Dos procesos en desarrollo:** `ng serve` en `4200` y la API con `tsx watch` en `4000`, unidos por `proxy.conf.json`.
 - **Signals:** estado reactivo para sesión, carrito, filtros y totales.
-- **Lazy loading:** las rutas de tienda, carrito, login, registro y 404 se cargan bajo demanda.
-- **SSR selectivo:** `/store` y `/cart` se renderizan en el cliente para evitar redirecciones de autenticación durante el prerender. `/login` y `/register` se prerenderizan.
+- **Portada editorial:** la raíz `/` es una landing pública; el auth vive a nivel raíz y la portada, tienda y carrito comparten un `MainLayout`.
+- **Animaciones por scroll:** la directiva `[appReveal]` usa `IntersectionObserver`; en SSR el HTML sale visible y con `prefers-reduced-motion` no se oculta nada (sin *layout shift*).
+- **Overlays de PrimeNG:** los paneles que deben flotar por encima de contenedores con `backdrop-filter` (header, toolbar del catálogo) se montan con `appendTo="body"`.
+- **Lazy loading:** las rutas de portada, tienda, carrito, login, registro y 404 se cargan bajo demanda.
+- **SSR selectivo:** la portada y el auth se prerenderizan; `/store` y `/cart` se renderizan en el cliente para evitar redirecciones de autenticación durante el prerender.
 - **Persistencia tolerante a fallos:** el carrito captura errores de `localStorage` (modo privado, cuotas, datos corruptos).
 - **Filtros sin saltos:** las actualizaciones de query params usan `scroll: 'manual'` para no volver al tope de la página.
 
@@ -192,6 +200,13 @@ npm test
 ```
 
 La suite cubre servicios, guards, interceptor, páginas de login y registro, y componentes de layout con Vitest y jsdom.
+
+## Documentación
+
+- [`docs/landing-y-animaciones.md`](./docs/landing-y-animaciones.md) — portada pública, sistema de animaciones por scroll y las correcciones de UX.
+- [`design-system/novastore/MASTER.md`](./design-system/novastore/MASTER.md) — sistema de diseño **Clean Tech Monocromo**.
+- [`SECURITY_AUDIT.md`](./SECURITY_AUDIT.md) — medidas de seguridad y riesgos residuales.
+- [`docs/README.md`](./docs/README.md) — índice de la documentación.
 
 ## Build de producción
 

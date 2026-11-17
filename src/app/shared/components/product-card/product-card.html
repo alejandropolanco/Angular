@@ -31,6 +31,18 @@
     <span class="product-card__stock">
       <p-tag [value]="stockLabel()" [severity]="severity()" />
     </span>
+
+    <button
+      type="button"
+      class="product-card__open"
+      (click)="open.emit(product())"
+      [attr.aria-label]="'Ver detalles de ' + product().name"
+    >
+      <span class="product-card__open-hint">
+        Ver detalle
+        <i class="pi pi-arrow-right" aria-hidden="true"></i>
+      </span>
+    </button>
   </div>
 
   <div class="product-card__body">
@@ -64,21 +76,32 @@
         }
       </div>
 
-      <button
-        type="button"
-        class="product-card__add"
-        [disabled]="isOutOfStock()"
-        (click)="add.emit(product())"
-        [attr.aria-label]="'Añadir ' + product().name + ' al carrito'"
-      >
-        <i
-          class="pi"
-          [class.pi-plus]="!isOutOfStock()"
-          [class.pi-ban]="isOutOfStock()"
-          aria-hidden="true"
-        ></i>
-        {{ isOutOfStock() ? 'Agotado' : 'Añadir' }}
-      </button>
+      @if (purchasable()) {
+        <button
+          type="button"
+          class="product-card__add"
+          [disabled]="isOutOfStock()"
+          (click)="add.emit(product())"
+          [attr.aria-label]="'Añadir ' + product().name + ' al carrito'"
+        >
+          <i
+            class="pi"
+            [class.pi-plus]="!isOutOfStock()"
+            [class.pi-ban]="isOutOfStock()"
+            aria-hidden="true"
+          ></i>
+          {{ isOutOfStock() ? 'Agotado' : 'Añadir' }}
+        </button>
+      } @else {
+        <a
+          routerLink="/login"
+          class="product-card__add"
+          [attr.aria-label]="'Inicia sesión para comprar ' + product().name"
+        >
+          <i class="pi pi-sign-in" aria-hidden="true"></i>
+          Inicia sesión
+        </a>
+      }
     </div>
   </div>
 </article>

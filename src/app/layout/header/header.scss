@@ -10,6 +10,17 @@
   background: var(--nv-surface-glass);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition:
+    box-shadow var(--nv-transition),
+    background var(--nv-transition),
+    border-color var(--nv-transition);
+}
+
+/* Microinteracción: al scrollear, el header se despega del contenido. */
+.site-header--scrolled {
+  border-bottom-color: var(--nv-border);
+  background: var(--nv-surface-glass);
+  box-shadow: var(--nv-shadow-sm);
 }
 
 .site-header__inner {
@@ -143,6 +154,44 @@
   font-weight: 500;
 }
 
+/* --------------------------------------------------------------------------
+   Acceso (visitantes sin sesión)
+   -------------------------------------------------------------------------- */
+.header-auth {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--nv-text);
+  border-radius: var(--nv-radius-sm);
+  color: var(--nv-bg);
+  font-size: var(--nv-text-footnote);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  background: var(--nv-text);
+  transition:
+    color var(--nv-duration-base) var(--nv-ease),
+    background var(--nv-duration-base) var(--nv-ease),
+    border-color var(--nv-duration-base) var(--nv-ease);
+}
+
+.header-auth:hover {
+  color: var(--nv-text);
+  background: transparent;
+}
+
+.header-auth--ghost {
+  border-color: transparent;
+  color: var(--nv-text-muted);
+  background: transparent;
+}
+
+.header-auth--ghost:hover {
+  color: var(--nv-text);
+  background: var(--nv-surface-2);
+}
+
 .icon-button {
   display: grid;
   width: 44px;
@@ -207,7 +256,8 @@
 }
 
 .mobile-nav > a,
-.mobile-nav__logout {
+.mobile-nav__logout,
+.mobile-nav__auth {
   display: flex;
   align-items: center;
   gap: 0.65rem;
@@ -254,6 +304,26 @@
   background: var(--nv-danger-soft);
 }
 
+.mobile-nav__auth {
+  color: var(--nv-text);
+}
+
+.mobile-nav__auth:hover {
+  background: var(--nv-surface-2);
+}
+
+.mobile-nav__auth--primary {
+  margin-top: 0.4rem;
+  border-color: var(--nv-text);
+  color: var(--nv-bg);
+  background: var(--nv-text);
+}
+
+.mobile-nav__auth--primary:hover {
+  color: var(--nv-text);
+  background: transparent;
+}
+
 @media (max-width: 980px) {
   .site-nav {
     display: none;
@@ -268,6 +338,7 @@
   }
 
   .logout-button,
+  .header-auth,
   .user-chip__name {
     display: none;
   }
