@@ -1,8 +1,12 @@
 # Blueprint de Render para NovaStore (Angular SSR + API Express + SQLite).
 #
 # Un único servicio Node sirve la web y la API (`/api`). La base SQLite vive en
-# un disco persistente, porque el resto del sistema de archivos de Render es
-# efímero (se borra en cada deploy).
+# un archivo dentro del proyecto.
+#
+# ⚠️ MODO FREE: el filesystem de Render free es EFÍMERO. Usuarios, sesiones,
+# productos y pedidos se borran en cada deploy/reinicio. Sirve para demo.
+# Para persistencia real, ver el bloque `disk` comentado abajo (requiere plan
+# pago) o `docs/deploy.md` §10 (VM gratis con disco).
 #
 # Uso: Render -> New -> Blueprint -> elegí este repositorio.
 # Docs: docs/deploy.md
@@ -14,10 +18,9 @@ services:
   - type: web
     name: novastore
     runtime: node
-    # Los discos persistentes requieren un plan pago. `0.5c-512mb` es el mínimo
-    # (el plan `free` no admite discos). Si el SSR queda corto de memoria, subí a
-    # `1c-2g`.
-    plan: 0.5c-512mb
+    # Free: 512 MB, se suspende a los 15 min sin tráfico y no admite discos.
+    # Si el SSR queda corto de memoria o querés persistencia, subí a `0.5c-512mb`.
+    plan: free
     region: oregon # Cambiá a la región más cercana (ohio, virginia, frankfurt, singapore).
     # `--include=dev` es imprescindible: con NODE_ENV=production npm omite las
     # devDependencies, y el CLI de Angular (`ng`) es una de ellas.
@@ -30,8 +33,10 @@ services:
         value: production
       - key: NODE_VERSION
         value: '24' # Coincidí con la versión de Node usada en desarrollo.
+      # Relativa a la raíz del proyecto: escribible en Render free. El contenido
+      # es efímero (se pierde en cada deploy/reinicio).
       - key: DATABASE_PATH
-        value: /var/lib/novastore/novastore.db # Ruta absoluta dentro del disco.
+        value: data/novastore.db
       - key: SESSION_TTL_DAYS
         value: '7'
       - key: TRUST_PROXY
@@ -49,7 +54,13 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
-    disk:
-      name: novastore-data
-      mountPath: /var/lib/novastore
-      sizeGB: 1
+
+    # --- Persistencia real (requiere plan pago) --------------------------------
+    # Descomentá para conservar los datos entre deploys. Requiere cambiar
+    # `plan: free` por `plan: 0.5c-512mb` (o superior) y apuntar DATABASE_PATH
+    # a `/var/lib/novastore/novastore.db`.
+    #
+    # disk:
+    #   name: novastore-data
+    #   mountPath: /var/lib/novastore
+    #   sizeGB: 1

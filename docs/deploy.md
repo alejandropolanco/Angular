@@ -13,6 +13,10 @@ Por eso **no encaja en hostings serverless** (Netlify, Vercel): no ofrecen
 proceso persistente ni almacenamiento duradero. Necesitás un servicio con
 proceso Node continuo **y** un disco/volumen persistente.
 
+> **¿Solo querés mostrar la app?** Render **free** sirve como demo (proceso Node,
+> sin disco): los datos se borran en cada deploy. Ver §3.1. Para conservarlos sin
+> pagar, ver §10.
+
 ---
 
 ## 1. Cómo se construye y arranca
@@ -42,7 +46,7 @@ Angular, así que web y API comparten origen y puerto.
 | `NODE_ENV` | `production` | Activa cookies `secure`, prefijo `__Host-` y HSTS |
 | `PORT` | *(lo inyecta el hosting)* | El servidor lee `process.env.PORT` |
 | `NODE_VERSION` | `24` | Coincidir con la versión de desarrollo |
-| `DATABASE_PATH` | `/var/lib/novastore/novastore.db` | **Absoluta**, dentro del disco persistente |
+| `DATABASE_PATH` | `data/novastore.db` (free) · `/var/lib/novastore/novastore.db` (disco) | Ver §3. En free es **efímera**; con disco, **absoluta** dentro del `mountPath` |
 | `ADMIN_EMAIL` | tu correo | Se usa solo al crear la base por primera vez |
 | `ADMIN_PASSWORD` | contraseña fuerte | Ídem; cambiarla después no actualiza el admin existente |
 | `SESSION_TTL_DAYS` | `7` | Duración de la sesión |
@@ -55,47 +59,63 @@ Angular, así que web y API comparten origen y puerto.
 
 ---
 
-## 3. Render (recomendado)
+## 3. Render
 
-Render ofrece un **Web Service** con **Persistent Disk**: es la opción más simple
-para este stack.
+Render ofrece un **Web Service**. Hay dos modalidades según querés pagar o no.
 
-> ⚠️ Los discos persistentes **requieren un plan pago** (Starter o superior) y
-> solo se pueden montar en **una instancia**. Nada de autoescalado ni varias
-> réplicas: SQLite no soporta escrituras concurrentes entre procesos.
+### 3.1 Modo free (demo, datos efímeros)
 
-### 3.1 Con Blueprint (usa `render.yaml`)
+Ideal para **mostrar la app** sin costo. El build y el arranque funcionan, pero:
 
-El repo incluye [`render.yaml`](../render.yaml). En Render:
+- **El filesystem es efímero:** usuarios, sesiones, productos y pedidos se
+  **borran en cada deploy/reinicio**.
+- **El servicio se suspende** a los 15 min sin tráfico y tarda ~1 min en
+  despertar.
+- **No admite discos** (eso requiere plan pago).
 
-1. **New → Blueprint** y elegí el repositorio.
-2. Revisá `name` (define el dominio `<name>.onrender.com`), `region` y `plan`.
-3. Completá `ADMIN_EMAIL` y `ADMIN_PASSWORD` cuando las pida.
-4. **Apply**.
+Configuración:
 
-### 3.2 Manual (dashboard)
+1. **New → Blueprint** y elegí el repositorio (usa [`render.yaml`](../render.yaml),
+   que ya viene con `plan: free` y `DATABASE_PATH=data/novastore.db`).
+2. Completá `ADMIN_EMAIL` y `ADMIN_PASSWORD` cuando las pida. **Recordá:** el admin
+   se recrea en cada arranque porque la base se borra.
+3. **Apply**.
+
+### 3.2 Modo persistente (plan pago, recomendado para producción)
+
+Con un **Persistent Disk**, los datos sobreviven a deploys y reinicios.
+
+> ⚠️ Los discos **requieren plan pago** (Starter o superior) y solo se pueden
+> montar en **una instancia**. Nada de autoescalado ni varias réplicas: SQLite no
+> soporta escrituras concurrentes entre procesos.
+
+En el [`render.yaml`](../render.yaml): cambiá `plan: free` por
+`plan: 0.5c-512mb`, apuntá `DATABASE_PATH` a `/var/lib/novastore/novastore.db` y
+descomentá el bloque `disk`.
+
+### 3.3 Manual (dashboard)
 
 1. **New → Web Service** y conectá el repositorio.
 2. Configurá:
    - **Runtime:** Node
-   - **Build Command:** `npm ci && npm run build`
+   - **Build Command:** `npm ci --include=dev && npm run build`
    - **Start Command:** `node dist/shop-tex/server/server.mjs`
    - **Health Check Path:** `/`
-   - **Instance Type:** Starter (`0.5c-512mb`; los discos requieren plan pago)
-3. **Add Disk**: nombre `novastore-data`, **Mount Path** `/var/lib/novastore`,
-   tamaño `1 GB`.
-4. **Environment → Add Environment Variable** con las variables de §2.
+   - **Instance Type:** Free (demo) o Starter (`0.5c-512mb`, para disco)
+3. **Environment → Add Environment Variable** con las variables de §2.
+4. *(Solo modo persistente)* **Add Disk**: nombre `novastore-data`,
+   **Mount Path** `/var/lib/novastore`, tamaño `1 GB`, y `DATABASE_PATH` dentro
+   de esa ruta.
 5. **Create Web Service**.
 
-### 3.3 Qué pasa en el primer deploy
+### 3.4 Qué pasa en el primer deploy
 
-1. El **build** corre en un filesystem efímero (el disco **no** está montado
-   todavía). `npm run build` prerenderiza `/`, `/login` y `/register`, y **no
-   necesita la base de datos**.
-2. Al **arrancar**, Render monta el disco en `/var/lib/novastore`; la app crea
-   el archivo SQLite, las tablas y siembra el administrador.
-3. A partir de ahí, todo lo escrito en `/var/lib/novastore` **sobrevive** a
-   deploys y reinicios.
+1. El **build** corre en un filesystem efímero. `npm run build` prerenderiza `/`,
+   `/login` y `/register`, y **no necesita la base de datos**.
+2. Al **arrancar**, la app crea el archivo SQLite, las tablas y siembra el
+   administrador.
+3. Con **disco**, todo lo escrito en `/var/lib/novastore` **sobrevive** a deploys
+   y reinicios. **Sin disco**, se reinicia de cero en cada arranque.
 
 ---
 
@@ -135,11 +155,17 @@ Hay dos soluciones:
 | `GET https://tudominio.com/api/auth/me` sin cookie | `401` |
 | Login con `ADMIN_EMAIL` / `ADMIN_PASSWORD` | `200` y cookie `__Host-novastore_session` |
 | Recargar la página tras el login | La sesión persiste (cookie `secure` + HTTPS) |
-| Reiniciar el servicio | Los usuarios/sesiones siguen ahí (disco persistente) |
+| Reiniciar el servicio *(solo con disco)* | Los usuarios/sesiones siguen ahí |
+
+> En **modo free** los datos se pierden en cada deploy/reinicio: el admin se
+> vuelve a sembrar desde `ADMIN_EMAIL`/`ADMIN_PASSWORD`, así que el login siempre
+> funciona, pero los registros previos desaparecen.
 
 ---
 
 ## 7. Backups de SQLite
+
+*(Solo aplica en modo persistente: en free no hay nada que respaldar.)*
 
 ```bash
 # Copia consistente aunque la app esté corriendo
@@ -156,11 +182,11 @@ Programalo con `cron` y guardá también el `.env` **fuera** del repositorio.
 - **El disco solo se monta en runtime.** No escribas la base ni corras
   migraciones durante el build; el contenido se descarta.
 - **Todo lo que esté fuera del disco es efímero.** Por eso `DATABASE_PATH` debe
-  apuntar dentro del `mountPath`.
+  apuntar dentro del `mountPath` (o, en free, a una ruta relativa escribible).
 - **Un solo disco = una sola instancia.** Sin autoescalado.
 - **Los deploys no son instantáneos:** el arranque vuelve a montar el disco y la
   app se reinicia (breve corte).
-- **`DATABASE_PATH` debe ser absoluta y escribible** por el usuario del servicio.
+- **`DATABASE_PATH` debe ser escribible** por el usuario del servicio.
 - **Netlify/Vercel no sirven** para este backend (serverless, sin disco).
 
 ---
@@ -171,6 +197,7 @@ Programalo con `cron` y guardá también el `.env` **fuera** del repositorio.
 | --- | --- | --- |
 | `sh: 1: ng: not found` en el build | `NODE_ENV=production` hace que npm **omita las devDependencies**, y `@angular/cli` es una de ellas | Build command: `npm ci --include=dev && npm run build` |
 | `ENOENT: mkdir '/var/lib/novastore'` en el build | El prerender cargaba el entry del servidor y abría SQLite, pero el disco no está montado durante el build | Ya resuelto: `src/server.ts` solo monta la API/DB cuando es el proceso servidor (`isMainModule`/PM2) |
+| `EACCES: permission denied, mkdir '/var/lib/novastore'` al arrancar | `DATABASE_PATH` apunta a una ruta del disco, pero **el disco no está montado** (modo free o falta agregarlo) | Montá el Disk (§3.2) o usá `DATABASE_PATH=data/novastore.db` en modo free (§3.1) |
 | El deploy "pasa" pero el servicio no responde / health check falla | `src/server.ts` no arranca Express (`app.listen`) | Asegurate de que `ssr.entry` apunte al servidor Express, no a un handler serverless |
 | `400 Host is not allowed` | Falta el dominio en la lista permitida | Definí `NG_ALLOWED_HOSTS` (ver §5) |
 | Login funciona pero la sesión no persiste | Sin HTTPS o cookie mal configurada | Entrá por `https://` y verificá `NODE_ENV=production` |
@@ -179,16 +206,27 @@ Programalo con `cron` y guardá también el `.env` **fuera** del repositorio.
 
 ---
 
-## 10. Alternativas
+## 10. Alternativas (y cómo seguir gratis)
 
-| Opción | Cuándo conviene |
-| --- | --- |
-| **Render** (Web Service + Disk) | La más simple; ver §3 |
-| **Railway** (Volume) | Similar a Render, cómodo desde el repo |
-| **Fly.io** (Volumes) | Buen precio; `better-sqlite3` compila en su builder |
-| **VPS** (Hetzner/DigitalOcean + nginx + systemd) | Más control y el más barato a largo plazo |
-| **Docker** en cualquier nube | Portable; multi-stage con volumen para `/data` |
+Los **PaaS gratuitos** (Render free, Netlify, Vercel, Koyeb) no dan disco
+persistente: sirven para demo, no para conservar datos. Si querés persistencia
+sin pagar, la salida es una **máquina con disco real**:
 
-Para el VPS, un `Dockerfile` multi-stage (compila el nativo dentro de Linux) y
-una unidad `systemd` + `nginx` como reverse proxy con `certbot` son el camino
-habitual. El resto de la configuración (variables, build y start) es idéntica.
+| Opción | Costo | Persistente | Cambios de código |
+| --- | --- | --- | --- |
+| **Render free** (§3.1) | $0 | ❌ efímero | Ninguno |
+| **VM gratis** (Oracle Cloud Always Free / GCP `e2-micro`) | $0 | ✅ | Ninguno |
+| **Tu PC/Raspberry + Cloudflare Tunnel** | $0 | ✅ (tu disco) | Ninguno |
+| **PaaS + DB externa** (Turso/Neon) | $0 | ✅ gestionada | **Alto** (capa de datos async) |
+| **Render + Disk** (§3.2) | pago | ✅ | Ninguno |
+| **Railway** (Volume) / **Fly.io** (Volumes) | pago | ✅ | Ninguno |
+| **VPS** (Hetzner/DigitalOcean + nginx + systemd) | pago, barato | ✅ | Ninguno |
+
+**Oracle Cloud Always Free** da una VM ARM (Ampere A1) más Block Volume gratis, y
+**GCP** una `e2-micro` con disco de 30 GB. En ambos, el despliegue es el camino de
+VPS: `npm ci --include=dev && npm run build`, `node dist/shop-tex/server/server.mjs`,
+`systemd`, `nginx` y HTTPS con `certbot`. Piden tarjeta para verificar identidad
+(aunque no cobran).
+
+Un `Dockerfile` multi-stage (que compila el nativo dentro de Linux) también es
+portable a cualquier nube con volumen para `/data`.
