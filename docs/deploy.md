@@ -170,6 +170,7 @@ Programalo con `cron` y guardá también el `.env` **fuera** del repositorio.
 | Síntoma | Causa | Solución |
 | --- | --- | --- |
 | `sh: 1: ng: not found` en el build | `NODE_ENV=production` hace que npm **omita las devDependencies**, y `@angular/cli` es una de ellas | Build command: `npm ci --include=dev && npm run build` |
+| `ENOENT: mkdir '/var/lib/novastore'` en el build | El prerender cargaba el entry del servidor y abría SQLite, pero el disco no está montado durante el build | Ya resuelto: `src/server.ts` solo monta la API/DB cuando es el proceso servidor (`isMainModule`/PM2) |
 | El deploy "pasa" pero el servicio no responde / health check falla | `src/server.ts` no arranca Express (`app.listen`) | Asegurate de que `ssr.entry` apunte al servidor Express, no a un handler serverless |
 | `400 Host is not allowed` | Falta el dominio en la lista permitida | Definí `NG_ALLOWED_HOSTS` (ver §5) |
 | Login funciona pero la sesión no persiste | Sin HTTPS o cookie mal configurada | Entrá por `https://` y verificá `NODE_ENV=production` |
