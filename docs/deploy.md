@@ -52,7 +52,7 @@ Angular, así que web y API comparten origen y puerto.
 | `SESSION_TTL_DAYS` | `7` | Duración de la sesión |
 | `ALLOWED_ORIGINS` | `https://tudominio.com` | Con esquema `https://`; separá varios por coma |
 | `TRUST_PROXY` | `true` | Detrás de un proxy inverso (Render, nginx, etc.) |
-| `NG_ALLOWED_HOSTS` | `tudominio.com` | Hosts permitidos por el SSR de Angular (ver §5) |
+| `NG_ALLOWED_HOSTS` | `tudominio.com` | Hosts permitidos por el SSR de Angular (ver §5). En Render no hace falta: se agrega `RENDER_EXTERNAL_HOSTNAME` solo |
 
 `dotenv` **no** sobreescribe variables ya definidas por el entorno, así que el
 `PORT` que inyecta el hosting tiene prioridad sobre cualquier `.env`.
@@ -138,12 +138,26 @@ El SSR de Angular valida el encabezado `Host` contra una lista permitida.
 `angular.json` trae `security.allowedHosts: ["localhost", "127.0.0.1"]`, así que
 en producción el SSR responde **400** para tu dominio.
 
-Hay dos soluciones:
+Hay tres soluciones:
 
-- **Sin recompilar (recomendado):** definir `NG_ALLOWED_HOSTS` con tu dominio.
-  El motor SSR lee esa variable y la **fusiona** con la de `angular.json`.
+- **En Render (automático):** el servidor agrega el dominio que Render inyecta en
+  `RENDER_EXTERNAL_HOSTNAME`, así que no tenés que configurar nada.
+- **Sin recompilar:** definir `NG_ALLOWED_HOSTS` con tu dominio (o con un dominio
+  propio, además del `.onrender.com`). El servidor la **fusiona** con la lista de
+  `angular.json`.
 - **En el build:** agregar el dominio a `security.allowedHosts` en
   `angular.json` y recompilar.
+
+### El aviso "trustProxyHeaders was not set up"
+
+```
+Received "x-forwarded-for" header but "trustProxyHeaders" was not set up to allow it.
+```
+
+Detrás de un proxy inverso (Render, nginx), los datos reales de la petición
+llegan en encabezados `x-forwarded-*`. El SSR los ignora salvo que se lo indiques.
+El servidor lo activa solo cuando `TRUST_PROXY=true` (que ya está puesto en
+Render). En un despliegue directo sin proxy, dejalo apagado.
 
 ---
 
@@ -199,7 +213,8 @@ Programalo con `cron` y guardá también el `.env` **fuera** del repositorio.
 | `ENOENT: mkdir '/var/lib/novastore'` en el build | El prerender cargaba el entry del servidor y abría SQLite, pero el disco no está montado durante el build | Ya resuelto: `src/server.ts` solo monta la API/DB cuando es el proceso servidor (`isMainModule`/PM2) |
 | `EACCES: permission denied, mkdir '/var/lib/novastore'` al arrancar | `DATABASE_PATH` apunta a una ruta del disco, pero **el disco no está montado** (modo free o falta agregarlo) | Montá el Disk (§3.2) o usá `DATABASE_PATH=data/novastore.db` en modo free (§3.1) |
 | El deploy "pasa" pero el servicio no responde / health check falla | `src/server.ts` no arranca Express (`app.listen`) | Asegurate de que `ssr.entry` apunte al servidor Express, no a un handler serverless |
-| `400 Host is not allowed` | Falta el dominio en la lista permitida | Definí `NG_ALLOWED_HOSTS` (ver §5) |
+| `400 Host is not allowed` | Falta el dominio en la lista permitida | En Render se agrega solo; si no, definí `NG_ALLOWED_HOSTS` (ver §5) |
+| `trustProxyHeaders was not set up` (aviso) | El SSR no confía en los `x-forwarded-*` del proxy | Definí `TRUST_PROXY=true` (ver §5) |
 | Login funciona pero la sesión no persiste | Sin HTTPS o cookie mal configurada | Entrá por `https://` y verificá `NODE_ENV=production` |
 | Los datos desaparecen tras cada deploy | `DATABASE_PATH` fuera del disco persistente | Apuntalo dentro del `mountPath` del disco |
 | `403 ORIGIN_NOT_ALLOWED` en llamadas a `/api` | Falta el dominio en `ALLOWED_ORIGINS` | Agregalo con esquema `https://` |

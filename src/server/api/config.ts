@@ -13,10 +13,19 @@ export const serverConfig = {
   sessionTtlMs: readNumber(process.env['SESSION_TTL_DAYS'], 7) * 24 * 60 * 60 * 1000,
   adminEmail: (process.env['ADMIN_EMAIL'] ?? 'admin@gmail.com').trim().toLowerCase(),
   adminPassword: process.env['ADMIN_PASSWORD'] ?? '1234',
+  // Detrás de un proxy inverso (Render, nginx), los datos reales de la petición
+  // llegan en los encabezados `x-forwarded-*`.
+  trustProxy: process.env['TRUST_PROXY'] === 'true',
   allowedOrigins: new Set(
-    (process.env['ALLOWED_ORIGINS'] ?? 'http://localhost:4200,http://localhost:4000')
-      .split(',')
-      .map((origin) => origin.trim())
-      .filter(Boolean),
+    [
+      ...(process.env['ALLOWED_ORIGINS'] ?? 'http://localhost:4200,http://localhost:4000').split(
+        ',',
+      ),
+      // Render expone la URL pública del servicio; la agregamos sola para no
+      // tener que hardcodear el dominio en ALLOWED_ORIGINS.
+      process.env['RENDER_EXTERNAL_URL'],
+    ]
+      .map((origin) => origin?.trim())
+      .filter((origin): origin is string => Boolean(origin)),
   ),
 } as const;

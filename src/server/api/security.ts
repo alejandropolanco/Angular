@@ -5,7 +5,7 @@ import { isProduction, serverConfig } from './config';
 
 export function applySecurityHeaders(app: Express): void {
   app.disable('x-powered-by');
-  app.set('trust proxy', process.env['TRUST_PROXY'] === 'true' ? 1 : false);
+  app.set('trust proxy', serverConfig.trustProxy ? 1 : false);
 
   app.use(
     helmet({

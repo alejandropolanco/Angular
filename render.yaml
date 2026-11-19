@@ -41,13 +41,14 @@ services:
         value: '7'
       - key: TRUST_PROXY
         value: 'true' # Render va detrás de un proxy inverso.
-      # Angular SSR: permite el host de producción (se fusiona con angular.json).
-      # Ajustá al dominio real que Render asigne al servicio.
-      - key: NG_ALLOWED_HOSTS
-        value: novastore.onrender.com
-      # Origen permitido para las solicitudes a /api (con esquema https).
-      - key: ALLOWED_ORIGINS
-        value: https://novastore.onrender.com
+      # El servidor agrega solo el dominio del servicio (RENDER_EXTERNAL_HOSTNAME)
+      # a los hosts del SSR y a los orígenes permitidos, así que no hace falta
+      # hardcodear el `.onrender.com`. Descomentá y ajustá solo si usás un
+      # dominio propio.
+      # - key: NG_ALLOWED_HOSTS
+      #   value: tudominio.com,www.tudominio.com
+      # - key: ALLOWED_ORIGINS
+      #   value: https://tudominio.com,https://www.tudominio.com
       # Credenciales del administrador inicial. `sync: false` las pide en el
       # dashboard y no las guarda en el repositorio.
       - key: ADMIN_EMAIL

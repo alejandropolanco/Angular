@@ -7,6 +7,7 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import { serverConfig } from './server/api/config';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -25,7 +26,28 @@ if (isServerProcess) {
   registerApi(app);
 }
 
-const angularApp = new AngularNodeAppEngine();
+function parseList(value: string | undefined): string[] {
+  return (value ?? '')
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+/**
+ * Hosts que el SSR acepta (protección contra SSRF). Además de `NG_ALLOWED_HOSTS`,
+ * tomamos el dominio público que Render inyecta en `RENDER_EXTERNAL_HOSTNAME`,
+ * así no hay que hardcodear el subdominio `.onrender.com`.
+ */
+const allowedHosts = [
+  ...parseList(process.env['NG_ALLOWED_HOSTS']),
+  ...parseList(process.env['RENDER_EXTERNAL_HOSTNAME']),
+];
+
+const angularApp = new AngularNodeAppEngine({
+  ...(allowedHosts.length > 0 ? { allowedHosts } : {}),
+  // Confiar en `x-forwarded-*` solo cuando estamos detrás de un proxy.
+  trustProxyHeaders: serverConfig.trustProxy,
+});
 
 /**
  * Serve static files from /browser
