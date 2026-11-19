@@ -1,0 +1,55 @@
+# Blueprint de Render para NovaStore (Angular SSR + API Express + SQLite).
+#
+# Un único servicio Node sirve la web y la API (`/api`). La base SQLite vive en
+# un disco persistente, porque el resto del sistema de archivos de Render es
+# efímero (se borra en cada deploy).
+#
+# Uso: Render -> New -> Blueprint -> elegí este repositorio.
+# Docs: docs/deploy.md
+#
+# Ajustá `name` (define el dominio por defecto `<name>.onrender.com`) y las
+# variables marcadas abajo antes de aplicar.
+
+services:
+  - type: web
+    name: novastore
+    runtime: node
+    # Los discos persistentes requieren un plan pago. `0.5c-512mb` es el mínimo
+    # (el plan `free` no admite discos). Si el SSR queda corto de memoria, subí a
+    # `1c-2g`.
+    plan: 0.5c-512mb
+    region: oregon # Cambiá a la región más cercana (ohio, virginia, frankfurt, singapore).
+    # `--include=dev` es imprescindible: con NODE_ENV=production npm omite las
+    # devDependencies, y el CLI de Angular (`ng`) es una de ellas.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: node dist/shop-tex/server/server.mjs
+    healthCheckPath: /
+    autoDeployTrigger: commit # Deploy automático en cada push a la rama.
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: '24' # Coincidí con la versión de Node usada en desarrollo.
+      - key: DATABASE_PATH
+        value: /var/lib/novastore/novastore.db # Ruta absoluta dentro del disco.
+      - key: SESSION_TTL_DAYS
+        value: '7'
+      - key: TRUST_PROXY
+        value: 'true' # Render va detrás de un proxy inverso.
+      # Angular SSR: permite el host de producción (se fusiona con angular.json).
+      # Ajustá al dominio real que Render asigne al servicio.
+      - key: NG_ALLOWED_HOSTS
+        value: novastore.onrender.com
+      # Origen permitido para las solicitudes a /api (con esquema https).
+      - key: ALLOWED_ORIGINS
+        value: https://novastore.onrender.com
+      # Credenciales del administrador inicial. `sync: false` las pide en el
+      # dashboard y no las guarda en el repositorio.
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+    disk:
+      name: novastore-data
+      mountPath: /var/lib/novastore
+      sizeGB: 1

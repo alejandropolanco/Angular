@@ -204,6 +204,7 @@ La suite cubre servicios, guards, interceptor, páginas de login y registro, y c
 ## Documentación
 
 - [`docs/landing-y-animaciones.md`](./docs/landing-y-animaciones.md) — portada pública, sistema de animaciones por scroll y las correcciones de UX.
+- [`docs/deploy.md`](./docs/deploy.md) — despliegue a producción (SSR + API + SQLite en un solo proceso), Render con disco persistente y alternativas.
 - [`design-system/novastore/MASTER.md`](./design-system/novastore/MASTER.md) — sistema de diseño **Clean Tech Monocromo**.
 - [`SECURITY_AUDIT.md`](./SECURITY_AUDIT.md) — medidas de seguridad y riesgos residuales.
 - [`docs/README.md`](./docs/README.md) — índice de la documentación.
