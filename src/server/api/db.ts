@@ -37,10 +37,32 @@ const databaseFile =
     : resolve(process.cwd(), serverConfig.databasePath);
 
 if (databaseFile !== ':memory:') {
-  mkdirSync(dirname(databaseFile), { recursive: true });
+  try {
+    mkdirSync(dirname(databaseFile), { recursive: true });
+  } catch (error) {
+    throw new Error(
+      `No se pudo crear el directorio de la base de datos "${dirname(databaseFile)}". ` +
+        'En Render, verificá que el disco persistente esté montado en esa ruta (o, ' +
+        'en modo free, que DATABASE_PATH sea una ruta relativa escribible).',
+      { cause: error },
+    );
+  }
 }
 
-export const db = new Database(databaseFile);
+export const db = openDatabase(databaseFile);
+
+function openDatabase(file: string): Database.Database {
+  try {
+    return new Database(file);
+  } catch (error) {
+    throw new Error(
+      `No se pudo abrir la base de datos en "${file}". ` +
+        'En Render, verificá que el disco persistente esté montado y que ' +
+        'DATABASE_PATH apunte dentro de él.',
+      { cause: error },
+    );
+  }
+}
 
 db.pragma('busy_timeout = 5000');
 db.pragma('foreign_keys = ON');
